@@ -134,7 +134,7 @@ public class MainActivity extends SMTHBaseActivity
     initBottomNavigation();
 
     mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-    setDrawerLeftEdgeSize (this, mDrawer, 1) ;
+    setDrawerLeftEdgeSize (this, mDrawer, (float)0.5) ;//To support Mail Deletion
     mToggle = new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
     mDrawer.addDrawerListener(mToggle);
     mToggle.syncState();

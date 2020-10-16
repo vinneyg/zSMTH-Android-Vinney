@@ -86,7 +86,7 @@ public class MaintainUserStatusService extends IntentService {
     if (userStatus.hasNewReply()  && settings.isNotificationReply()) {
       message += SMTHApplication.NOTIFICATION_NEW_REPLY + "  ";
     }
-    //Log.d(TAG, message);
+  //  Log.d("Vinney", message);
     return message;
   }
 
@@ -107,17 +107,17 @@ public class MaintainUserStatusService extends IntentService {
     //Log.d(TAG, "1.0 get current UserStatus from remote");
     helper.wService.queryActiveUserStatus().map(new Function<UserStatus, UserStatus>() {
       @Override public UserStatus apply(@NonNull UserStatus userStatus) throws Exception {
-        //Log.d(TAG, "2.0 " + userStatus.toString());
+      //  Log.d(TAG, "2.0 " + userStatus.toString());
 
         // check it's logined user, or guest
         if (userStatus != null && userStatus.getId() != null && !userStatus.getId().equals("guest")) {
           // logined user, just return the status for next step
-          //Log.d(TAG, "call: 2.1 valid logined user: " + userStatus.getId());
+       //   Log.d(TAG, "call: 2.1 valid logined user: " + userStatus.getId());
           return userStatus;
         }
 
         // login first
-        //Log.d(TAG, "call: " + "2.2 user not logined, try to login now...");
+      //  Log.d(TAG, "call: " + "2.2 user not logined, try to login now...");
         final Settings setting = Settings.getInstance();
         String username = setting.getUsername();
         String password = setting.getPassword();
@@ -142,16 +142,16 @@ public class MaintainUserStatusService extends IntentService {
 
           List<Integer> results = MakeList.makeList(its);
 
-          //Log.d(TAG, "call: 2.2.2 " + results.size());
+        //  Log.d(TAG, "call: 2.2.2 " + results.size());
           if (results != null && results.size() == 1) {
             int result = results.get(0);
             if (result == AjaxResponse.AJAX_RESULT_OK) {
               // set flag, so that we will query user status again
-              //Log.d(TAG, "call: 2.2.3. Login success");
+         //     Log.d(TAG, "call: 2.2.3. Login success");
               bLoginSuccess = true;
             } else if (result == AjaxResponse.AJAX_RESULT_FAILED) {
               // set flag, so that we will not login again next time
-              //Log.d(TAG, "call: 2.2.4. Login failed");
+          //    Log.d(TAG, "call: 2.2.4. Login failed");
               setting.setLastLoginSuccess(false);
             }
           }
@@ -159,7 +159,7 @@ public class MaintainUserStatusService extends IntentService {
 
         // try to find new UserStatus only when login success
         if (bLoginSuccess) {
-          //Log.d(TAG, "call: " + "2.2.5.1 try to get userstatus again after login action");
+       //   Log.d(TAG, "call: " + "2.2.5.1 try to get userstatus again after login action");
           UserStatus stat = SMTHHelper.queryActiveUserStatus().blockingFirst();
           //Log.d(TAG, "call: " + stats.size());
           return stat;
@@ -169,24 +169,24 @@ public class MaintainUserStatusService extends IntentService {
       }
     }).map(new Function<UserStatus, UserStatus>() {
       @Override public UserStatus apply(@NonNull UserStatus userStatus) throws Exception {
-        //Log.d(TAG, "3.0 call: " + userStatus.toString());
+      //  Log.d(TAG, "3.0 call: " + userStatus.toString());
         String userid = userStatus.getId();
         if (userid != null && !TextUtils.equals(userid, "guest")) {
           // valid logined user
           if (SMTHApplication.activeUser != null && TextUtils.equals(userid, SMTHApplication.activeUser.getId())) {
             // current user is already cached in SMTHApplication
-            //Log.d(TAG, "call: " + "3.1 New user is the same with cached user, copy faceURL from local");
+         //  Log.d(TAG, "call: " + "3.1 New user is the same with cached user, copy faceURL from local");
             userStatus.setFace_url(SMTHApplication.activeUser.getFace_url());
           } else {
             // get correct faceURL
-            //Log.d(TAG, "call: " + "3.2 New user is different with cached user, get real face URL from remote");
+          //  Log.d(TAG, "call: " + "3.2 New user is different with cached user, get real face URL from remote");
             UserInfo userInfo = helper.wService.queryUserInformation(userid).blockingFirst();
             if (userInfo != null) {
               userStatus.setFace_url(userInfo.getFace_url());
             }
           }
         } else {
-          //Log.d(TAG, "call: 3.3 " + "invalid logined user");
+         // Log.d(TAG, "call: 3.3 " + "invalid logined user");
         }
         return userStatus;
       }
@@ -196,7 +196,7 @@ public class MaintainUserStatusService extends IntentService {
       }
 
       @Override public void onNext(@NonNull UserStatus userStatus) {
-        //Log.d(TAG, "4.0 onNext: " + userStatus.toString());
+      //  Log.d(TAG, "4.0 onNext: " + userStatus.toString());
         String userid = userStatus.getId();
         if (userid == null || TextUtils.equals(userid, "guest")) return;
 
@@ -211,7 +211,7 @@ public class MaintainUserStatusService extends IntentService {
         // send notification: 1. new message 2. new activeUser to update Sidebar status
         String message = getNotificationMessage(userStatus);
         if ((updateUserIcon || message.length() > 0) && userStatusReceiver != null) {
-          //Log.d(TAG, "4.2 cached user, valid message, valid receiver, send message");
+        //  Log.d(TAG, "4.2 cached user, valid message, valid receiver, send message");
           Bundle bundle = new Bundle();
           if(message.length() > 0) {
             bundle.putString(SMTHApplication.SERVICE_NOTIFICATION_MESSAGE, message);
