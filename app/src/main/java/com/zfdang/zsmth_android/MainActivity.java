@@ -1,6 +1,7 @@
 package com.zfdang.zsmth_android;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Application;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -13,6 +14,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,6 +30,7 @@ import android.support.v4.app.FragmentManager;
 //import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.ViewDragHelper;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -131,9 +134,12 @@ public class MainActivity extends SMTHBaseActivity
     initBottomNavigation();
 
     mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+    setDrawerLeftEdgeSize (this, mDrawer, 1) ;
     mToggle = new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
     mDrawer.addDrawerListener(mToggle);
     mToggle.syncState();
+    //Vinney Full Screen Drawer
+
 
     mNavigationView = (NavigationView) findViewById(R.id.nav_view);
     mNavigationView.setNavigationItemSelectedListener(this);
@@ -908,6 +914,29 @@ public class MainActivity extends SMTHBaseActivity
     }
   }
 
+  private void setDrawerLeftEdgeSize (Activity activity, DrawerLayout drawerLayout, float displayWidthPercentage) {
+    if (activity == null || drawerLayout == null) return;
+    try {
+      // 找到 ViewDragHelper 并设置 Accessible 为true
+      Field leftDraggerField =
+              drawerLayout.getClass().getDeclaredField("mLeftDragger");//Right
+      leftDraggerField.setAccessible(true);
+      ViewDragHelper leftDragger = (ViewDragHelper) leftDraggerField.get(drawerLayout);
 
+      // 找到 edgeSizeField 并设置 Accessible 为true
+      Field edgeSizeField = leftDragger.getClass().getDeclaredField("mEdgeSize");
+      edgeSizeField.setAccessible(true);
+      int edgeSize = edgeSizeField.getInt(leftDragger);
+
+      // 设置新的边缘大小
+      Point displaySize = new Point();
+      activity.getWindowManager().getDefaultDisplay().getSize(displaySize);
+      edgeSizeField.setInt(leftDragger, Math.max(edgeSize, (int) (displaySize.x *
+              displayWidthPercentage)));
+    } catch (NoSuchFieldException e) {
+    } catch (IllegalArgumentException e) {
+    } catch (IllegalAccessException e) {
+    }
+  }
 
 }

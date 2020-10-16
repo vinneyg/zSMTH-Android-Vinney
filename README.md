@@ -1,21 +1,18 @@
-# zSMTH-Android
+# zSMTH-Android-Vinney
 
-水木社区BBS的开源Android客户端
+基于zSMTH [http://zsmth-android.zfdang.com/](http://zsmth-android.zfdang.com/) 的水木社区BBS的
+更新开源Android客户端
 
-
-![zSMTH](zsmth.png)
 
 # 项目地址：
+https://github.com/vinneyg/zSMTH-Android-Vinney
 
-[http://zsmth-android.zfdang.com/](http://zsmth-android.zfdang.com/)
-
-![Build_zSMTH_APK](https://github.com/zfdang/zSMTH-Android/workflows/Build_zSMTH_APK/badge.svg)
 
 
 # 项目说明：
 
 
-本项目使用了当前Android开发流行的技术，比如
+zSMTH项目使用了当前Android开发流行的技术，比如
 
 * RxJava+Retrofit2+okhttp3: 网络和reactive模式开发
 * Fresco: 网络图片下载、缓存和显示
@@ -26,5 +23,6 @@
 * Jsoup: 解析页面内容
 * ...
 
+本版本基于原始的zSMTH版本增加了部分功能！
 
 欢迎更多的人参与进来一起改进！
