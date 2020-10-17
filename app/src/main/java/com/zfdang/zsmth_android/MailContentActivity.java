@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -33,6 +34,7 @@ import com.klinker.android.link_builder.LinkConsumableTextView;
 import com.zfdang.SMTHApplication;
 import com.zfdang.zsmth_android.fresco.WrapContentDraweeView;
 import com.zfdang.zsmth_android.helpers.ActivityUtils;
+import com.zfdang.zsmth_android.models.Board;
 import com.zfdang.zsmth_android.models.ComposePostContext;
 import com.zfdang.zsmth_android.models.ContentSegment;
 import com.zfdang.zsmth_android.models.Mail;
@@ -195,7 +197,17 @@ public class MailContentActivity extends AppCompatActivity {
   @Override public boolean onOptionsItemSelected(MenuItem item) {
     int id = item.getItemId();
     if (id == android.R.id.home) {
-      onBackPressed();
+      if (mMail.isRefferedPost() ) {
+          //Toast.makeText(MailContentActivity.this, "回复POST提醒", Toast.LENGTH_LONG).show();
+          Board board = new Board("", mMail.fromBoard, mMail.fromBoard);
+          Intent intent = new Intent(this, BoardTopicActivity.class);
+          intent.putExtra(SMTHApplication.BOARD_OBJECT, (Parcelable)board);
+          startActivity(intent);
+          finish();
+      }
+      else{
+        onBackPressed();
+      }
       return true;
     } else if (id == R.id.mail_content_reply) {
       if (mPost == null) {
