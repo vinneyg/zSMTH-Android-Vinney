@@ -1108,11 +1108,11 @@ public class SMTHHelper {
      @Override public Observable<Board> apply(@NonNull ResponseBody responseBody) throws Exception {
         try {
           String response = SMTHHelper.DecodeResponseFromWWW(responseBody.bytes());
-           Log.d(TAG, "Vinney:"+response);
+        //   Log.d(TAG, "Vinney:"+response);
           List<Board> boards = SMTHHelper.ParseFavoriteBoardsFromWWW(response);
           return Observable.fromIterable(boards);
         } catch (Exception e) {
-          Log.e(TAG, "Vinney:Failed to load favorite {" + path + "}");
+       //   Log.e(TAG, "Vinney:Failed to load favorite {" + path + "}");
           Log.e(TAG, Log.getStackTraceString(e));
           return null;
         }

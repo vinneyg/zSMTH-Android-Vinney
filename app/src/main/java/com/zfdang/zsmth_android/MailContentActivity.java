@@ -1,16 +1,30 @@
 package com.zfdang.zsmth_android;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.ContextMenu;
+import android.view.GestureDetector;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.jude.swipbackhelper.SwipeBackHelper;
@@ -23,6 +37,8 @@ import com.zfdang.zsmth_android.models.ComposePostContext;
 import com.zfdang.zsmth_android.models.ContentSegment;
 import com.zfdang.zsmth_android.models.Mail;
 import com.zfdang.zsmth_android.models.Post;
+import com.zfdang.zsmth_android.models.PostActionAlertDialogItem;
+import com.zfdang.zsmth_android.models.PostListContent;
 import com.zfdang.zsmth_android.models.Topic;
 import com.zfdang.zsmth_android.newsmth.AjaxResponse;
 import com.zfdang.zsmth_android.newsmth.SMTHHelper;
@@ -47,6 +63,7 @@ public class MailContentActivity extends AppCompatActivity {
   public TextView mPostPublishDate;
   private LinearLayout mViewGroup;
   public LinkConsumableTextView mPostContent;
+
 
   @Override protected void onDestroy() {
     super.onDestroy();
@@ -81,6 +98,8 @@ public class MailContentActivity extends AppCompatActivity {
     if (actionBar != null) {
       actionBar.setDisplayHomeAsUpEnabled(true);
     }
+
+
 
     // load mMail content
     Bundle bundle = getIntent().getExtras();
@@ -216,7 +235,23 @@ public class MailContentActivity extends AppCompatActivity {
       } else {
         Toast.makeText(MailContentActivity.this, "普通邮件，无法打开原贴!", Toast.LENGTH_LONG).show();
       }
-    }
+    }else if(id == R.id.mail_content_copy) //Vinney: 增加邮件内容复制
+      {
+        String content;
+
+        if (mPost != null) {
+            content = mPost.getRawContent();
+
+            final android.content.ClipboardManager clipboardManager =
+                    (android.content.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+            final android.content.ClipData clipData = android.content.ClipData.newPlainText("PostContent", content);
+            clipboardManager.setPrimaryClip(clipData);
+
+          Toast.makeText(MailContentActivity.this, "帖子内容已复制到剪贴板", Toast.LENGTH_SHORT).show();
+        } else {
+          Toast.makeText(MailContentActivity.this, "复制失败！", Toast.LENGTH_SHORT).show();
+        }
+      }
     return super.onOptionsItemSelected(item);
   }
 
@@ -225,4 +260,7 @@ public class MailContentActivity extends AppCompatActivity {
     getMenuInflater().inflate(R.menu.mail_content_menu, menu);
     return true;
   }
-}
+
+
+
+    }

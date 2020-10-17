@@ -133,6 +133,7 @@
   <string name="mail_button_at_label">\@我</string>
   <string name="mail_button_reply_label">回复我</string>
   <string name="mail_button_like_label">Like我</string>
+  <string name="mail_content_menu_copy">复制邮件内容</string>
 
   <!-- 关于 -->
   <string name="about_title">关于zSMTH</string>

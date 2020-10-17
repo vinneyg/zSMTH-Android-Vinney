@@ -855,7 +855,7 @@ public class MainActivity extends SMTHBaseActivity
 
             SMTHHelper helper = SMTHHelper.getInstance();
             //Log.d(TAG, "Vinney: " + board.getFolderID() + "&&" + board.getFolderName() + "&&" + String.valueOf(Integer.parseInt(board.getFolderID()) - 1));
-            helper.wService.manageFavoriteBoard(favoriteBoardFragment.getCurrentFavoritePath(), "dg", String.valueOf(Integer.parseInt(board.getFolderID()) - 1))
+            helper.wService.manageFavoriteBoard(favoriteBoardFragment.getCurrentFavoritePath(), "df", String.valueOf(Integer.parseInt(board.getFolderID()) - 1))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Observer<AjaxResponse>() {
