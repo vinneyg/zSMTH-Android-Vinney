@@ -8,8 +8,9 @@ def getDate() {
     return formattedDate
 }
 def cmd = 'git rev-list HEAD --count'
-//def gitVersion = cmd.execute().text.trim().toInteger() + 100
-def gitVersion =  115
+
+def gitVersion = cmd.execute().text.trim().toInteger() + 107 //Starting 109
+//gitVersion =  116
 def appVersion = getDate()
 
 android {
