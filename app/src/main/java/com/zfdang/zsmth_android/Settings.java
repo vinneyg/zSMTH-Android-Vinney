@@ -518,6 +518,8 @@ public class Settings {
 
     bTopicFwdSelf = mPreference.getBoolean(SET_FWD_ADDRESS,true);
 
+    bOpenTopicAdd =mPreference.getBoolean(OPEN_TOPIC_ADD,false);
+
     bPostNavBar = mPreference.getBoolean(SHOW_POST_NAVITATION_BAR, true);
     bVolumeKeyScroll = mPreference.getBoolean(VOLUME_KEY_SCROLL, true);
     iFontIndex = mPreference.getInt(ZSMTH_FONT_INDEX, 1);

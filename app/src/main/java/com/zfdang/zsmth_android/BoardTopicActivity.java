@@ -90,7 +90,6 @@ public class BoardTopicActivity extends SMTHBaseActivity
     if (isSearchMode) {
       onRefresh();
     } else {
-      Log.d("VINNEY","BACK-PRESS");
       super.onBackPressed();
     }
   }

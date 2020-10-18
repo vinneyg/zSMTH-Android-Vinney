@@ -93,6 +93,7 @@ public class PostListActivity extends SMTHBaseActivity
   private EditText mPageNo = null;
 
   public int mCurrentPageNo = 1;
+  public static int mTotalPageNo =0;
   private String mFilterUser = null;
 
   private static Topic mTopic = null;
@@ -256,13 +257,14 @@ public class PostListActivity extends SMTHBaseActivity
     else //Add by Vinney for recording article address
     {
       mTopic = topic;
-      mFilterUser = null;
+        mFilterUser = null;
       setTitle(mTopic.getBoardChsName() + " - 阅读文章");
       if(!Settings.getInstance().isOpenTopicAdd()) {
         reloadPostList();
       }
       else {
-        String title = String.format("[%d/%d] %s", mCurrentPageNo, mTopic.getTotalPageNo(), mTopic.getTitle());
+        Log.d("Vinney",Integer.toString(mTotalPageNo));
+        String title = String.format("[%d/%d] %s", mCurrentPageNo, mTotalPageNo, mTopic.getTitle());
         mTitle.setText(title);
         scrollToPosition();
         clearLoadingHints();
@@ -349,6 +351,7 @@ public class PostListActivity extends SMTHBaseActivity
           }
 
           @Override public void onComplete() {
+            mTotalPageNo = mTopic.getTotalPageNo();
             String title = String.format("[%d/%d] %s", mCurrentPageNo, mTopic.getTotalPageNo(), mTopic.getTitle());
             mTitle.setText(title);
             mPageNo.setText(String.format("%d", mCurrentPageNo));

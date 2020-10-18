@@ -134,7 +134,7 @@ public class MainActivity extends SMTHBaseActivity
     initBottomNavigation();
 
     mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-    setDrawerLeftEdgeSize (this, mDrawer, (float)0.5) ;//To support Mail Deletion
+    setDrawerLeftEdgeSize (this, mDrawer, (float)0.3) ;//To support Mail Deletion
     mToggle = new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
     mDrawer.addDrawerListener(mToggle);
     mToggle.syncState();
@@ -789,11 +789,14 @@ public class MainActivity extends SMTHBaseActivity
     Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.content_frame);
     if (fragment == favoriteBoardFragment) {
       // favorite fragment, remove the board
+      Log.d(TAG, (board.isFolder())?"true":"false");
       if (!board.isFolder()) {
         // confirm dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         String title = String.format("将版面\"%s\"从收藏夹中删除么？", board.getBoardName());
         builder.setTitle("收藏夹操作").setMessage(title);
+
+       // Log.d(TAG, favoriteBoardFragment.getCurrentFavoritePath());
 
         builder.setPositiveButton("删除", new DialogInterface.OnClickListener() {
           @Override
@@ -801,7 +804,7 @@ public class MainActivity extends SMTHBaseActivity
             dialog.dismiss();
 
             SMTHHelper helper = SMTHHelper.getInstance();
-            helper.wService.manageFavoriteBoard(favoriteBoardFragment.getCurrentFavoritePath(), "db", board.getBoardEngName())
+            helper.wService.manageFavoriteBoard("0", "db", board.getBoardEngName())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Observer<AjaxResponse>() {
@@ -854,8 +857,9 @@ public class MainActivity extends SMTHBaseActivity
             dialog.dismiss();
 
             SMTHHelper helper = SMTHHelper.getInstance();
-            //Log.d(TAG, "Vinney: " + board.getFolderID() + "&&" + board.getFolderName() + "&&" + String.valueOf(Integer.parseInt(board.getFolderID()) - 1));
-            helper.wService.manageFavoriteBoard(favoriteBoardFragment.getCurrentFavoritePath(), "df", String.valueOf(Integer.parseInt(board.getFolderID()) - 1))
+            Log.d(TAG, "Vinney: " + board.getFolderID() + "&&" + board.getFolderName() + "&&" + String.valueOf(Integer.parseInt(board.getFolderID()) - 1));
+            Log.d(TAG, favoriteBoardFragment.getCurrentFavoritePath());
+            helper.wService.manageFavoriteBoard("0", "dg", String.valueOf(Integer.parseInt(board.getFolderID()) - 1))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Observer<AjaxResponse>() {
