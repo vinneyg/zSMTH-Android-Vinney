@@ -93,6 +93,7 @@ public class PostListActivity extends SMTHBaseActivity
   private EditText mPageNo = null;
 
   public int mCurrentPageNo = 1;
+  public static int mCurrentReadPageNo = 1;
   public static int mTotalPageNo =0;
   private String mFilterUser = null;
 
@@ -263,10 +264,10 @@ public class PostListActivity extends SMTHBaseActivity
         reloadPostList();
       }
       else {
-        Log.d("Vinney",Integer.toString(mTotalPageNo));
-        String title = String.format("[%d/%d] %s", mCurrentPageNo, mTotalPageNo, mTopic.getTitle());
+        String title = String.format("[%d/%d] %s", mCurrentReadPageNo, mTotalPageNo, mTopic.getTitle());
         mTitle.setText(title);
         scrollToPosition();
+        mCurrentPageNo =mCurrentReadPageNo;
         clearLoadingHints();
       }
     }
@@ -355,6 +356,7 @@ public class PostListActivity extends SMTHBaseActivity
             String title = String.format("[%d/%d] %s", mCurrentPageNo, mTopic.getTotalPageNo(), mTopic.getTitle());
             mTitle.setText(title);
             mPageNo.setText(String.format("%d", mCurrentPageNo));
+            mCurrentReadPageNo = mCurrentPageNo;
 
             clearLoadingHints();
           }
@@ -422,10 +424,12 @@ public class PostListActivity extends SMTHBaseActivity
         goToNextPage();
         break;
       case R.id.post_list_last_page:
-        if (mCurrentPageNo == mTopic.getTotalPageNo()) {
+        //Change by Vinney
+        if (mCurrentPageNo == mTopic.getTotalPageNo()|| mCurrentReadPageNo == mTotalPageNo) {
           Toast.makeText(PostListActivity.this, "已在末页！", Toast.LENGTH_SHORT).show();
         } else {
-          mCurrentPageNo = mTopic.getTotalPageNo();
+          //mCurrentPageNo = mTopic.getTotalPageNo();
+          mCurrentPageNo =mTotalPageNo;
           reloadPostList();
         }
         break;
