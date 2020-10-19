@@ -1,21 +1,21 @@
 package com.zfdang.zsmth_android;
 
-import android.annotation.SuppressLint;
+//import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Application;
+//import android.app.Application;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.ClipboardManager;
-import android.content.Context;
+//import android.content.ClipboardManager;
+//import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.res.ColorStateList;
+//import android.content.res.ColorStateList;
 import android.graphics.Point;
-import android.net.Uri;
+//import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -134,7 +134,7 @@ public class MainActivity extends SMTHBaseActivity
     initBottomNavigation();
 
     mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-    setDrawerLeftEdgeSize (this, mDrawer, (float)0.3) ;//To support Mail Deletion
+    setDrawerLeftEdgeSize (this, mDrawer, (float)0.2) ;//To support Mail Deletion
     mToggle = new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
     mDrawer.addDrawerListener(mToggle);
     mToggle.syncState();
@@ -462,7 +462,10 @@ public class MainActivity extends SMTHBaseActivity
     mailListFragment = new MailListFragment();
 
     preferenceFragment = new MyPreferenceFragment();
-    aboutFragment = new LibsBuilder().supportFragment();
+    aboutFragment = new LibsBuilder()
+            .withLicenseShown(true)
+            .supportFragment();
+
   }
 
   @Override
