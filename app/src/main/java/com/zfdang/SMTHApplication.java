@@ -15,6 +15,13 @@ import com.zfdang.zsmth_android.newsmth.UserStatus;
 import okhttp3.OkHttpClient;
 import android.support.multidex.MultiDex;
 
+import com.zfdang.zsmth_android.models.Topic;
+import com.zfdang.zsmth_android.models.TopicListContent;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
 /**
  * Created by zfdang on 2016-3-18.
  */

@@ -363,50 +363,6 @@ public class PostListActivity extends SMTHBaseActivity
         });
   }
 
-  public void loadPostListFirstPage(Post post) {
-    final SMTHHelper helper = SMTHHelper.getInstance();
-    helper.wService.getPostListByPage(mTopic.getTopicURL(), post.getPostID(), 1, "")
-            .flatMap(new Function<ResponseBody, Observable<Post>>() {
-              @Override public Observable<Post> apply(@NonNull ResponseBody responseBody) throws Exception {
-                try {
-                  String response = responseBody.string();
-                  List<Post> posts = SMTHHelper.ParsePostListFromWWW(response, mTopic);
-                  return Observable.fromIterable(posts);
-                } catch (Exception e) {
-                  Log.e(TAG, Log.getStackTraceString(e));
-                }
-                return null;
-              }
-            })
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(new Observer<Post>() {
-              @Override public void onSubscribe(@NonNull Disposable disposable) {
-
-              }
-
-              @Override public void onNext(@NonNull Post post) {
-                // Log.d(TAG, post.toString());
-                PostListContent.addItem(post);
-               // mRecyclerView.getAdapter().notifyItemInserted(PostListContent.POSTS.size() - 1);
-              }
-
-              @Override public void onError(@NonNull Throwable e) {
-                clearLoadingHints();
-                Toast.makeText(SMTHApplication.getAppContext(), "加载失败！\n" + e.toString(), Toast.LENGTH_LONG).show();
-              }
-
-              @Override public void onComplete() {
-                mTotalPageNo = mTopic.getTotalPageNo();
-                //String title = String.format("[%d/%d] %s", mCurrentPageNo, mTopic.getTotalPageNo(), mTopic.getTitle());
-               // mTitle.setText(title);
-              //  mPageNo.setText(String.format("%d", mCurrentPageNo));
-              //  mCurrentReadPageNo = mCurrentPageNo;
-
-              //  clearLoadingHints();
-              }
-            });
-  }
 
   @Override public boolean onCreateOptionsMenu(Menu menu) {
     // http://stackoverflow.com/questions/10692755/how-do-i-hide-a-menu-item-in-the-actionbar
@@ -565,7 +521,7 @@ public class PostListActivity extends SMTHBaseActivity
         new PostActionAlertDialogItem(getString(R.string.post_delete_post), R.drawable.ic_delete_black_48dp), // 9
         new PostActionAlertDialogItem(getString(R.string.post_edit_post), R.drawable.ic_edit_black_48dp), // 10
         new PostActionAlertDialogItem(getString(R.string.post_convert_image), R.drawable.ic_photo_black_48dp), // 11
-    //    new PostActionAlertDialogItem(getString(R.string.replyOrigAuth), R.drawable.ic_arrow_upward_36dp), // 11
+
     };
 
     ListAdapter adapter = new ArrayAdapter<PostActionAlertDialogItem>(getApplicationContext(), R.layout.post_popup_menu_item, menuItems) {
@@ -726,40 +682,7 @@ public class PostListActivity extends SMTHBaseActivity
       // convert title + post to image
       captureView(mTitle, v, post.getPostID());
     }
-    /*
-    else if  (which == 12) {
-      // post_reply_post_Head_Author
-     // mRecyclerView.scrollToPosition(0);
 
-
-      ComposePostContext postContext = new ComposePostContext();
-      postContext.setBoardEngName(mTopic.getBoardEngName());
-      postContext.setPostId(post.getPostID());
-      postContext.setPostTitle(mTopic.getTitle());
-     if(! (mTopic.getTopicID()== null) )
-     Log.d ("Vinney","mTopic.getTopicID()==NULL");
-      Log.d ("Vinney",post.getPostID());
-      Log.d ("Vinney", mTopic.getTopicURL());
-      Log.d ("Vinney", Integer.toString(mTopic.getTotalPageNo()));
-      Log.d ("Vinney", mTopic.isCategory?"Yes Category":"No");
-      if(! (mFilterUser== null) )
-      Log.d ("Vinney","mFilterUser==NULL");
-      loadPostListFirstPage(post);
-
-      Post postNew = PostListContent.POSTS.get(0);
-      Log.d ("Vinney",postNew.getRawAuthor());
-      Log.d ("Vinney", postNew.getRawContent());
-      postContext.setPostAuthor(postNew.getRawAuthor());
-      postContext.setPostContent(postNew.getRawContent());
-
-      postContext.setComposingMode(ComposePostContext.MODE_REPLY_POST);
-
-      Intent intent = new Intent(this, ComposePostActivity.class);
-      intent.putExtra(SMTHApplication.COMPOSE_POST_CONTEXT, postContext);
-      startActivityForResult(intent, ComposePostActivity.COMPOSE_ACTIVITY_REQUEST_CODE);
-    }
-
-     */
   }
 
   public void captureView(View v1, View v2, String postID){

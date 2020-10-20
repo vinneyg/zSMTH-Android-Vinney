@@ -30,4 +30,5 @@ public class TopicListContent {
   public static void clearBoardTopics() {
     BOARD_TOPICS.clear();
   }
+
 }
