@@ -51,7 +51,8 @@ public class SMTHApplication extends Application {
   public static GEODatabase geoDB;
 
   public static boolean isValidUser() {
-    return activeUser != null && !activeUser.getId().equals("guest");
+    //return activeUser != null && !activeUser.getId().equals("guest");
+    return activeUser != null && !activeUser.getId().equalsIgnoreCase("guest");
   }
 
   @Override

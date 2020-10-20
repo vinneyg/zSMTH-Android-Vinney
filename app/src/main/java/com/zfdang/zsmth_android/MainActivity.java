@@ -428,13 +428,17 @@ public class MainActivity extends SMTHBaseActivity
       String message = bundle.getString(SMTHApplication.SERVICE_NOTIFICATION_MESSAGE);
       if (message != null) {
         // find the actual folder for the new message
+        String subTitle = "收件箱";
         if (message.contains(SMTHApplication.NOTIFICATION_NEW_MAIL)) {
           mailListFragment.setCurrentFolder(MailListFragment.INBOX_LABEL);
         } else if (message.contains(SMTHApplication.NOTIFICATION_NEW_LIKE)) {
+          subTitle = "LIKE我";
           mailListFragment.setCurrentFolder(MailListFragment.LIKE_LABEL);
         } else if (message.contains(SMTHApplication.NOTIFICATION_NEW_AT)) {
+          subTitle = "@我";
           mailListFragment.setCurrentFolder(MailListFragment.AT_LABEL);
         } else if (message.contains(SMTHApplication.NOTIFICATION_NEW_REPLY)) {
+          subTitle = "回复我";
           mailListFragment.setCurrentFolder(MailListFragment.REPLY_LABEL);
         }
         // force mail fragment to reload
@@ -442,7 +446,8 @@ public class MainActivity extends SMTHBaseActivity
 
         fm.beginTransaction().replace(R.id.content_frame, mailListFragment).commitAllowingStateLoss();
         // switch title of mainActivity
-        setTitle(SMTHApplication.App_Title_Prefix + "邮件");
+        //setTitle(SMTHApplication.App_Title_Prefix + "邮件");
+        setTitle(SMTHApplication.App_Title_Prefix + subTitle);
       }
     }
   }
@@ -758,7 +763,7 @@ public class MainActivity extends SMTHBaseActivity
   public void onMailInteraction(Mail item, int position) {
     if (item.isCategory) return;
 
-    // mark item as readed
+    // mark item as read
     mailListFragment.markMailAsReaded(position);
     // MailListFragment
     Intent intent = new Intent(this, MailContentActivity.class);
@@ -924,18 +929,15 @@ public class MainActivity extends SMTHBaseActivity
   private void setDrawerLeftEdgeSize (Activity activity, DrawerLayout drawerLayout, float displayWidthPercentage) {
     if (activity == null || drawerLayout == null) return;
     try {
-      // 找到 ViewDragHelper 并设置 Accessible 为true
       Field leftDraggerField =
               drawerLayout.getClass().getDeclaredField("mLeftDragger");//Right
       leftDraggerField.setAccessible(true);
       ViewDragHelper leftDragger = (ViewDragHelper) leftDraggerField.get(drawerLayout);
 
-      // 找到 edgeSizeField 并设置 Accessible 为true
       Field edgeSizeField = leftDragger.getClass().getDeclaredField("mEdgeSize");
       edgeSizeField.setAccessible(true);
       int edgeSize = edgeSizeField.getInt(leftDragger);
 
-      // 设置新的边缘大小
       Point displaySize = new Point();
       activity.getWindowManager().getDefaultDisplay().getSize(displaySize);
       edgeSizeField.setInt(leftDragger, Math.max(edgeSize, (int) (displaySize.x *

@@ -840,7 +840,9 @@ public class SMTHHelper {
     if (content.contains(error_msg)) {
       Board board = new Board(Board.Invalid_Folder_ID, error_msg + "\n" + "登录后，请在右上角菜单里'刷新'收藏夹");
       boards.add(board);
-
+      //Vinney 解决用户状态更新失步问题
+      SMTHApplication.activeUser = null;
+      //Log.d("VINNEY-HELLO","No Login");
       return boards;
     }
 

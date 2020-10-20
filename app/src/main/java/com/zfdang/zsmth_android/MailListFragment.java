@@ -286,12 +286,27 @@ public class MailListFragment extends Fragment implements OnVolumeUpDownListener
   }
 
   public void LoadMailsOrReferPosts() {
+    MainActivity activity = (MainActivity) getActivity();
+
     if (TextUtils.equals(currentFolder, INBOX_LABEL) || TextUtils.equals(currentFolder, OUTBOX_LABEL) || TextUtils.equals(currentFolder,
         DELETED_LABEL)) {
       // Load mails
+      if (TextUtils.equals(currentFolder, INBOX_LABEL) )
+        activity.setTitle(SMTHApplication.App_Title_Prefix+"收件箱");
+      else if(TextUtils.equals(currentFolder,OUTBOX_LABEL))
+        activity.setTitle(SMTHApplication.App_Title_Prefix+"发件箱");
+      else if(TextUtils.equals(currentFolder,DELETED_LABEL))
+        activity.setTitle(SMTHApplication.App_Title_Prefix+"回收站");
       LoadMails();
+
     } else {
       // Load refer posts
+           if (TextUtils.equals(currentFolder, REPLY_LABEL) )
+              activity.setTitle(SMTHApplication.App_Title_Prefix+"回复我");
+           else if(TextUtils.equals(currentFolder,AT_LABEL))
+              activity.setTitle(SMTHApplication.App_Title_Prefix+"@我");
+           else if(TextUtils.equals(currentFolder,LIKE_LABEL))
+              activity.setTitle(SMTHApplication.App_Title_Prefix+"LIKE我");
       LoadReferPosts();
     }
   }

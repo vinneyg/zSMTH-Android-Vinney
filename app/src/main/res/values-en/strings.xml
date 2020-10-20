@@ -124,6 +124,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   <string name="post_like_post">Like文章</string>
   <string name="post_edit_post">修改文章</string>
   <string name="post_convert_image">生成图片</string>
+  <string name="replyOrigAuth">回复楼主</string>
 
   <string name="mail_item_author_label">来自:</string>
   <string name="mail_button_inbox_label">收件箱</string>
@@ -135,7 +136,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   <string name="post_filter_author">只看此ID/所有人</string>
   <string name="mail_button_at_label">\@我</string>
   <string name="mail_button_reply_label">回复我</string>
-  <string name="mail_button_like_label">Like我</string>
+  <string name="mail_button_like_label">LIKE我</string>
   <string name="mail_content_menu_copy">复制邮件内容</string>
 
   <!-- 关于 -->
