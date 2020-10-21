@@ -54,6 +54,8 @@ public class SMTHApplication extends Application {
   public static final String NOTIFICATION_NEW_REPLY = "你有新回复!";
   public static final String NOTIFICATION_NEW_LIKE = "你有新Like!";
 
+  public static final  List<String> ReadTopicLists = new ArrayList<String>();
+
   // IP database
   public static GEODatabase geoDB;
 

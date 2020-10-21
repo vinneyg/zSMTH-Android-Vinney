@@ -1,5 +1,6 @@
 package com.zfdang.zsmth_android;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -14,6 +15,8 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+
 import com.jude.swipbackhelper.SwipeBackHelper;
 import com.zfdang.SMTHApplication;
 import com.zfdang.zsmth_android.helpers.RecyclerViewUtil;
@@ -119,6 +122,7 @@ public class BoardTopicActivity extends SMTHBaseActivity
     LinearLayoutManager linearLayoutManager = new WrapContentLinearLayoutManager(this);
     mRecyclerView.setLayoutManager(linearLayoutManager);
     mRecyclerView.setAdapter(new BoardTopicRecyclerViewAdapter(TopicListContent.BOARD_TOPICS, this));
+
 
     // enable endless loading
     mScrollListener = new EndlessRecyclerOnScrollListener(linearLayoutManager) {
@@ -399,4 +403,5 @@ public class BoardTopicActivity extends SMTHBaseActivity
           }
         });
   }
+
 }

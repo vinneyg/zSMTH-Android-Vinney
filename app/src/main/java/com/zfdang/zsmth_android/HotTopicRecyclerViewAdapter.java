@@ -1,10 +1,14 @@
 package com.zfdang.zsmth_android;
 
+import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.zfdang.SMTHApplication;
 import com.zfdang.zsmth_android.listeners.OnTopicFragmentInteractionListener;
 import com.zfdang.zsmth_android.models.Topic;
 import java.util.List;
@@ -27,6 +31,7 @@ public class HotTopicRecyclerViewAdapter extends RecyclerView.Adapter<HotTopicRe
     return new ViewHolder(view);
   }
 
+  @SuppressLint("ResourceAsColor")
   @Override public void onBindViewHolder(final ViewHolder holder, int position) {
     holder.mItem = mValues.get(position);
 
@@ -45,14 +50,44 @@ public class HotTopicRecyclerViewAdapter extends RecyclerView.Adapter<HotTopicRe
       holder.mTopicTitle.setText(holder.mItem.getTitle());
       holder.mBoardName.setText(holder.mItem.getBoardName());
       holder.mReplyCount.setText(holder.mItem.getTotalPostNoAsStr());
+
+      //Vinney
+      if(Settings.getInstance().isDiffReadTopic()) {
+        if ((!SMTHApplication.ReadTopicLists.isEmpty()) && SMTHApplication.ReadTopicLists.contains(holder.mItem.getTopicID())) {
+          if (Settings.getInstance().isNightMode()) {
+            holder.mTopicTitle.setTextColor(Color.DKGRAY);
+            holder.mBoardName.setTextColor(Color.DKGRAY);
+            holder.mReplyCount.setTextColor(Color.DKGRAY);
+          } else {
+            holder.mTopicTitle.setTextColor(R.color.colorSecondaryText);
+            holder.mBoardName.setTextColor(R.color.colorSecondaryText);
+            holder.mReplyCount.setTextColor(R.color.colorSecondaryText);
+          }
+        }
+      }
+      //
     }
 
     holder.mView.setOnClickListener(new View.OnClickListener() {
+      @SuppressLint("ResourceAsColor")
       @Override public void onClick(View v) {
         if (null != mListener) {
           // Notify the active callbacks interface (the activity, if the
           // fragment is attached to one) that an item has been selected.
           mListener.onTopicFragmentInteraction(holder.mItem);
+          //Vinney
+          if (Settings.getInstance().isDiffReadTopic()) {
+            SMTHApplication.ReadTopicLists.add(holder.mItem.getTopicID());
+            if (Settings.getInstance().isNightMode()) {
+              holder.mTopicTitle.setTextColor(Color.DKGRAY);
+              holder.mBoardName.setTextColor(Color.DKGRAY);
+              holder.mReplyCount.setTextColor(Color.DKGRAY);
+            } else {
+              holder.mTopicTitle.setTextColor(R.color.colorSecondaryText);
+              holder.mBoardName.setTextColor(R.color.colorSecondaryText);
+              holder.mReplyCount.setTextColor(R.color.colorSecondaryText);
+            }
+          }
         }
       }
     });

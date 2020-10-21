@@ -379,6 +379,22 @@ public class Settings {
     }
   }
 
+
+  private static final String DIFF_READ_TOPIC = "DIFF_READ_TOPIC";
+  private boolean bDiffReadTopic;
+
+  public boolean isDiffReadTopic() {
+    return bDiffReadTopic;
+  }
+
+  public void setDiffReadTopic(boolean bDiffReadTopic) {
+    if (this.bDiffReadTopic != bDiffReadTopic) {
+      this.bDiffReadTopic = bDiffReadTopic;
+      mEditor.putBoolean(DIFF_READ_TOPIC, this.bDiffReadTopic);
+      mEditor.commit();
+    }
+  }
+
   private static final String SHOW_POST_NAVITATION_BAR = "SHOW_POST_NAVITATION_BAR";
   private boolean bPostNavBar;
 
@@ -506,6 +522,8 @@ public class Settings {
     bLoadOriginalImage = mPreference.getBoolean(LOAD_ORIGINAL_IMAGE, false);
 
     bNightMode = mPreference.getBoolean(NIGHT_MODE, true);
+
+    bDiffReadTopic = mPreference.getBoolean(DIFF_READ_TOPIC, true);
 
     iLastVersion = mPreference.getInt(LAST_LAUNCH_VERSION, 0);
 

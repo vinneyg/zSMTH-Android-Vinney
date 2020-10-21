@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-  <PreferenceCategory android:title="缓存管理">
+  <PreferenceCategory
+      android:title="缓存管理"
+      app:iconSpaceReserved="true">
     <Preference
         android:key="setting_fresco_cache"
         android:summary="缓存大小:0B"
-        android:title="清除图片缓存"/>
+        android:title="清除图片缓存" />
     <Preference
         android:key="setting_okhttp3_cache"
         android:summary="缓存大小:0B"
-        android:title="清除帖子缓存"/>
+        android:title="清除帖子缓存" />
   </PreferenceCategory>
 
   <PreferenceCategory android:title="程序设置">
@@ -26,6 +29,13 @@
         android:summaryOff="重新打开帖子首页"
         android:summaryOn="记住帖子浏览位置"
         android:title="记住帖子浏览位置"/>
+
+    <CheckBoxPreference
+        android:defaultValue="on"
+        android:key="diff_read_topic"
+        android:summaryOff="不区分已读未读帖子"
+        android:summaryOn="区分已读未读帖子"
+        android:title="区分已读未读帖子"/>
 
     <CheckBoxPreference
         android:defaultValue="on"

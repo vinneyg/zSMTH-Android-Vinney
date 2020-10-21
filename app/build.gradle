@@ -152,5 +152,6 @@ dependencies {
     implementation project(':multiple-images-selector')
     implementation project(':device_model_to_marketing_name')
 
+
 }
 

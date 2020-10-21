@@ -42,6 +42,7 @@ public class MyPreferenceFragment extends PreferenceFragmentCompat {
 
   CheckBoxPreference launch_hottopic_as_entry;
   CheckBoxPreference open_topic_add;
+  CheckBoxPreference diff_read_topic;
   CheckBoxPreference daynight_control;
   CheckBoxPreference setting_post_navigation_control;
   CheckBoxPreference setting_volume_key_scroll;
@@ -113,6 +114,21 @@ public class MyPreferenceFragment extends PreferenceFragmentCompat {
           bValue = boolVal;
         }
         Settings.getInstance().setOpenTopicAdd(bValue);
+        return true;
+      }
+    });
+
+    diff_read_topic = (CheckBoxPreference) findPreference("diff_read_topic");
+    diff_read_topic.setChecked(Settings.getInstance().isDiffReadTopic());
+    diff_read_topic.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+      @Override public boolean onPreferenceChange(Preference preference, Object newValue) {
+        boolean bDiffRead = Settings.getInstance().isDiffReadTopic();
+        if (newValue instanceof Boolean) {
+          Boolean boolVal = (Boolean) newValue;
+          bDiffRead = boolVal;
+        }
+        Settings.getInstance().setDiffReadTopic(bDiffRead);
+        SMTHApplication.ReadTopicLists.clear();// 当选择on或者off的时候清空已读列表。
         return true;
       }
     });

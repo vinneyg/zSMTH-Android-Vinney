@@ -1,12 +1,18 @@
 package com.zfdang.zsmth_android;
 
+import android.annotation.SuppressLint;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.zfdang.SMTHApplication;
 import com.zfdang.zsmth_android.listeners.OnTopicFragmentInteractionListener;
 import com.zfdang.zsmth_android.models.Topic;
 import java.util.List;
@@ -29,6 +35,7 @@ public class BoardTopicRecyclerViewAdapter extends RecyclerView.Adapter<BoardTop
     return new ViewHolder(view);
   }
 
+  @SuppressLint("ResourceAsColor")
   @Override public void onBindViewHolder(final ViewHolder holder, int position) {
     holder.mTopic = mTopics.get(position);
     Topic topic = holder.mTopic;
@@ -43,10 +50,34 @@ public class BoardTopicRecyclerViewAdapter extends RecyclerView.Adapter<BoardTop
     } else {
       holder.mPageIndicator.setVisibility(View.GONE);
       holder.mTitle.setVisibility(View.VISIBLE);
+
       holder.mAuthorReplierRow.setVisibility(View.VISIBLE);
       holder.mStatusRow.setVisibility(View.VISIBLE);
 
       holder.mTitle.setText(topic.getTitle());
+
+      //Vinney
+      if(Settings.getInstance().isDiffReadTopic()) {
+        if ((!SMTHApplication.ReadTopicLists.isEmpty()) && SMTHApplication.ReadTopicLists.contains(holder.mTopic.getTopicID())) {
+          if (Settings.getInstance().isNightMode()) {
+            holder.mTitle.setTextColor(Color.DKGRAY);
+            holder.mAuthor.setTextColor(Color.DKGRAY);
+            holder.mReplier.setTextColor(Color.DKGRAY);
+            holder.mReplyDate.setTextColor(Color.DKGRAY);
+            holder.mPublishDate.setTextColor(Color.DKGRAY);
+            holder.mStatusSummary.setTextColor(Color.DKGRAY);
+          } else {
+            holder.mTitle.setTextColor(R.color.colorSecondaryText);
+            holder.mAuthor.setTextColor(R.color.colorSecondaryText);
+            holder.mReplier.setTextColor(R.color.colorSecondaryText);
+            holder.mReplyDate.setTextColor(R.color.colorSecondaryText);
+            holder.mPublishDate.setTextColor(R.color.colorSecondaryText);
+            holder.mStatusSummary.setTextColor(R.color.colorSecondaryText);
+          }
+        }
+      }
+      //
+
       holder.mAuthor.setText(topic.getAuthor());
       holder.mReplier.setText(topic.getReplier());
       holder.mPublishDate.setText(topic.getPublishDate());
@@ -67,11 +98,32 @@ public class BoardTopicRecyclerViewAdapter extends RecyclerView.Adapter<BoardTop
     }
 
     holder.mView.setOnClickListener(new View.OnClickListener() {
+      @SuppressLint("ResourceAsColor")
       @Override public void onClick(View v) {
         if (null != mListener) {
           // Notify the active callbacks interface (the activity, if the
           // fragment is attached to one) that an item has been selected.
           mListener.onTopicFragmentInteraction(holder.mTopic);
+          //Vinney
+          if(Settings.getInstance().isDiffReadTopic()) {
+            SMTHApplication.ReadTopicLists.add(holder.mTopic.getTopicID());
+            if (Settings.getInstance().isNightMode()) {
+              holder.mTitle.setTextColor(Color.DKGRAY);
+              holder.mAuthor.setTextColor(Color.DKGRAY);
+              holder.mReplier.setTextColor(Color.DKGRAY);
+              holder.mReplyDate.setTextColor(Color.DKGRAY);
+              holder.mPublishDate.setTextColor(Color.DKGRAY);
+              holder.mStatusSummary.setTextColor(Color.DKGRAY);
+            } else {
+              holder.mTitle.setTextColor(R.color.colorSecondaryText);
+              holder.mAuthor.setTextColor(R.color.colorSecondaryText);
+              holder.mReplier.setTextColor(R.color.colorSecondaryText);
+              holder.mReplyDate.setTextColor(R.color.colorSecondaryText);
+              holder.mPublishDate.setTextColor(R.color.colorSecondaryText);
+              holder.mStatusSummary.setTextColor(R.color.colorSecondaryText);
+            }
+
+          }
         }
       }
     });
