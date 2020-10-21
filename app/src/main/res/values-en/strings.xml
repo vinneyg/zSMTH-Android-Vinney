@@ -61,6 +61,8 @@
   <string name="write_label_post">发表</string>
   <string name="post_attach">附件</string>
 
+  <string name="post_reply_author">回复楼主</string>
+
   <!--boardTopic的option menu-->
   <string name="board_topic_action_search">搜索</string>
   <string name="board_topic_action_favorite">收藏版面</string>

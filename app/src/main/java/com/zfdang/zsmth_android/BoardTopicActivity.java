@@ -341,6 +341,8 @@ public class BoardTopicActivity extends SMTHBaseActivity
 
   @Override public void onTopicFragmentInteraction(Topic item) {
     if (item.isCategory) return;
+    SMTHApplication.ReadRec = false;//Reset to allow 2nd Topic Reading record
+    SMTHApplication.ReadPostFirst = null;
     Intent intent = new Intent(this, PostListActivity.class);
     item.setBoardEngName(mBoard.getBoardEngName());
     item.setBoardChsName(mBoard.getBoardChsName());

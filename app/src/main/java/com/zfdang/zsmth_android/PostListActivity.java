@@ -1,5 +1,6 @@
 package com.zfdang.zsmth_android;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -320,14 +321,21 @@ public class PostListActivity extends SMTHBaseActivity
 
   public void loadPostListByPages() {
     final SMTHHelper helper = SMTHHelper.getInstance();
+
     helper.wService.getPostListByPage(mTopic.getTopicURL(), mTopic.getTopicID(), mCurrentPageNo, mFilterUser)
         .flatMap(new Function<ResponseBody, Observable<Post>>() {
           @Override public Observable<Post> apply(@NonNull ResponseBody responseBody) throws Exception {
             try {
               String response = responseBody.string();
               List<Post> posts = SMTHHelper.ParsePostListFromWWW(response, mTopic);
+              if(SMTHApplication.ReadRec == false) {
+                SMTHApplication.ReadPostFirst = posts.get(0);
+                SMTHApplication.ReadRec=true;
+              }
               return Observable.fromIterable(posts);
             } catch (Exception e) {
+              SMTHApplication.ReadRec=false;
+              SMTHApplication.ReadPostFirst=null;
               Log.e(TAG, Log.getStackTraceString(e));
             }
             return null;
@@ -357,7 +365,6 @@ public class PostListActivity extends SMTHBaseActivity
             mTitle.setText(title);
             mPageNo.setText(String.format("%d", mCurrentPageNo));
             mCurrentReadPageNo = mCurrentPageNo;
-
             clearLoadingHints();
           }
         });
@@ -402,6 +409,7 @@ public class PostListActivity extends SMTHBaseActivity
     return super.onOptionsItemSelected(item);
   }
 
+  @SuppressLint("NonConstantResourceId")
   @Override public void onClick(View v) {
     // page navigation buttons
     switch (v.getId()) {
@@ -473,6 +481,7 @@ public class PostListActivity extends SMTHBaseActivity
       case R.id.post_list_action_bottom:
         mRecyclerView.scrollToPosition(mRecyclerView.getAdapter().getItemCount() - 1);
         break;
+
     }
   }
 
@@ -521,7 +530,8 @@ public class PostListActivity extends SMTHBaseActivity
         new PostActionAlertDialogItem(getString(R.string.post_delete_post), R.drawable.ic_delete_black_48dp), // 9
         new PostActionAlertDialogItem(getString(R.string.post_edit_post), R.drawable.ic_edit_black_48dp), // 10
         new PostActionAlertDialogItem(getString(R.string.post_convert_image), R.drawable.ic_photo_black_48dp), // 11
-
+        new PostActionAlertDialogItem(getString(R.string.post_reply_author),R.drawable.ic_arrow_upward_36dp), // 11
+        //Vinney add reply head author
     };
 
     ListAdapter adapter = new ArrayAdapter<PostActionAlertDialogItem>(getApplicationContext(), R.layout.post_popup_menu_item, menuItems) {
@@ -575,6 +585,7 @@ public class PostListActivity extends SMTHBaseActivity
     }
 
     Post post = PostListContent.POSTS.get(position);
+
     if (which == 0) {
       // post_reply_post
       ComposePostContext postContext = new ComposePostContext();
@@ -682,6 +693,23 @@ public class PostListActivity extends SMTHBaseActivity
       // convert title + post to image
       captureView(mTitle, v, post.getPostID());
     }
+    //Vinney
+    else if (which == 12) {
+      // post_reply_post
+      ComposePostContext postContext = new ComposePostContext();
+      postContext.setBoardEngName(mTopic.getBoardEngName());
+      postContext.setPostId(SMTHApplication.ReadPostFirst.getPostID());
+      postContext.setPostTitle(mTopic.getTitle());
+
+      postContext.setPostAuthor(SMTHApplication.ReadPostFirst.getRawAuthor());
+      postContext.setPostContent(SMTHApplication.ReadPostFirst.getRawContent());
+
+      postContext.setComposingMode(ComposePostContext.MODE_REPLY_POST);
+
+      Intent intent = new Intent(this, ComposePostActivity.class);
+      intent.putExtra(SMTHApplication.COMPOSE_POST_CONTEXT, postContext);
+      startActivityForResult(intent, ComposePostActivity.COMPOSE_ACTIVITY_REQUEST_CODE);
+    }
 
   }
 
@@ -755,7 +783,9 @@ public class PostListActivity extends SMTHBaseActivity
       }
 
       @Override public void onComplete() {
-
+        //Vinney：修改删除回复后导致页面减少显示不正常。删除后，退回board再进入文章显示第一页
+      mCurrentPageNo = 1;
+      mCurrentReadPageNo =1;
       }
     });
   }

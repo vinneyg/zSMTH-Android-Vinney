@@ -10,6 +10,7 @@ import com.mob.MobSDK;
 import com.umeng.commonsdk.UMConfigure;
 import com.zfdang.zsmth_android.Settings;
 import com.zfdang.zsmth_android.helpers.GEODatabase;
+import com.zfdang.zsmth_android.models.Post;
 import com.zfdang.zsmth_android.newsmth.SMTHHelper;
 import com.zfdang.zsmth_android.newsmth.UserStatus;
 import okhttp3.OkHttpClient;
@@ -55,6 +56,8 @@ public class SMTHApplication extends Application {
   public static final String NOTIFICATION_NEW_LIKE = "你有新Like!";
 
   public static final  List<String> ReadTopicLists = new ArrayList<String>();
+  public static Post ReadPostFirst = null;
+  public static boolean ReadRec = false;
 
   // IP database
   public static GEODatabase geoDB;

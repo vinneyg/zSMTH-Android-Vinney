@@ -74,6 +74,8 @@ public class HotTopicRecyclerViewAdapter extends RecyclerView.Adapter<HotTopicRe
         if (null != mListener) {
           // Notify the active callbacks interface (the activity, if the
           // fragment is attached to one) that an item has been selected.
+          SMTHApplication.ReadRec=false;
+          SMTHApplication.ReadPostFirst=null;
           mListener.onTopicFragmentInteraction(holder.mItem);
           //Vinney
           if (Settings.getInstance().isDiffReadTopic()) {
