@@ -53,13 +53,13 @@ public class PostRecyclerViewAdapter extends RecyclerView.Adapter<PostRecyclerVi
 
     List<ContentSegment> contents = post.getContentSegments();
     if (contents == null) return;
-
     final LayoutInflater inflater = mListener.getLayoutInflater();
     if (contents.size() > 0) {
       // there are multiple segments, add the first contentView first
       // contentView is always available, we don't have to inflate it again
       ContentSegment content = contents.get(0);
-      if (content.getSpanned().toString().contains("mp4")) { //Video
+
+      if (content.getSpanned().toString().contains("mp4") && content.getSpanned().toString().contains("附件")) { //Video
         List<Attachment> attaches = post.getAttachVideoFiles();
         for (int i = 0; i < attaches.size(); i++) {
           Attachment attach = attaches.get(i);
@@ -113,6 +113,7 @@ public class PostRecyclerViewAdapter extends RecyclerView.Adapter<PostRecyclerVi
       }
     }
 
+    Log.d("Vinney","3");
       // http://stackoverflow.com/questions/13438473/clicking-html-link-in-textview-fires-weird-androidruntimeexception
 
       for (int i = 1; i < contents.size(); i++) {
@@ -150,7 +151,7 @@ public class PostRecyclerViewAdapter extends RecyclerView.Adapter<PostRecyclerVi
           // Add the text view to the parent layout
           viewGroup.addView(image);
         } else if (content.getType() == ContentSegment.SEGMENT_TEXT) {
-          if (content.getSpanned().toString().contains("mp4")) { //Video
+          if (content.getSpanned().toString().contains("mp4") && content.getSpanned().toString().contains("附件")) { //Video
             List<Attachment> attaches = post.getAttachVideoFiles();
             for (int j = 0; j < attaches.size(); j++) {
               Attachment attach = attaches.get(j);
@@ -223,7 +224,6 @@ public class PostRecyclerViewAdapter extends RecyclerView.Adapter<PostRecyclerVi
     });
 
     inflateContentViewGroup(holder.mViewGroup, holder.mPostContent, post);
-
     // http://stackoverflow.com/questions/4415528/how-to-pass-the-onclick-event-to-its-parent-on-android
     // http://stackoverflow.com/questions/24885223/why-doesnt-recyclerview-have-onitemclicklistener-and-how-recyclerview-is-dif
     holder.mView.setOnClickListener(new View.OnClickListener() {

@@ -12,6 +12,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.GestureDetector;
@@ -122,6 +123,10 @@ public class MailContentActivity extends AppCompatActivity {
     SMTHHelper helper = SMTHHelper.getInstance();
     helper.wService.getMailContent(mMail.url).map(new Function<AjaxResponse, Post>() {
       @Override public Post apply(@NonNull AjaxResponse ajaxResponse) throws Exception {
+        String msg = ajaxResponse.getAjax_msg();
+        if( !TextUtils.equals(msg, "操作成功")) {
+          throw new Exception(msg);
+        }
         mPostGroupId = ajaxResponse.getGroup_id();
         return SMTHHelper.ParseMailContentFromWWW(ajaxResponse.getContent());
       }
@@ -145,7 +150,7 @@ public class MailContentActivity extends AppCompatActivity {
       }
 
       @Override public void onError(@NonNull Throwable e) {
-        mPostContent.setText("读取内容失败: \n" + e.toString());
+        mPostContent.setText("读取内容失败: \n" + e.getMessage());
       }
 
       @Override public void onComplete() {

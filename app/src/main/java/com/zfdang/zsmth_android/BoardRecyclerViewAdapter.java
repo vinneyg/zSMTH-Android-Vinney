@@ -46,7 +46,8 @@ public class BoardRecyclerViewAdapter extends RecyclerView.Adapter<BoardRecycler
       holder.mCategoryView.setText("[" + board.getCategoryName() + "]");
       holder.mModeratorView.setVisibility(View.VISIBLE);
       holder.mModeratorView.setText(board.getModerator());
-      holder.mNameView.setText("[" + board.getBoardEngName() + "]" + board.getBoardChsName());
+     // holder.mNameView.setText("[" + board.getBoardEngName() + "]" + board.getBoardChsName());
+      holder.mNameView.setText(board.getBoardChsName()+" [" + board.getBoardEngName() + "]" );
     }
 
     holder.mView.setOnClickListener(new View.OnClickListener() {

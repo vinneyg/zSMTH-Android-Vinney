@@ -66,7 +66,8 @@ public class Board implements Externalizable, Parcelable {
     if (boardChsName == null || boardChsName.length() == 0) {
       return boardEngName;
     } else {
-      return String.format("[%s]%s", boardEngName, boardChsName);
+     // return String.format("[%s]%s", boardEngName, boardChsName);
+      return String.format("%s[%s]", boardChsName,boardEngName );
     }
   }
 
