@@ -7,12 +7,14 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.klinker.android.link_builder.Link;
 import com.klinker.android.link_builder.LinkBuilder;
@@ -210,6 +212,15 @@ public class PostRecyclerViewAdapter extends RecyclerView.Adapter<PostRecyclerVi
     holder.mPostAuthor.setText(post.getAuthor());
     holder.mPostPublishDate.setText(post.getFormatedDate());
     holder.mPostIndex.setText(post.getPosition());
+
+    holder.mPostAuthor.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        //Log.d("VINNEY"," CLICK");
+        Intent intent = new Intent(v.getContext(), QueryUserActivity.class);
+        intent.putExtra(SMTHApplication.QUERY_USER_INFO, post.getRawAuthor());
+        v.getContext().startActivity(intent);
+      }
+    });
 
     inflateContentViewGroup(holder.mViewGroup, holder.mPostContent, post);
 

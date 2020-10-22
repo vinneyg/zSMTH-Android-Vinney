@@ -92,6 +92,15 @@ public class MailContentActivity extends AppCompatActivity {
     mViewGroup = (LinearLayout) findViewById(R.id.post_content_holder);
     mPostContent = (LinkConsumableTextView) findViewById(R.id.post_content);
 
+    mPostAuthor.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        //Log.d("VINNEY"," CLICK");
+        Intent intent = new Intent(v.getContext(), QueryUserActivity.class);
+        intent.putExtra(SMTHApplication.QUERY_USER_INFO, mMail.getFrom());
+        v.getContext().startActivity(intent);
+      }
+    });
+
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
 

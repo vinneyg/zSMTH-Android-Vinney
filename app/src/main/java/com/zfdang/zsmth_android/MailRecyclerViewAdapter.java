@@ -1,10 +1,13 @@
 package com.zfdang.zsmth_android;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.zfdang.SMTHApplication;
 import com.zfdang.zsmth_android.listeners.OnMailInteractionListener;
 import com.zfdang.zsmth_android.models.Mail;
 import java.util.List;
@@ -58,6 +61,15 @@ public class MailRecyclerViewAdapter extends RecyclerView.Adapter<MailRecyclerVi
       holder.mAuthor.setText(mail.getFrom());
       holder.mTopic.setText(mail.title);
       holder.mDate.setText(mail.date);
+
+      holder.mAuthor.setOnClickListener(new View.OnClickListener() {
+        @Override public void onClick(View v) {
+          //Log.d("VINNEY"," CLICK");
+          Intent intent = new Intent(v.getContext(), QueryUserActivity.class);
+          intent.putExtra(SMTHApplication.QUERY_USER_INFO, mail.getFrom());
+          v.getContext().startActivity(intent);
+        }
+      });
 
       holder.mView.setOnClickListener(new View.OnClickListener() {
         @Override public void onClick(View v) {

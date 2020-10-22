@@ -1,6 +1,7 @@
 package com.zfdang.zsmth_android;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -165,6 +166,15 @@ public class QueryUserActivity extends SMTHBaseActivity {
 
           @Override public void onNext(@NonNull UserInfo user) {
             Log.d(TAG, "onNext: " + user.toString());
+
+            if(user.getId() == null)
+            {
+              EditText tv = (EditText) findViewById(R.id.query_user_input);
+              tv.setText(mUsername+"不存在！");
+              tv.setTextColor(Color.RED);
+              dismissProgress();
+              return;
+            }
 
             mUserId.setText(user.getId());
             mUserNickname.setText(user.getUser_name());
