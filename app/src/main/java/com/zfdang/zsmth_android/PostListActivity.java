@@ -258,7 +258,7 @@ public class PostListActivity extends SMTHBaseActivity
     }
     else //Add by Vinney for recording article address
     {
-      mTopic = topic;
+        mTopic = topic;
         mFilterUser = null;
       setTitle(mTopic.getBoardChsName() + " - 阅读文章");
       if(!Settings.getInstance().isOpenTopicAdd()) {

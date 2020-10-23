@@ -9,6 +9,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 //import android.content.ClipboardManager;
 //import android.content.Context;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -22,8 +23,10 @@ import android.os.Handler;
 import android.os.Parcelable;
 //import android.support.design.internal.BottomNavigationItemView;
 //import android.support.design.internal.BottomNavigationMenuView;
+import android.os.Vibrator;
 import android.support.design.widget.BottomNavigationView;
 //import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -34,6 +37,8 @@ import android.support.v4.widget.ViewDragHelper;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatDelegate;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -48,11 +53,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 //import android.widget.ImageView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.mikepenz.aboutlibraries.LibsBuilder;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
 //import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
+import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 import com.umeng.analytics.MobclickAgent;
 import com.zfdang.SMTHApplication;
 import com.zfdang.zsmth_android.fresco.WrapContentDraweeView;
@@ -60,6 +67,7 @@ import com.zfdang.zsmth_android.listeners.OnBoardFragmentInteractionListener;
 import com.zfdang.zsmth_android.listeners.OnMailInteractionListener;
 import com.zfdang.zsmth_android.listeners.OnTopicFragmentInteractionListener;
 import com.zfdang.zsmth_android.listeners.OnVolumeUpDownListener;
+import com.zfdang.zsmth_android.listeners.ShakeListener;
 import com.zfdang.zsmth_android.models.Board;
 import com.zfdang.zsmth_android.models.Mail;
 import com.zfdang.zsmth_android.models.MailListContent;
@@ -127,8 +135,8 @@ public class MainActivity extends SMTHBaseActivity
     // zsmth_actionbar_size @ dimen ==> ThemeOverlay.ActionBar @ styles ==> theme @ app_bar_main.xml
 
     // init floating action button & circular action menu
-    //FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-    //initCircularActionMenu(fab);
+   // FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+   // initCircularActionMenu(fab);
     //fab.hide();
 
     initBottomNavigation();
@@ -140,10 +148,10 @@ public class MainActivity extends SMTHBaseActivity
     mToggle.syncState();
     //Vinney Full Screen Drawer
 
-
     mNavigationView = (NavigationView) findViewById(R.id.nav_view);
     mNavigationView.setNavigationItemSelectedListener(this);
     mNavigationView.setCheckedItem(R.id.nav_guidance);
+
 
     // http://stackoverflow.com/questions/33161345/android-support-v23-1-0-update-breaks-navigationview-get-find-header
     View headerView = mNavigationView.getHeaderView(0);
@@ -216,16 +224,39 @@ public class MainActivity extends SMTHBaseActivity
       }, 2000);
     }
 
+    ShakeListener shakeListener = new ShakeListener(this);
+    shakeListener.setOnShakeListener(new ShakeListener.OnShakeListener(){
+      @Override
+      public void onShake() {
+       // onVibrator(getApplicationContext());
+        quitNow();
+      }
+
+    });
+
   }
+
+  /*
+  //Vinney for test
+  private void onVibrator(Context context) {
+    Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+    if (vibrator == null) {
+      Vibrator localVibrator = (Vibrator) context.getApplicationContext()
+              .getSystemService(Context.VIBRATOR_SERVICE);
+      vibrator = localVibrator;
+    }
+    vibrator.vibrate(100L);
+  }
+   */
 
   //Vinney
   private void initBottomNavigation() {
     BottomNavigationView mBottomNavigationView = findViewById(R.id.bv_bottomNavigation);
+
     if (Settings.getInstance().isNightMode())
     {
       mBottomNavigationView.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark,getTheme()));
-
-  }
+    }
 
     mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
       @Override
@@ -255,7 +286,7 @@ public class MainActivity extends SMTHBaseActivity
 
   }
 
-  /*
+/*
   private void initCircularActionMenu(FloatingActionButton fab) {
     SubActionButton.Builder itemBuilder = new SubActionButton.Builder(this);
 
@@ -318,7 +349,8 @@ public class MainActivity extends SMTHBaseActivity
         .attachTo(fab)
         .build();
   }
-*/
+ */
+
   // triger the background service right now
   private void updateUserStatusNow() {
     Intent intent = new Intent(this, MaintainUserStatusService.class);
@@ -494,6 +526,7 @@ public class MainActivity extends SMTHBaseActivity
       login.setVisible(true);
       logout.setVisible(false);
     }
+
     return super.onPrepareOptionsMenu(menu);
   }
 
@@ -710,7 +743,12 @@ public class MainActivity extends SMTHBaseActivity
     } else if (id == R.id.nav_about) {
       fragment = aboutFragment;
       title = "关于";
+    } else if (id == R.id.nav_exit)
+    {
+      quitNow();
     }
+
+
 
     // switch fragment
     if (fragment != null) {
@@ -947,5 +985,6 @@ public class MainActivity extends SMTHBaseActivity
     } catch (IllegalAccessException e) {
     }
   }
+
 
 }

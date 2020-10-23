@@ -35,6 +35,7 @@ import com.klinker.android.link_builder.LinkConsumableTextView;
 import com.zfdang.SMTHApplication;
 import com.zfdang.zsmth_android.fresco.WrapContentDraweeView;
 import com.zfdang.zsmth_android.helpers.ActivityUtils;
+import com.zfdang.zsmth_android.listeners.ShakeListener;
 import com.zfdang.zsmth_android.models.Board;
 import com.zfdang.zsmth_android.models.ComposePostContext;
 import com.zfdang.zsmth_android.models.ContentSegment;
@@ -110,8 +111,6 @@ public class MailContentActivity extends AppCompatActivity {
     if (actionBar != null) {
       actionBar.setDisplayHomeAsUpEnabled(true);
     }
-
-
 
     // load mMail content
     Bundle bundle = getIntent().getExtras();

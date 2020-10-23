@@ -113,7 +113,6 @@ public class PostRecyclerViewAdapter extends RecyclerView.Adapter<PostRecyclerVi
       }
     }
 
-    Log.d("Vinney","3");
       // http://stackoverflow.com/questions/13438473/clicking-html-link-in-textview-fires-weird-androidruntimeexception
 
       for (int i = 1; i < contents.size(); i++) {

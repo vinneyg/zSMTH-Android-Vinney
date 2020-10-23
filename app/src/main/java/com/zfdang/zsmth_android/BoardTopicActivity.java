@@ -22,6 +22,7 @@ import com.zfdang.SMTHApplication;
 import com.zfdang.zsmth_android.helpers.RecyclerViewUtil;
 import com.zfdang.zsmth_android.listeners.EndlessRecyclerOnScrollListener;
 import com.zfdang.zsmth_android.listeners.OnTopicFragmentInteractionListener;
+import com.zfdang.zsmth_android.listeners.ShakeListener;
 import com.zfdang.zsmth_android.models.Board;
 import com.zfdang.zsmth_android.models.ComposePostContext;
 import com.zfdang.zsmth_android.models.Topic;
@@ -122,7 +123,6 @@ public class BoardTopicActivity extends SMTHBaseActivity
     LinearLayoutManager linearLayoutManager = new WrapContentLinearLayoutManager(this);
     mRecyclerView.setLayoutManager(linearLayoutManager);
     mRecyclerView.setAdapter(new BoardTopicRecyclerViewAdapter(TopicListContent.BOARD_TOPICS, this));
-
 
     // enable endless loading
     mScrollListener = new EndlessRecyclerOnScrollListener(linearLayoutManager) {

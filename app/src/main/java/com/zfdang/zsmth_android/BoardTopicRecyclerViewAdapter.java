@@ -75,6 +75,10 @@ public class BoardTopicRecyclerViewAdapter extends RecyclerView.Adapter<BoardTop
             holder.mStatusSummary.setTextColor(R.color.colorSecondaryText);
           }
         }
+        else
+        {
+          Log.d("VINNEY-4","fail");
+        }
       }
       //
 
