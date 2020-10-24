@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
@@ -182,14 +183,34 @@ public class ImagesSelectorActivity extends AppCompatActivity
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_STORAGE_CODE: {
                 // If request is cancelled, the result arrays are empty.
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q ){
+
                 if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
                     LoadFolderAndImages();
-                } else {
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                    Toast.makeText(ImagesSelectorActivity.this, getString(R.string.selector_permission_error), Toast.LENGTH_SHORT).show();
+
+                    } else{
+                        //在版本低于此的时候，做一些处理
+
+                        // permission denied, boo! Disable the
+                        // functionality that depends on this permission.
+                        Toast.makeText(ImagesSelectorActivity.this, getString(R.string.selector_permission_error), Toast.LENGTH_SHORT).show();
+                    }
+                    }
+                else //Build >= 29.Android Q
+                {
+                    if (grantResults.length == 2 && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                            && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                        // permission was granted, yay! Do the
+                        // contacts-related task you need to do.
+                        LoadFolderAndImages();
+                    } else {
+                        // permission denied, boo! Disable the
+                        // functionality that depends on this permission.
+                        Toast.makeText(ImagesSelectorActivity.this, getString(R.string.selector_permission_error), Toast.LENGTH_SHORT).show();
+                    }
+                    return;
                 }
                 return;
             }

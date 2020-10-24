@@ -1,13 +1,17 @@
 package com.zfdang.zsmth_android;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -21,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.jude.swipbackhelper.SwipeBackHelper;
 import com.zfdang.SMTHApplication;
+import com.zfdang.multiple_images_selector.ImagesSelectorActivity;
 import com.zfdang.zsmth_android.fresco.FrescoUtils;
 import com.zfdang.zsmth_android.fresco.MyPhotoView;
 import com.zfdang.zsmth_android.helpers.ActivityUtils;
@@ -39,6 +44,8 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 public class FSImageViewerActivity extends AppCompatActivity implements PhotoViewAttacher.OnPhotoTapListener {
 
   private static final String TAG = "FullViewer";
+
+  private static final int MY_PERMISSIONS_REQUEST_STORAGE_CODE = 299;
 
   private HackyViewPager mViewPager;
 
@@ -100,16 +107,16 @@ public class FSImageViewerActivity extends AppCompatActivity implements PhotoVie
     btSave = (ImageView) findViewById(R.id.fullscreen_button_save);
     btSave.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
-        int position = mViewPager.getCurrentItem();
-        final String imagePath = mURLs.get(position);
 
-        View currentView = mPagerAdapter.mCurrentView;
-        boolean isAnimation = false;
-        if (currentView instanceof MyPhotoView) {
-          MyPhotoView photoView = (MyPhotoView) currentView;
-          isAnimation = photoView.isAnimation();
+        if (ContextCompat.checkSelfPermission(FSImageViewerActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+          ActivityCompat.requestPermissions(FSImageViewerActivity.this,
+                  new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                  MY_PERMISSIONS_REQUEST_STORAGE_CODE);
         }
-        saveImageToFile(imagePath, isAnimation);
+        else
+        {
+          realSaveImageToFile();
+        }
       }
     });
 
@@ -119,6 +126,59 @@ public class FSImageViewerActivity extends AppCompatActivity implements PhotoVie
     SwipeBackHelper.getCurrentPage(this).setSwipeEdgePercent(0.2f);
   }
 
+  public void realSaveImageToFile()
+  {
+    int position = mViewPager.getCurrentItem();
+    final String imagePath = mURLs.get(position);
+
+    View currentView = mPagerAdapter.mCurrentView;
+    boolean isAnimation = false;
+    if (currentView instanceof MyPhotoView) {
+      MyPhotoView photoView = (MyPhotoView) currentView;
+      isAnimation = photoView.isAnimation();
+    }
+
+    saveImageToFile(imagePath, isAnimation);
+  }
+  @Override
+  public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    switch (requestCode) {
+      case MY_PERMISSIONS_REQUEST_STORAGE_CODE:
+      {
+        // If request is cancelled, the result arrays are empty.
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q ){
+
+          if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            // permission was granted, yay! Do the
+            // contacts-related task you need to do.
+            realSaveImageToFile();
+
+          } else{
+            //在版本低于此的时候，做一些处理
+
+            // permission denied, boo! Disable the
+            // functionality that depends on this permission.
+            Toast.makeText(FSImageViewerActivity.this, getString(com.zfdang.multiple_images_selector.R.string.selector_permission_error), Toast.LENGTH_SHORT).show();
+          }
+        }
+        else //Build >= 29.Android Q
+        {
+          if (grantResults.length == 2 && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                  && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+            // permission was granted, yay! Do the
+            // contacts-related task you need to do.
+            realSaveImageToFile();
+          } else {
+            // permission denied, boo! Disable the
+            // functionality that depends on this permission.
+            Toast.makeText(FSImageViewerActivity.this, getString(com.zfdang.multiple_images_selector.R.string.selector_permission_error), Toast.LENGTH_SHORT).show();
+          }
+          return;
+        }
+        return;
+      }
+    }
+  }
   private void hide() {
     // Hide status bar and navigation bar
     mViewPager.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE

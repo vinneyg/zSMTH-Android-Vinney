@@ -349,6 +349,22 @@ public class Settings {
     }
   }
 
+  private static final String LAUNCH_BOTTOM_NAVI = "LAUNCH_BOTTOM_NAVI";
+  private boolean bLaunchBottomNavi;
+
+  public boolean isLaunchBottomNavi() {
+    return bLaunchBottomNavi;
+  }
+
+  public void setLaunchBottomNavi(boolean bLaunchBottomNavi) {
+    if (this.bLaunchBottomNavi != bLaunchBottomNavi) {
+      this.bLaunchBottomNavi = bLaunchBottomNavi;
+      mEditor.putBoolean(LAUNCH_BOTTOM_NAVI, this.bLaunchBottomNavi);
+      mEditor.commit();
+    }
+  }
+
+
   private static final String LAUNCH_HOTTOPIC_AS_ENTRY = "LAUNCH_HOTTOPIC_AS_ENTRY";
   private boolean bLaunchHotTopic;
 
@@ -533,6 +549,7 @@ public class Settings {
     bNotificationReply = mPreference.getBoolean(NOTIFICATION_REPLY, true);
 
     bLaunchHotTopic = mPreference.getBoolean(LAUNCH_HOTTOPIC_AS_ENTRY, true);
+    bLaunchBottomNavi = mPreference.getBoolean(LAUNCH_BOTTOM_NAVI, true);
 
     bTopicFwdSelf = mPreference.getBoolean(SET_FWD_ADDRESS,true);
 

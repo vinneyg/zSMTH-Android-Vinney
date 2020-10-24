@@ -18,6 +18,13 @@
   <PreferenceCategory android:title="程序设置">
     <CheckBoxPreference
         android:defaultValue="on"
+        android:key="launch_bottom_navi"
+        android:summaryOff="ZPad"
+        android:summaryOn="底部导航栏"
+        android:title="底部导航栏设置"/>
+
+    <CheckBoxPreference
+        android:defaultValue="on"
         android:key="launch_hottopic_as_entry"
         android:summaryOff="打开收藏页面"
         android:summaryOn="打开导读页面"

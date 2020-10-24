@@ -1,6 +1,7 @@
 package com.zfdang.zsmth_android;
 
 //import android.annotation.SuppressLint;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 //import android.app.Application;
 import android.app.Notification;
@@ -25,7 +26,6 @@ import android.os.Parcelable;
 //import android.support.design.internal.BottomNavigationMenuView;
 import android.os.Vibrator;
 import android.support.design.widget.BottomNavigationView;
-//import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -135,11 +135,22 @@ public class MainActivity extends SMTHBaseActivity
     // zsmth_actionbar_size @ dimen ==> ThemeOverlay.ActionBar @ styles ==> theme @ app_bar_main.xml
 
     // init floating action button & circular action menu
-   // FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-   // initCircularActionMenu(fab);
-    //fab.hide();
+    FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+    initCircularActionMenu(fab);
 
     initBottomNavigation();
+    // Add Vinney Switch
+    // fab.hide()
+    //BottomNavigationView mBottomNavigationView = findViewById(R.id.bv_bottomNavigation);
+    if(Settings.getInstance().isLaunchBottomNavi()) {
+      fab.hide();
+      findViewById(R.id.bv_bottomNavigation).setVisibility(View.VISIBLE);
+    }
+    else
+    {
+      fab.show();
+      findViewById(R.id.bv_bottomNavigation).setVisibility(View.GONE);
+    }
 
     mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
     setDrawerLeftEdgeSize (this, mDrawer, (float)0.2) ;//To support Mail Deletion
@@ -286,7 +297,7 @@ public class MainActivity extends SMTHBaseActivity
 
   }
 
-/*
+
   private void initCircularActionMenu(FloatingActionButton fab) {
     SubActionButton.Builder itemBuilder = new SubActionButton.Builder(this);
 
@@ -349,7 +360,7 @@ public class MainActivity extends SMTHBaseActivity
         .attachTo(fab)
         .build();
   }
- */
+
 
   // triger the background service right now
   private void updateUserStatusNow() {
@@ -526,7 +537,6 @@ public class MainActivity extends SMTHBaseActivity
       login.setVisible(true);
       logout.setVisible(false);
     }
-
     return super.onPrepareOptionsMenu(menu);
   }
 

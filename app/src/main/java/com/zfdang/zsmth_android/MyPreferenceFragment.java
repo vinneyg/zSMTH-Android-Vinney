@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipeline;
 import com.zfdang.SMTHApplication;
+import com.zfdang.multiple_images_selector.SelectorSettings;
 import com.zfdang.zsmth_android.helpers.ActivityUtils;
 import com.zfdang.zsmth_android.helpers.FileLess;
 import com.zfdang.zsmth_android.helpers.FileSizeUtil;
@@ -40,6 +41,7 @@ public class MyPreferenceFragment extends PreferenceFragmentCompat {
   CheckBoxPreference signature_control;
   Preference signature_content;
 
+  CheckBoxPreference launch_bottom_navi;
   CheckBoxPreference launch_hottopic_as_entry;
   CheckBoxPreference open_topic_add;
   CheckBoxPreference diff_read_topic;
@@ -89,6 +91,30 @@ public class MyPreferenceFragment extends PreferenceFragmentCompat {
         return true;
       }
     });
+
+
+    launch_bottom_navi = (CheckBoxPreference) findPreference("launch_bottom_navi");
+    launch_bottom_navi.setChecked(Settings.getInstance().isLaunchBottomNavi());
+    launch_bottom_navi.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+      @Override public boolean onPreferenceChange(Preference preference, Object newValue) {
+        boolean bValue = Settings.getInstance().isLaunchBottomNavi();
+        if (newValue instanceof Boolean) {
+          Boolean boolVal = (Boolean) newValue;
+          bValue = boolVal;
+        }
+        Settings.getInstance().setLaunchBottomNavi(bValue);
+        Activity activity = getActivity();
+        if (activity != null) {
+          Intent intent = new Intent(activity.getApplicationContext(), MainActivity.class);
+          intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+          startActivity(intent);
+          activity.finish();
+        }
+        return true;
+      }
+    });
+
+
 
     launch_hottopic_as_entry = (CheckBoxPreference) findPreference("launch_hottopic_as_entry");
     launch_hottopic_as_entry.setChecked(Settings.getInstance().isLaunchHotTopic());
