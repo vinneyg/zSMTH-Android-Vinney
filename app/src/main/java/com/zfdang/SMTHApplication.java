@@ -59,6 +59,12 @@ public class SMTHApplication extends Application {
   public static Post ReadPostFirst = null;
   public static boolean ReadRec = false;
 
+  public static String ReadBoard1 = "版块(空)";
+  public static String ReadBoard2 = "版块(空)";
+  public static String ReadBoard3 = "版块(空)";
+  public static int ReadBoardCount = 0;
+
+
   // IP database
   public static GEODatabase geoDB;
 

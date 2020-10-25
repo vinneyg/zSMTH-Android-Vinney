@@ -147,6 +147,22 @@ public class BoardTopicActivity extends SMTHBaseActivity
       mBoard = board;
       TopicListContent.clearBoardTopics();
       mCurrentPageNo = 1;
+
+      if (!mBoard.getBoardChsName().equals(SMTHApplication.ReadBoard1) && !mBoard.getBoardChsName().equals(SMTHApplication.ReadBoard2)
+              && !mBoard.getBoardChsName().equals(SMTHApplication.ReadBoard3)) {
+        switch (SMTHApplication.ReadBoardCount % 3) {
+          case 0:
+            SMTHApplication.ReadBoard1 = mBoard.getBoardChsName();
+            break;
+          case 1:
+            SMTHApplication.ReadBoard2 = mBoard.getBoardChsName();
+            break;
+          case 2:
+            SMTHApplication.ReadBoard3 = mBoard.getBoardChsName();
+            break;
+        }
+        SMTHApplication.ReadBoardCount++;
+      }
     }
 
     updateTitle();
@@ -346,6 +362,23 @@ public class BoardTopicActivity extends SMTHBaseActivity
     Intent intent = new Intent(this, PostListActivity.class);
     item.setBoardEngName(mBoard.getBoardEngName());
     item.setBoardChsName(mBoard.getBoardChsName());
+
+    if (!mBoard.getBoardChsName().equals(SMTHApplication.ReadBoard1) && !mBoard.getBoardChsName().equals(SMTHApplication.ReadBoard2)
+            && !mBoard.getBoardChsName().equals(SMTHApplication.ReadBoard3)) {
+      switch (SMTHApplication.ReadBoardCount % 3) {
+        case 0:
+          SMTHApplication.ReadBoard1 = mBoard.getBoardChsName();
+          break;
+        case 1:
+          SMTHApplication.ReadBoard2 = mBoard.getBoardChsName();
+          break;
+        case 2:
+          SMTHApplication.ReadBoard3 = mBoard.getBoardChsName();
+          break;
+      }
+      SMTHApplication.ReadBoardCount++;
+    }
+
     intent.putExtra(SMTHApplication.TOPIC_OBJECT, item);
     intent.putExtra(SMTHApplication.FROM_BOARD, SMTHApplication.FROM_BOARD_BOARD);
     startActivity(intent);

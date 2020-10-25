@@ -154,8 +154,21 @@ public class MainActivity extends SMTHBaseActivity
 
     mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
     setDrawerLeftEdgeSize (this, mDrawer, (float)0.2) ;//To support Mail Deletion
+
+    mDrawer.addDrawerListener(new ActionBarDrawerToggle(this,mDrawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+      @Override
+      public void onDrawerOpened(View drawerView) {
+        //mNavigationView = (NavigationView) findViewById(R.id.nav_view);
+        Menu menu=((NavigationView) findViewById(R.id.nav_view)).getMenu();
+        menu.findItem(R.id.read_board1).setTitle(SMTHApplication.ReadBoard1);
+        menu.findItem(R.id.read_board2).setTitle(SMTHApplication.ReadBoard2);
+        menu.findItem(R.id.read_board3).setTitle(SMTHApplication.ReadBoard3);
+        super.onDrawerOpened(drawerView);
+      }
+     });
+
     mToggle = new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-    mDrawer.addDrawerListener(mToggle);
+    //mDrawer.addDrawerListener(mToggle);
     mToggle.syncState();
     //Vinney Full Screen Drawer
 
@@ -800,6 +813,22 @@ public class MainActivity extends SMTHBaseActivity
     Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.content_frame);
     if (fragment == hotTopicFragment) {
       if (item.isCategory) return;
+
+      if (!item.getBoardChsName().equals(SMTHApplication.ReadBoard1) && !item.getBoardChsName().equals(SMTHApplication.ReadBoard2)
+              && !item.getBoardChsName().equals(SMTHApplication.ReadBoard3)) {
+        switch (SMTHApplication.ReadBoardCount % 3) {
+          case 0:
+            SMTHApplication.ReadBoard1 = item.getBoardChsName();
+            break;
+          case 1:
+            SMTHApplication.ReadBoard2 = item.getBoardChsName();
+            break;
+          case 2:
+            SMTHApplication.ReadBoard3 =item.getBoardChsName();
+            break;
+        }
+        SMTHApplication.ReadBoardCount++;
+      }
       Intent intent = new Intent(this, PostListActivity.class);
       intent.putExtra(SMTHApplication.TOPIC_OBJECT, item);
       intent.putExtra(SMTHApplication.FROM_BOARD, SMTHApplication.FROM_BOARD_HOT);

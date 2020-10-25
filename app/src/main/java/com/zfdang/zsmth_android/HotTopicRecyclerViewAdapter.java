@@ -78,6 +78,7 @@ public class HotTopicRecyclerViewAdapter extends RecyclerView.Adapter<HotTopicRe
           SMTHApplication.ReadRec=false;
           SMTHApplication.ReadPostFirst=null;
           mListener.onTopicFragmentInteraction(holder.mItem);
+
           //Vinney
           if (Settings.getInstance().isDiffReadTopic()) {
             SMTHApplication.ReadTopicLists.add(holder.mItem.getTopicID());
