@@ -769,7 +769,26 @@ public class MainActivity extends SMTHBaseActivity
     } else if (id == R.id.nav_exit)
     {
       quitNow();
+    } else if( id == R.id.read_board1)
+    {
+      if(SMTHApplication.ReadBoardEng1 != null) {
+        Board item = new Board(null, SMTHApplication.ReadBoard1, SMTHApplication.ReadBoardEng1);
+        startBoardTopicActivity(item);
+      }
+    } else if( id == R.id.read_board2)
+    {
+      if(SMTHApplication.ReadBoardEng2 != null) {
+        Board item = new Board(null, SMTHApplication.ReadBoard2, SMTHApplication.ReadBoardEng2);
+        startBoardTopicActivity(item);
+      }
+    }else if( id == R.id.read_board3)
+    {
+      if(SMTHApplication.ReadBoardEng3 != null) {
+        Board item = new Board(null, SMTHApplication.ReadBoard3, SMTHApplication.ReadBoardEng3);
+        startBoardTopicActivity(item);
+      }
     }
+
 
 
 
@@ -819,12 +838,15 @@ public class MainActivity extends SMTHBaseActivity
         switch (SMTHApplication.ReadBoardCount % 3) {
           case 0:
             SMTHApplication.ReadBoard1 = item.getBoardChsName();
+            SMTHApplication.ReadBoardEng1 = item.getBoardEngName();
             break;
           case 1:
             SMTHApplication.ReadBoard2 = item.getBoardChsName();
+            SMTHApplication.ReadBoardEng2 = item.getBoardEngName();
             break;
           case 2:
             SMTHApplication.ReadBoard3 =item.getBoardChsName();
+            SMTHApplication.ReadBoardEng3 = item.getBoardEngName();
             break;
         }
         SMTHApplication.ReadBoardCount++;

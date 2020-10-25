@@ -42,20 +42,22 @@
 
   </group>
 
-  <group>
+  <group
+    android:checkableBehavior="single"
+    android:id="@+id/drawer_menu_group3">
     <item
         android:id="@+id/nav_read"
         android:icon="@drawable/ic_menu_allboard"
         android:title="最近浏览"/>
     <item
         android:id="@+id/read_board1"
-        android:title="版块(空)"/>
+        android:title=""/>
     <item
         android:id="@+id/read_board2"
-        android:title="版块(空)"/>
+        android:title=""/>
     <item
         android:id="@+id/read_board3"
-        android:title="版块(空)"/>
+        android:title=""/>
   </group>
 
 </menu>
