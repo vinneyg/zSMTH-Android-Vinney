@@ -59,12 +59,12 @@ public class SMTHApplication extends Application {
   public static Post ReadPostFirst = null;
   public static boolean ReadRec = false;
 
-  public static String ReadBoard1 = "";
-  public static String ReadBoard2 = "";
-  public static String ReadBoard3 = "";
-  public static String ReadBoardEng1 = "";
-  public static String ReadBoardEng2 = "";
-  public static String ReadBoardEng3 = "";
+  public static String ReadBoard1 = null;
+  public static String ReadBoard2 = null;
+  public static String ReadBoard3 = null;
+  public static String ReadBoardEng1 = null;
+  public static String ReadBoardEng2 = null;
+  public static String ReadBoardEng3 = null;
   public static int ReadBoardCount = 0;
 
 

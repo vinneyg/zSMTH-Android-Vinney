@@ -153,12 +153,15 @@ public class BoardTopicActivity extends SMTHBaseActivity
         switch (SMTHApplication.ReadBoardCount % 3) {
           case 0:
             SMTHApplication.ReadBoard1 = mBoard.getBoardChsName();
+            SMTHApplication.ReadBoardEng1 = mBoard.getBoardEngName();
             break;
           case 1:
             SMTHApplication.ReadBoard2 = mBoard.getBoardChsName();
+            SMTHApplication.ReadBoardEng2 = mBoard.getBoardEngName();
             break;
           case 2:
             SMTHApplication.ReadBoard3 = mBoard.getBoardChsName();
+            SMTHApplication.ReadBoardEng3 = mBoard.getBoardEngName();
             break;
         }
         SMTHApplication.ReadBoardCount++;

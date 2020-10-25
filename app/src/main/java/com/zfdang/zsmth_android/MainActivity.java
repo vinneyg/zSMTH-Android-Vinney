@@ -851,6 +851,7 @@ public class MainActivity extends SMTHBaseActivity
         }
         SMTHApplication.ReadBoardCount++;
       }
+
       Intent intent = new Intent(this, PostListActivity.class);
       intent.putExtra(SMTHApplication.TOPIC_OBJECT, item);
       intent.putExtra(SMTHApplication.FROM_BOARD, SMTHApplication.FROM_BOARD_HOT);
