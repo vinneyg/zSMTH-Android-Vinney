@@ -16,7 +16,8 @@
     <item
         android:id="@+id/nav_all_boards"
         android:icon="@drawable/ic_format_list_bulleted_white_48dp"
-        android:title="所有版面"/>
+        android:title="所有版块"/>
+
     <item
         android:id="@+id/nav_mail"
         android:icon="@drawable/ic_email_white_48dp"
@@ -25,39 +26,40 @@
   </group>
 
   <group
-      android:checkableBehavior="single"
-      android:id="@+id/drawer_menu_group2">
-    <item
-        android:id="@+id/nav_setting"
-        android:icon="@drawable/ic_settings_white_48dp"
-        android:title="设置"/>
-    <item
-        android:id="@+id/nav_exit"
-        android:icon="@drawable/ic_arrow_downward_36dp"
-        android:title="一键退出"/>
-    <item
-        android:id="@+id/nav_about"
-        android:icon="@drawable/ic_info_white_48dp"
-        android:title="关于"/>
-
-  </group>
-
-  <group
     android:checkableBehavior="single"
-    android:id="@+id/drawer_menu_group3">
+    android:id="@+id/drawer_menu_group2"
+      android:textSize = "10sp">
     <item
         android:id="@+id/nav_read"
         android:icon="@drawable/ic_menu_allboard"
         android:title="最近浏览"/>
     <item
         android:id="@+id/read_board1"
-        android:title=""/>
+        android:title="版块(空)" />
     <item
         android:id="@+id/read_board2"
-        android:title=""/>
+        android:title="版块(空)"/>
     <item
         android:id="@+id/read_board3"
-        android:title=""/>
+        android:title="版块(空)"/>
+  </group>
+
+  <group
+      android:checkableBehavior="single"
+      android:id="@+id/drawer_menu_group3">
+    <item
+        android:id="@+id/nav_exit"
+        android:icon="@drawable/ic_arrow_downward_36dp"
+        android:title="一键退出"/>
+    <item
+        android:id="@+id/nav_setting"
+        android:icon="@drawable/ic_settings_white_48dp"
+        android:title="设置"/>
+    <item
+        android:id="@+id/nav_about"
+        android:icon="@drawable/ic_info_white_48dp"
+        android:title="关于"/>
+
   </group>
 
 </menu>

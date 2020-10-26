@@ -46,6 +46,7 @@ import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.util.Log;
 //import android.view.GestureDetector;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -160,9 +161,17 @@ public class MainActivity extends SMTHBaseActivity
       public void onDrawerOpened(View drawerView) {
         //mNavigationView = (NavigationView) findViewById(R.id.nav_view);
         Menu menu=((NavigationView) findViewById(R.id.nav_view)).getMenu();
+
+        //TextView textView1 =(TextView)findViewById(R.id.read_board1);
+        //textView1.setTextSize(TypedValue.COMPLEX_UNIT_SP,10);
+        //((TextView)findViewById(R.id.read_board2)).setTextSize(TypedValue.COMPLEX_UNIT_SP,10);
+       // ((TextView)findViewById(R.id.read_board3)).setTextSize(TypedValue.COMPLEX_UNIT_SP,10);
+
+
         menu.findItem(R.id.read_board1).setTitle(SMTHApplication.ReadBoard1);
         menu.findItem(R.id.read_board2).setTitle(SMTHApplication.ReadBoard2);
         menu.findItem(R.id.read_board3).setTitle(SMTHApplication.ReadBoard3);
+
         super.onDrawerOpened(drawerView);
       }
      });
@@ -769,7 +778,12 @@ public class MainActivity extends SMTHBaseActivity
     } else if (id == R.id.nav_exit)
     {
       quitNow();
-    } else if( id == R.id.read_board1)
+    } else if( id == R.id.nav_read)
+    {
+     //Toast.makeText(this, "Click boards below",Toast.LENGTH_LONG);
+      return true;
+    }
+    else if( id == R.id.read_board1)
     {
       if(SMTHApplication.ReadBoardEng1 != null) {
         Board item = new Board(null, SMTHApplication.ReadBoard1, SMTHApplication.ReadBoardEng1);
@@ -788,9 +802,6 @@ public class MainActivity extends SMTHBaseActivity
         startBoardTopicActivity(item);
       }
     }
-
-
-
 
     // switch fragment
     if (fragment != null) {
