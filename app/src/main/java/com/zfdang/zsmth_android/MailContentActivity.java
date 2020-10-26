@@ -98,7 +98,8 @@ public class MailContentActivity extends AppCompatActivity {
       @Override public void onClick(View v) {
         //Log.d("VINNEY"," CLICK");
         Intent intent = new Intent(v.getContext(), QueryUserActivity.class);
-        intent.putExtra(SMTHApplication.QUERY_USER_INFO, mMail.getFrom());
+       // intent.putExtra(SMTHApplication.QUERY_USER_INFO, mMail.getFrom());
+        intent.putExtra(SMTHApplication.QUERY_USER_INFO, mMail.author);
         v.getContext().startActivity(intent);
       }
     });
