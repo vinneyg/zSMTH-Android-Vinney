@@ -842,7 +842,6 @@ public class SMTHHelper {
       boards.add(board);
       //Vinney 解决用户状态更新失步问题
       SMTHApplication.activeUser = null;
-      //Log.d("VINNEY-HELLO","No Login");
       return boards;
     }
 

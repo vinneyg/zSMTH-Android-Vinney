@@ -162,12 +162,6 @@ public class MainActivity extends SMTHBaseActivity
         //mNavigationView = (NavigationView) findViewById(R.id.nav_view);
         Menu menu=((NavigationView) findViewById(R.id.nav_view)).getMenu();
 
-        //TextView textView1 =(TextView)findViewById(R.id.read_board1);
-        //textView1.setTextSize(TypedValue.COMPLEX_UNIT_SP,10);
-        //((TextView)findViewById(R.id.read_board2)).setTextSize(TypedValue.COMPLEX_UNIT_SP,10);
-       // ((TextView)findViewById(R.id.read_board3)).setTextSize(TypedValue.COMPLEX_UNIT_SP,10);
-
-
         menu.findItem(R.id.read_board1).setTitle(SMTHApplication.ReadBoard1);
         menu.findItem(R.id.read_board2).setTitle(SMTHApplication.ReadBoard2);
         menu.findItem(R.id.read_board3).setTitle(SMTHApplication.ReadBoard3);

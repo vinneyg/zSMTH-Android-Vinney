@@ -64,11 +64,11 @@ public class MailRecyclerViewAdapter extends RecyclerView.Adapter<MailRecyclerVi
 
       holder.mAuthor.setOnClickListener(new View.OnClickListener() {
         @Override public void onClick(View v) {
-          //Log.d("VINNEY"," CLICK");
-          Intent intent = new Intent(v.getContext(), QueryUserActivity.class);
-          //intent.putExtra(SMTHApplication.QUERY_USER_INFO, mail.getFrom());
-		  intent.putExtra(SMTHApplication.QUERY_USER_INFO, mail.author);
-          v.getContext().startActivity(intent);
+          if (Settings.getInstance().isSetIdCheck()) {
+            Intent intent = new Intent(v.getContext(), QueryUserActivity.class);
+            intent.putExtra(SMTHApplication.QUERY_USER_INFO, mail.author);
+            v.getContext().startActivity(intent);
+          }
         }
       });
 

@@ -215,10 +215,11 @@ public class PostRecyclerViewAdapter extends RecyclerView.Adapter<PostRecyclerVi
 
     holder.mPostAuthor.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
-        //Log.d("VINNEY"," CLICK");
-        Intent intent = new Intent(v.getContext(), QueryUserActivity.class);
-        intent.putExtra(SMTHApplication.QUERY_USER_INFO, post.getRawAuthor());
-        v.getContext().startActivity(intent);
+        if(Settings.getInstance().isSetIdCheck()) {
+          Intent intent = new Intent(v.getContext(), QueryUserActivity.class);
+          intent.putExtra(SMTHApplication.QUERY_USER_INFO, post.getRawAuthor());
+          v.getContext().startActivity(intent);
+        }
       }
     });
 

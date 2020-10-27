@@ -57,6 +57,7 @@ public class MyPreferenceFragment extends PreferenceFragmentCompat {
   CheckBoxPreference notification_control_at;
 
   CheckBoxPreference topic_fwd_self; //Vinney
+  CheckBoxPreference set_id_check; //Vinney
 
   Preference app_version;
 
@@ -346,6 +347,20 @@ public class MyPreferenceFragment extends PreferenceFragmentCompat {
           bValue = boolVal;
         }
         Settings.getInstance().SetTopicFwdSelf(bValue);
+        return true;
+      }
+    });
+
+    set_id_check = (CheckBoxPreference) findPreference("set_id_check");
+    set_id_check.setChecked(Settings.getInstance().isSetIdCheck());
+    set_id_check.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+      @Override public boolean onPreferenceChange(Preference preference, Object newValue) {
+        boolean bValue = Settings.getInstance().isSetIdCheck();
+        if (newValue instanceof Boolean) {
+          Boolean boolVal = (Boolean) newValue;
+          bValue = boolVal;
+        }
+        Settings.getInstance().SetIdCheck(bValue);
         return true;
       }
     });

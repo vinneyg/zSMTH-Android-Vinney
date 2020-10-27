@@ -250,6 +250,22 @@ public class Settings {
     }
   }
 
+  private static final String SET_ID_CHECK = "SET_ID_CHECK";
+  private boolean bSetIdCheck;
+
+  public boolean isSetIdCheck() {
+    return bSetIdCheck;
+  }
+
+  public void SetIdCheck(boolean bSetIdCheck) {
+    if (this.bSetIdCheck != bSetIdCheck) {
+      this.bSetIdCheck = bSetIdCheck;
+      mEditor.putBoolean(SET_ID_CHECK, this.bSetIdCheck);
+      mEditor.commit();
+    }
+  }
+
+
 
   private static final String NIGHT_MODE = "NIGHT_MODE";
   private boolean bNightMode;
@@ -552,6 +568,7 @@ public class Settings {
     bLaunchBottomNavi = mPreference.getBoolean(LAUNCH_BOTTOM_NAVI, true);
 
     bTopicFwdSelf = mPreference.getBoolean(SET_FWD_ADDRESS,true);
+    bSetIdCheck = mPreference.getBoolean(SET_ID_CHECK,true);
 
     bOpenTopicAdd =mPreference.getBoolean(OPEN_TOPIC_ADD,false);
 
