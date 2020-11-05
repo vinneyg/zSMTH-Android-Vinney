@@ -1,7 +1,9 @@
 package com.zfdang.zsmth_android;
 
+import android.arch.lifecycle.ViewModelProvider;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -344,7 +346,8 @@ public class ComposePostActivity extends SMTHBaseActivity {
     // publish post
     String postContent = mContent.getText().toString();
     if (Settings.getInstance().bUseSignature()) {
-      postContent += "\n" + String.format("#发自zSMTH-v-@%s", Settings.getInstance().getSignature());
+      //postContent += "\n" + String.format("#发自zSMTH-v-@%s", Settings.getInstance().getSignature());
+      postContent += "\n" + String.format("#发自zSMTH-v-@%s", Build.BRAND+"-"+Settings.getInstance().getSignature());
     }
     Observable<AjaxResponse> resp2 = null;
     if (mPostContext.getComposingMode() == ComposePostContext.MODE_NEW_MAIL

@@ -23,6 +23,7 @@ import com.zfdang.SMTHApplication;
 import com.zfdang.zsmth_android.fresco.WrapContentDraweeView;
 import com.zfdang.zsmth_android.helpers.ActivityUtils;
 import com.zfdang.zsmth_android.models.Attachment;
+import com.zfdang.zsmth_android.models.ComposePostContext;
 import com.zfdang.zsmth_android.models.ContentSegment;
 import com.zfdang.zsmth_android.models.Post;
 import java.util.ArrayList;
