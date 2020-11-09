@@ -47,6 +47,8 @@ public class MyPreferenceFragment extends PreferenceFragmentCompat {
   CheckBoxPreference diff_read_topic;
   CheckBoxPreference daynight_control;
   CheckBoxPreference setting_post_navigation_control;
+  CheckBoxPreference auto_load_more;
+
   CheckBoxPreference setting_volume_key_scroll;
   ListPreference setting_fontsize_control;
   CheckBoxPreference image_quality_control;
@@ -173,6 +175,21 @@ public class MyPreferenceFragment extends PreferenceFragmentCompat {
         return true;
       }
     });
+
+    auto_load_more = (CheckBoxPreference) findPreference("auto_load_more");
+    auto_load_more.setChecked(Settings.getInstance().isautoloadmore());
+    auto_load_more.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+      @Override public boolean onPreferenceChange(Preference preference, Object newValue) {
+        boolean bValue = Settings.getInstance().isautoloadmore();
+        if (newValue instanceof Boolean) {
+          Boolean boolVal = (Boolean) newValue;
+          bValue = boolVal;
+        }
+        Settings.getInstance().Setautoloadmore(bValue);
+        return true;
+      }
+    });
+
 
     setting_volume_key_scroll = (CheckBoxPreference) findPreference("setting_volume_key_scroll");
     setting_volume_key_scroll.setChecked(Settings.getInstance().isVolumeKeyScroll());

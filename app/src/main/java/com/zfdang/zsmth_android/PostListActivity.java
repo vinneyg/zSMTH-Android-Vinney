@@ -16,6 +16,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+//import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -46,7 +47,7 @@ import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.zfdang.SMTHApplication;
-import com.zfdang.zsmth_android.helpers.ActivityUtils;
+//import com.zfdang.zsmth_android.helpers.ActivityUtils;
 import com.zfdang.zsmth_android.helpers.RecyclerViewUtil;
 import com.zfdang.zsmth_android.models.Attachment;
 import com.zfdang.zsmth_android.models.Board;
@@ -61,7 +62,7 @@ import com.zfdang.zsmth_android.newsmth.SMTHHelper;
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.onekeyshare.OnekeyShare;
-import github.nisrulz.screenshott.ScreenShott;
+//import github.nisrulz.screenshott.ScreenShott;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -69,13 +70,16 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
+//import java.io.BufferedInputStream;
+//import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
+//import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.List;
+import java.util.zip.Inflater;
+//import java.util.Stack;
+
 import okhttp3.ResponseBody;
 
 /**
@@ -170,6 +174,11 @@ public class PostListActivity extends SMTHBaseActivity
     SwipeBackHelper.onCreate(this);
 
     setContentView(R.layout.activity_post_list);
+
+    //LayoutInflater inflate = LayoutInflater.from(this);
+    //View view = inflate.inflate(R.layout.activity_post_list,null);
+    //setContentView(view);
+
     Toolbar toolbar = (Toolbar) findViewById(R.id.post_list_toolbar);
     setSupportActionBar(toolbar);
 
@@ -189,6 +198,14 @@ public class PostListActivity extends SMTHBaseActivity
     mRefreshLayout.setEnableAutoLoadMore(false);
     mRefreshLayout.setEnableScrollContentWhenLoaded(false);
     mRefreshLayout.setEnableOverScrollBounce(false);
+    if(!Settings.getInstance().isautoloadmore()) {
+      mRefreshLayout.setEnableRefresh(false);
+      mRefreshLayout.setEnableLoadMore(false);
+    } else {
+      mRefreshLayout.setEnableRefresh(true);
+      mRefreshLayout.setEnableLoadMore(true);
+    }
+
     mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
       @Override public void onRefresh(RefreshLayout refreshLayout) {
         // reload current page
@@ -223,27 +240,95 @@ public class PostListActivity extends SMTHBaseActivity
     //        Log.d(TAG, String.format("Load post list for topic = %s, source = %s", topic.toString(), mFrom));
 
     // set onClick Lisetner for page navigator buttons
-    findViewById(R.id.post_list_first_page).setOnClickListener(this);
-    findViewById(R.id.post_list_pre_page).setOnClickListener(this);
-    findViewById(R.id.post_list_next_page).setOnClickListener(this);
-    findViewById(R.id.post_list_last_page).setOnClickListener(this);
-    findViewById(R.id.post_list_go_page).setOnClickListener(this);
 
-    LinearLayout navLayout = (LinearLayout) findViewById(R.id.post_list_action_layout);
+      findViewById(R.id.post_list_first_page).setOnClickListener(this);
+      findViewById(R.id.post_list_pre_page).setOnClickListener(this);
+      findViewById(R.id.post_list_next_page).setOnClickListener(this);
+      findViewById(R.id.post_list_last_page).setOnClickListener(this);
+      findViewById(R.id.post_list_go_page).setOnClickListener(this);
+
+    if(!Settings.getInstance().isautoloadmore()) {
+       findViewById(R.id.post_list_first_page).setEnabled(false);
+       findViewById(R.id.post_list_pre_page).setEnabled(false);
+       findViewById(R.id.post_list_next_page).setEnabled(false);
+       findViewById(R.id.post_list_last_page).setEnabled(false);
+       findViewById(R.id.post_list_go_page).setEnabled(false);
+       findViewById(R.id.post_list_page_no).setEnabled(false);
+     }
+    else
+    {
+      findViewById(R.id.post_list_first_page).setEnabled(true);
+      findViewById(R.id.post_list_pre_page).setEnabled(true);
+      findViewById(R.id.post_list_next_page).setEnabled(true);
+      findViewById(R.id.post_list_last_page).setEnabled(true);
+      findViewById(R.id.post_list_go_page).setEnabled(true);
+      findViewById(R.id.post_list_page_no).setEnabled(true);
+    }
+
+    LinearLayout navLayout = findViewById(R.id.post_list_action_layout);
     if (Settings.getInstance().hasPostNavBar()) {
       navLayout.setVisibility(View.VISIBLE);
     } else {
       navLayout.setVisibility(View.GONE);
     }
     initPostNavigationButtons();
-    //监听RecyclerView滚动状态
+
     mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+      boolean isSlidingToLast = false;
+      int mIndex = 0;
+
       @Override
       public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+        LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
+
         super.onScrollStateChanged(recyclerView, newState);
-        if(recyclerView.getLayoutManager() != null) {
+        if (recyclerView.getLayoutManager() != null) {
           getPositionAndOffset();
         }
+        if(!Settings.getInstance().isautoloadmore()) {
+          if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+            //LastItemPosition
+            int lastVisiblePos = manager.findLastVisibleItemPosition();
+            int totalItemCount = manager.getItemCount();
+
+            //int firstVisibleItem = manager.findFirstVisibleItemPosition();
+
+
+            // reach bottom
+            if (lastVisiblePos == (totalItemCount - 1) && isSlidingToLast && (mCurrentPageNo < mTopic.getTotalPageNo())) {
+              //Toast.makeText(getApplicationContext(), "加载更多", Toast.LENGTH_SHORT).show();
+              //goToNextPage();
+              LoadMoreItems();
+            } else {
+              TextView mIndexView = (TextView) (manager.findViewByPosition(lastVisiblePos)).findViewById(R.id.post_index);
+              String temp = mIndexView.getText().toString();
+
+              if (temp.equals("楼主")) {
+                mIndex = 0;
+              } else {
+                String newTemp = temp.replaceAll("第", "");
+                temp = newTemp.replaceAll("楼", "");
+                mIndex = Integer.parseInt(temp);
+              }
+              mCurrentPageNo = mIndex / 10 + 1;
+              mTotalPageNo = mTopic.getTotalPageNo();
+              String title = String.format("[%d/%d] %s", mCurrentPageNo, mTopic.getTotalPageNo(), mTopic.getTitle());
+              mTitle.setText(title);
+              mPageNo.setText(String.format("%d", mCurrentPageNo));
+              mCurrentReadPageNo = mCurrentPageNo;
+              recyclerView.getAdapter().notifyDataSetChanged();
+
+            }
+          }
+        }
+      }
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+          super.onScrolled(recyclerView, dx, dy);
+          if(dy > 0){
+            isSlidingToLast = true;
+          }
       }
     });
 
@@ -318,6 +403,60 @@ public class PostListActivity extends SMTHBaseActivity
 
     reloadPostListWithoutAlert();
   }
+
+
+  public void AddLoadPostList() {
+    final SMTHHelper helper = SMTHHelper.getInstance();
+
+    helper.wService.getPostListByPage(mTopic.getTopicURL(), mTopic.getTopicID(), mCurrentPageNo, mFilterUser)
+            .flatMap(new Function<ResponseBody, Observable<Post>>() {
+              @Override public Observable<Post> apply(@NonNull ResponseBody responseBody) throws Exception {
+                try {
+                  String response = responseBody.string();
+                  List<Post> posts = SMTHHelper.ParsePostListFromWWW(response, mTopic);
+                  if(SMTHApplication.ReadRec == false) {
+                    SMTHApplication.ReadPostFirst = posts.get(0);
+                    SMTHApplication.ReadRec=true;
+                  }
+                  return Observable.fromIterable(posts);
+                } catch (Exception e) {
+                  SMTHApplication.ReadRec=false;
+                  SMTHApplication.ReadPostFirst=null;
+                  Log.e(TAG, Log.getStackTraceString(e));
+                }
+                return null;
+              }
+            })
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(new Observer<Post>() {
+              @Override public void onSubscribe(@NonNull Disposable disposable) {
+
+              }
+
+              @Override public void onNext(@NonNull Post post) {
+                // Log.d(TAG, post.toString());
+                PostListContent.addItem(post);
+                mRecyclerView.getAdapter().notifyItemInserted(PostListContent.POSTS.size() - 1);
+               // mRecyclerView.getAdapter().notifyDataSetChanged();
+              }
+
+              @Override public void onError(@NonNull Throwable e) {
+                clearLoadingHints();
+                Toast.makeText(SMTHApplication.getAppContext(), "加载失败！\n" + e.toString(), Toast.LENGTH_LONG).show();
+              }
+
+              @Override public void onComplete() {
+                mTotalPageNo = mTopic.getTotalPageNo();
+                String title = String.format("[%d/%d] %s", mCurrentPageNo, mTopic.getTotalPageNo(), mTopic.getTitle());
+                mTitle.setText(title);
+                mPageNo.setText(String.format("%d", mCurrentPageNo));
+                mCurrentReadPageNo = mCurrentPageNo;
+                clearLoadingHints();
+              }
+            });
+  }
+
 
   public void loadPostListByPages() {
     final SMTHHelper helper = SMTHHelper.getInstance();
@@ -492,6 +631,21 @@ public class PostListActivity extends SMTHBaseActivity
     } else {
       mCurrentPageNo += 1;
       reloadPostList();
+    }
+  }
+
+
+  public void LoadMoreItems() {
+
+    if (mCurrentPageNo == mTopic.getTotalPageNo()) {
+      Toast.makeText(PostListActivity.this, "已在末页！", Toast.LENGTH_SHORT).show();
+      clearLoadingHints();
+    } else {
+      synchronized (this) {
+        mCurrentPageNo += 1;
+        //reloadPostList();
+        loadPostListByPages();
+      }
     }
   }
 

@@ -250,6 +250,22 @@ public class Settings {
     }
   }
 
+  private static final String AUTO_LOAD_MORE = "AUTO_LOAD_MORE";
+  private boolean bAutoLoadMore;
+
+  public boolean isautoloadmore() {
+    return bAutoLoadMore;
+  }
+
+  public void Setautoloadmore(boolean bAutoLoadMore) {
+    if (this.bAutoLoadMore != bAutoLoadMore) {
+      this.bAutoLoadMore = bAutoLoadMore;
+      mEditor.putBoolean(AUTO_LOAD_MORE, this.bAutoLoadMore);
+      mEditor.commit();
+    }
+  }
+
+
   private static final String SET_ID_CHECK = "SET_ID_CHECK";
   private boolean bSetIdCheck;
 
@@ -568,11 +584,13 @@ public class Settings {
     bLaunchBottomNavi = mPreference.getBoolean(LAUNCH_BOTTOM_NAVI, true);
 
     bTopicFwdSelf = mPreference.getBoolean(SET_FWD_ADDRESS,true);
+    bAutoLoadMore = mPreference.getBoolean(SET_FWD_ADDRESS,true);
     bSetIdCheck = mPreference.getBoolean(SET_ID_CHECK,true);
 
     bOpenTopicAdd =mPreference.getBoolean(OPEN_TOPIC_ADD,false);
 
-    bPostNavBar = mPreference.getBoolean(SHOW_POST_NAVITATION_BAR, true);
+
+    bPostNavBar = mPreference.getBoolean(SHOW_POST_NAVITATION_BAR, false);
     bVolumeKeyScroll = mPreference.getBoolean(VOLUME_KEY_SCROLL, true);
     iFontIndex = mPreference.getInt(ZSMTH_FONT_INDEX, 1);
 

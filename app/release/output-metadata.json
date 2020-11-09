@@ -10,9 +10,9 @@
     {
       "type": "SINGLE",
       "filters": [],
-      "versionCode": 134,
-      "versionName": "2020.11.05",
-      "outputFile": "zSMTH-release-v2020.11.05-134.apk"
+      "versionCode": 135,
+      "versionName": "2020.11.09",
+      "outputFile": "zSMTH-release-v2020.11.09-135.apk"
     }
   ]
 }

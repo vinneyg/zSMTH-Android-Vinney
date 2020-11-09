@@ -57,11 +57,18 @@
         android:title="配色模式"/>
 
     <CheckBoxPreference
-        android:defaultValue="on"
+        android:defaultValue="off"
         android:key="setting_post_navigation_control"
         android:summaryOff="快速导航栏已关闭"
         android:summaryOn="快速导航栏已打开"
         android:title="帖子快速导航栏"/>
+
+    <CheckBoxPreference
+        android:defaultValue="on"
+        android:key="auto_load_more"
+        android:summaryOff="自动加载页面"
+        android:summaryOn="默认单页加载"
+        android:title="帖子加载设置"/>
 
     <CheckBoxPreference
         android:defaultValue="on"
