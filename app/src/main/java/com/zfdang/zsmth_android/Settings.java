@@ -584,7 +584,7 @@ public class Settings {
     bLaunchBottomNavi = mPreference.getBoolean(LAUNCH_BOTTOM_NAVI, true);
 
     bTopicFwdSelf = mPreference.getBoolean(SET_FWD_ADDRESS,true);
-    bAutoLoadMore = mPreference.getBoolean(SET_FWD_ADDRESS,true);
+    bAutoLoadMore = mPreference.getBoolean(AUTO_LOAD_MORE,true);
     bSetIdCheck = mPreference.getBoolean(SET_ID_CHECK,true);
 
     bOpenTopicAdd =mPreference.getBoolean(OPEN_TOPIC_ADD,false);

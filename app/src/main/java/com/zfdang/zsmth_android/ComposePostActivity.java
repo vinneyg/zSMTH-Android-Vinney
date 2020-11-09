@@ -346,8 +346,8 @@ public class ComposePostActivity extends SMTHBaseActivity {
     // publish post
     String postContent = mContent.getText().toString();
     if (Settings.getInstance().bUseSignature()) {
-      //postContent += "\n" + String.format("#发自zSMTH-v-@%s", Settings.getInstance().getSignature());
-      postContent += "\n" + String.format("#发自zSMTH-v-@%s", Build.BRAND+"-"+Settings.getInstance().getSignature());
+      postContent += "\n" + String.format("#发自zSMTH-v-@%s", Settings.getInstance().getSignature());
+      //postContent += "\n" + String.format("#发自zSMTH-v-@%s", Build.BRAND+"-"+Settings.getInstance().getSignature());
     }
     Observable<AjaxResponse> resp2 = null;
     if (mPostContext.getComposingMode() == ComposePostContext.MODE_NEW_MAIL

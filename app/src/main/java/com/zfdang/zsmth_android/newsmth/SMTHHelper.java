@@ -636,10 +636,17 @@ public class SMTHHelper {
     // <li class="page-select"><a title="当前页">2</a></li>
     String currentPage = null;
     Elements lis = doc.select("li.page-select");
+
     if (lis.size() > 0) {
       Element li = lis.first();
       currentPage = li.text();
       //            Log.d(TAG, "ParseBoardTopicsFromWWW: " + currentPage);
+    }
+    // To handle Error case :  <title>水木社区-错误信息</title>
+    // Log.d("Vinney", Integer.toString(lis.size()));
+    else
+    {
+      return results;
     }
 
     //        <tr class="top">

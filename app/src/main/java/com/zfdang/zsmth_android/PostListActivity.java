@@ -199,7 +199,7 @@ public class PostListActivity extends SMTHBaseActivity
     mRefreshLayout.setEnableScrollContentWhenLoaded(false);
     mRefreshLayout.setEnableOverScrollBounce(false);
     if(!Settings.getInstance().isautoloadmore()) {
-      mRefreshLayout.setEnableRefresh(false);
+      mRefreshLayout.setEnableRefresh(true);
       mRefreshLayout.setEnableLoadMore(false);
     } else {
       mRefreshLayout.setEnableRefresh(true);
@@ -209,7 +209,13 @@ public class PostListActivity extends SMTHBaseActivity
     mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
       @Override public void onRefresh(RefreshLayout refreshLayout) {
         // reload current page
-        reloadPostListWithoutAlert();
+        if(Settings.getInstance().isautoloadmore()) {
+          reloadPostListWithoutAlert();
+        }
+        else {
+          reloadPostListWithoutAlertNew();
+        }
+
       }
     });
     mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
@@ -391,11 +397,16 @@ public class PostListActivity extends SMTHBaseActivity
     }
   }
 
-  public void reloadPostListWithoutAlert() {
+  public void reloadPostListWithoutAlertNew() {
     PostListContent.clear();
     mRecyclerView.getAdapter().notifyDataSetChanged();
-
+    mCurrentPageNo = 1;
     loadPostListByPages();
+  }
+  public void reloadPostListWithoutAlert() {
+      PostListContent.clear();
+      mRecyclerView.getAdapter().notifyDataSetChanged();
+      loadPostListByPages();
   }
 
   public void reloadPostList() {

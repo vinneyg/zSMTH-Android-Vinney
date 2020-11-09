@@ -33,6 +33,8 @@ import io.reactivex.ObservableSource;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import java.util.List;
+
+import io.reactivex.internal.operators.observable.ObservableEmpty;
 import okhttp3.ResponseBody;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -302,6 +304,9 @@ public class BoardTopicActivity extends SMTHBaseActivity
             try {
               String response = responseBody.string();
               List<Topic> topics = SMTHHelper.ParseBoardTopicsFromWWW(response);
+              if(topics.size()==0) {
+                return Observable.empty(); //handle error case
+              }
               return Observable.fromIterable(topics);
             } catch (Exception e) {
               Log.e(TAG, "call: " + Log.getStackTraceString(e));
@@ -337,6 +342,11 @@ public class BoardTopicActivity extends SMTHBaseActivity
 
           @Override public void onComplete() {
             clearLoadingHints();
+            if(TopicListContent.BOARD_TOPICS.size() == 1) {
+                      SMTHApplication.activeUser = null;
+                      Toast.makeText(SMTHApplication.getAppContext(), "请重新登陆！",
+                      Toast.LENGTH_LONG).show();
+            }
           }
         });
   }
