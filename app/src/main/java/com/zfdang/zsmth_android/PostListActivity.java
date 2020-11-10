@@ -56,6 +56,7 @@ import com.zfdang.zsmth_android.models.Post;
 import com.zfdang.zsmth_android.models.PostActionAlertDialogItem;
 import com.zfdang.zsmth_android.models.PostListContent;
 import com.zfdang.zsmth_android.models.Topic;
+import com.zfdang.zsmth_android.models.TopicListContent;
 import com.zfdang.zsmth_android.newsmth.AjaxResponse;
 import com.zfdang.zsmth_android.newsmth.SMTHHelper;
 
@@ -478,6 +479,9 @@ public class PostListActivity extends SMTHBaseActivity
             try {
               String response = responseBody.string();
               List<Post> posts = SMTHHelper.ParsePostListFromWWW(response, mTopic);
+              if(posts.size()==0) {
+                return Observable.empty(); //handle error case
+              }
               if(SMTHApplication.ReadRec == false) {
                 SMTHApplication.ReadPostFirst = posts.get(0);
                 SMTHApplication.ReadRec=true;
@@ -516,6 +520,20 @@ public class PostListActivity extends SMTHBaseActivity
             mPageNo.setText(String.format("%d", mCurrentPageNo));
             mCurrentReadPageNo = mCurrentPageNo;
             clearLoadingHints();
+
+            //Special User OFFLINE case: [] or [Category 第一页:]
+            if(PostListContent.POSTS.size() == 0)
+            {
+              Toast.makeText(SMTHApplication.getAppContext(),"请重新登录-"+ PostListContent.POSTS.size()+"-!",Toast.LENGTH_LONG).show();
+              PostListContent.clear();
+              SMTHApplication.activeUser = null;
+              try {
+                Thread.sleep(1000);
+                onBackPressed();
+              } catch (InterruptedException e) {
+                e.printStackTrace();
+              }
+            }
           }
         });
   }

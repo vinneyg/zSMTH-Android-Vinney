@@ -342,13 +342,24 @@ public class BoardTopicActivity extends SMTHBaseActivity
 
           @Override public void onComplete() {
             clearLoadingHints();
-            if(TopicListContent.BOARD_TOPICS.size() == 1) {
-                      SMTHApplication.activeUser = null;
-                      Toast.makeText(SMTHApplication.getAppContext(), "请重新登陆！",
-                      Toast.LENGTH_LONG).show();
+
+            //Special User OFFLINE case: [] or [Category 第一页:]
+            if(TopicListContent.BOARD_TOPICS.toString().length() == 2 || TopicListContent.BOARD_TOPICS.toString().length() == 15)
+            {
+              Toast.makeText(SMTHApplication.getAppContext(),"请重新登录！",Toast.LENGTH_LONG).show();
+              TopicListContent.clearBoardTopics();
+              SMTHApplication.activeUser = null;
+              try {
+                Thread.sleep(1000);
+                onBackPressed();
+              } catch (InterruptedException e) {
+                e.printStackTrace();
+              }
             }
           }
         });
+
+
   }
 
   @Override public boolean onKeyDown(int keyCode, KeyEvent event) {

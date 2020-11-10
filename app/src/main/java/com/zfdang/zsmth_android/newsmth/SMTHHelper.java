@@ -381,6 +381,10 @@ public class SMTHHelper {
         //                Log.d(TAG, totalPostString);
       }
     }
+    else
+    {
+      return results;
+    }
 
     // find all posts
     Elements tables = doc.select("table.article");
