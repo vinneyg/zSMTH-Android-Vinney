@@ -18,6 +18,8 @@ import android.widget.Toast;
 import com.zfdang.SMTHApplication;
 import com.zfdang.zsmth_android.newsmth.AjaxResponse;
 import com.zfdang.zsmth_android.newsmth.SMTHHelper;
+import com.zfdang.zsmth_android.newsmth.UserStatus;
+
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -52,6 +54,7 @@ public class LoginActivity extends SMTHBaseActivity implements OnClickListener {
 
     mAutoLogin = (CheckBox) findViewById(R.id.auto_login);
     mAutoLogin.setChecked(autologin);
+    mAutoLogin.setOnClickListener(this);
 
     TextView registerLink = (TextView) findViewById(R.id.register_link);
     registerLink.setMovementMethod(LinkMovementMethod.getInstance());
@@ -66,6 +69,12 @@ public class LoginActivity extends SMTHBaseActivity implements OnClickListener {
     ActionBar bar = getSupportActionBar();
     if (bar != null) {
       bar.setDisplayHomeAsUpEnabled(true);
+    }
+ //vinney
+    if(Settings.getInstance().isAutoLogin())
+    {
+      Settings.getInstance().setLastLoginSuccess(false);
+      attemptLoginFromWWW(username, password);
     }
   }
 
@@ -103,6 +112,9 @@ public class LoginActivity extends SMTHBaseActivity implements OnClickListener {
         Settings.getInstance().setLastLoginSuccess(false);
         attemptLoginFromWWW(username, password);
       }
+    }
+    else if (view.getId() == R.id.auto_login) {
+      Settings.getInstance().setAutoLogin(!Settings.getInstance().isAutoLogin());
     }
   }
 

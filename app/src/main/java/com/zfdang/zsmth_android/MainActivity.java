@@ -557,7 +557,7 @@ public class MainActivity extends SMTHBaseActivity
   }
 
   // update header view in navigation header
-  public void UpdateNavigationViewHeader() {
+  private void UpdateNavigationViewHeader() {
     // update optionMenu
     getWindow().invalidatePanelMenu(Window.FEATURE_OPTIONS_PANEL);
 
@@ -734,6 +734,7 @@ public class MainActivity extends SMTHBaseActivity
 
               }
             });
+    Settings.getInstance().setAutoLogin(false);
   }
 
   @SuppressWarnings("StatementWithEmptyBody")

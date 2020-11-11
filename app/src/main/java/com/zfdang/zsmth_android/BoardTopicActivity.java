@@ -3,6 +3,7 @@ package com.zfdang.zsmth_android;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -12,13 +13,18 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
 import com.jude.swipbackhelper.SwipeBackHelper;
 import com.zfdang.SMTHApplication;
+import com.zfdang.zsmth_android.fresco.WrapContentDraweeView;
 import com.zfdang.zsmth_android.helpers.RecyclerViewUtil;
 import com.zfdang.zsmth_android.listeners.EndlessRecyclerOnScrollListener;
 import com.zfdang.zsmth_android.listeners.OnTopicFragmentInteractionListener;
@@ -29,6 +35,8 @@ import com.zfdang.zsmth_android.models.Topic;
 import com.zfdang.zsmth_android.models.TopicListContent;
 import com.zfdang.zsmth_android.newsmth.AjaxResponse;
 import com.zfdang.zsmth_android.newsmth.SMTHHelper;
+import com.zfdang.zsmth_android.newsmth.UserStatus;
+
 import io.reactivex.ObservableSource;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
@@ -89,16 +97,57 @@ public class BoardTopicActivity extends SMTHBaseActivity
       // ideally, we should also check the resultCode
       RefreshBoardTopicFromPageOne();
     }
+    else if (requestCode == MainActivity.LOGIN_ACTIVITY_REQUEST_CODE) {
+      if (resultCode == RESULT_OK) {
+
+        SMTHApplication.activeUser.setId(Settings.getInstance().getUsername());
+        Settings.getInstance().setUserOnline(true);
+        UpdateNavigationViewHeaderNew();
+      }
+
+    }
     super.onActivityResult(requestCode, resultCode, data);
   }
 
   @Override public void onBackPressed() {
     if (isSearchMode) {
       onRefresh();
-    } else {
-      super.onBackPressed();
+    }
+    super.onBackPressed();
+
+   // Log.d("Vinney", SMTHApplication.activeUser.getId());
+
+    if(SMTHApplication.isValidUser()&&!Settings.getInstance().isUserOnline()) {
+      Intent intent = new Intent(BoardTopicActivity.this, LoginActivity.class);
+      startActivityForResult(intent, MainActivity.LOGIN_ACTIVITY_REQUEST_CODE);
     }
   }
+
+  private void UpdateNavigationViewHeaderNew() {
+    getWindow().invalidatePanelMenu(Window.FEATURE_OPTIONS_PANEL);
+    LayoutInflater factory = LayoutInflater.from(BoardTopicActivity.this);
+
+    //View layout = factory.inflate(R.layout.activity_main, null);
+    View layout = factory.inflate(R.layout.nav_header_main, null);
+
+    TextView mUsername = (TextView) layout.findViewById(R.id.nav_user_name);
+    WrapContentDraweeView mAvatar = (WrapContentDraweeView) layout.findViewById(R.id.nav_user_avatar);
+
+    if (SMTHApplication.isValidUser()) {
+      // update user to login user
+      mUsername.setText(SMTHApplication.activeUser.getId());
+      String faceURL = SMTHApplication.activeUser.getFace_url();
+      if (faceURL != null) {
+        mAvatar.setImageFromStringURL(faceURL);
+      }
+    } else {
+      // only user to guest
+      mUsername.setText(getString(R.string.nav_header_click_to_login));
+      mAvatar.setImageResource(R.drawable.ic_person_black_48dp);
+    }
+
+  }
+
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -346,21 +395,24 @@ public class BoardTopicActivity extends SMTHBaseActivity
             //Special User OFFLINE case: [] or [Category 第一页:]
             if(TopicListContent.BOARD_TOPICS.toString().length() == 2 || TopicListContent.BOARD_TOPICS.toString().length() == 15)
             {
-              Toast.makeText(SMTHApplication.getAppContext(),"请重新登录！",Toast.LENGTH_LONG).show();
+              //Toast.makeText(SMTHApplication.getAppContext(),"请重新登录！",Toast.LENGTH_SHORT).show();
               TopicListContent.clearBoardTopics();
-              SMTHApplication.activeUser = null;
+             // SMTHApplication.activeUser = null;
+              Settings.getInstance().setUserOnline(false); //User Offline
               try {
-                Thread.sleep(1000);
+                Thread.sleep(1500);
                 onBackPressed();
               } catch (InterruptedException e) {
                 e.printStackTrace();
               }
+
             }
           }
         });
 
 
   }
+
 
   @Override public boolean onKeyDown(int keyCode, KeyEvent event) {
     if (Settings.getInstance().isVolumeKeyScroll() && (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)) {
