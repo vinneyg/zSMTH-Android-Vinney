@@ -341,14 +341,21 @@ public class PostListActivity extends SMTHBaseActivity
             int totalItemCount = manager.getItemCount();
 
             //int firstVisibleItem = manager.findFirstVisibleItemPosition();
+            Log.d("Vinney",Integer.toString(lastVisiblePos));
+            Log.d("Vinney",Integer.toString(totalItemCount));
+            Log.d("Vinney",Integer.toString(isSlidingToLast?1:0));
+            Log.d("Vinney",Integer.toString(mCurrentPageNo));
+            Log.d("Vinney",Integer.toString(mTopic.getTotalPageNo()));
 
 
             // reach bottom
             if (lastVisiblePos == (totalItemCount - 1) && isSlidingToLast && (mCurrentPageNo < mTopic.getTotalPageNo())) {
               //Toast.makeText(getApplicationContext(), "加载更多", Toast.LENGTH_SHORT).show();
               //goToNextPage();
+              Log.d("Vinney1",Integer.toString(lastVisiblePos));
               LoadMoreItems();
             } else {
+              Log.d("Vinney2",Integer.toString(lastVisiblePos));
               TextView mIndexView = (TextView) (manager.findViewByPosition(lastVisiblePos)).findViewById(R.id.post_index);
               String temp = mIndexView.getText().toString();
 
@@ -365,8 +372,9 @@ public class PostListActivity extends SMTHBaseActivity
               mTitle.setText(title);
               mPageNo.setText(String.format("%d", mCurrentPageNo));
               mCurrentReadPageNo = mCurrentPageNo;
-              recyclerView.getAdapter().notifyDataSetChanged();
-
+              //recyclerView.getAdapter().notifyDataSetChanged();
+             // recyclerView.getAdapter().notifyItemRangeChanged(1,1,"x");
+              recyclerView.getAdapter().notifyItemRangeChanged(1,1);
             }
           }
         }
