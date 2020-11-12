@@ -442,8 +442,12 @@ public class PostListActivity extends SMTHBaseActivity
   public void reloadPostListWithoutAlertNew() {
     PostListContent.clear();
     mRecyclerView.getAdapter().notifyDataSetChanged();
-    mCurrentPageNo = 1;
-    loadPostListByPages();
+    if(mCurrentPageNo != 1) {
+      mCurrentPageNo = mCurrentPageNo-1;
+      loadPostListByPages();
+    }
+    else
+      loadPostListByPages();
   }
   public void reloadPostListWithoutAlert() {
       PostListContent.clear();
