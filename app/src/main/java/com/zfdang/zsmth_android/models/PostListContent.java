@@ -11,7 +11,6 @@ import java.util.Map;
 public class PostListContent {
 
   public static final List<Post> POSTS = new ArrayList<Post>();
-
   public static final Map<String, Post> POST_MAP = new HashMap<String, Post>();
 
   public static void addItem(Post item) {
@@ -23,4 +22,10 @@ public class PostListContent {
     POSTS.clear();
     POST_MAP.clear();
   }
+
+  public static void InsertItem(int index,Post item) {
+    POSTS.add(index,item);
+    POST_MAP.put(item.getPostID(), item);
+  }
+
 }

@@ -78,8 +78,10 @@ import io.reactivex.schedulers.Schedulers;
 import java.io.File;
 //import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.zip.Inflater;
 //import java.util.Stack;
 
@@ -108,6 +110,8 @@ public class PostListActivity extends SMTHBaseActivity
   private static Topic mTopic = null;
   private static int lastOffset =0;
   private static int lastPosition =0;
+
+  static private final int POST_PER_PAGE = 10;
 
   static {
     ClassicsHeader.REFRESH_HEADER_PULLDOWN = "下拉可以刷新";
@@ -251,16 +255,21 @@ public class PostListActivity extends SMTHBaseActivity
         if(Settings.getInstance().isautoloadmore()) {
           reloadPostListWithoutAlert();
         }
-        else {
-          reloadPostListWithoutAlertNew();
+        else { //Waterfall mode  insert item
+          InsertPostListWithoutAlert();
         }
-
       }
     });
     mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
       @Override public void onLoadMore(RefreshLayout refreshLayout) {
         // load next page if available
-        goToNextPage();
+        if(Settings.getInstance().isautoloadmore()) {
+          goToNextPage();
+        }
+        else {
+          //goToNextPage();
+          reloadPostListWithoutAlertNew();
+        }
       }
     });
 
@@ -292,26 +301,6 @@ public class PostListActivity extends SMTHBaseActivity
       findViewById(R.id.post_list_last_page).setOnClickListener(this);
       findViewById(R.id.post_list_go_page).setOnClickListener(this);
 
-      /*
-    if(!Settings.getInstance().isautoloadmore()) {
-       findViewById(R.id.post_list_first_page).setEnabled(false);
-       findViewById(R.id.post_list_pre_page).setEnabled(false);
-       findViewById(R.id.post_list_next_page).setEnabled(false);
-       findViewById(R.id.post_list_last_page).setEnabled(false);
-       findViewById(R.id.post_list_go_page).setEnabled(false);
-       findViewById(R.id.post_list_page_no).setEnabled(false);
-     }
-    else
-    {
-      findViewById(R.id.post_list_first_page).setEnabled(true);
-      findViewById(R.id.post_list_pre_page).setEnabled(true);
-      findViewById(R.id.post_list_next_page).setEnabled(true);
-      findViewById(R.id.post_list_last_page).setEnabled(true);
-      findViewById(R.id.post_list_go_page).setEnabled(true);
-      findViewById(R.id.post_list_page_no).setEnabled(true);
-    }
-    */
-
 
     LinearLayout navLayout = findViewById(R.id.post_list_action_layout);
     if (Settings.getInstance().hasPostNavBar()) {
@@ -341,24 +330,19 @@ public class PostListActivity extends SMTHBaseActivity
             int totalItemCount = manager.getItemCount();
 
             //int firstVisibleItem = manager.findFirstVisibleItemPosition();
-            Log.d("Vinney",Integer.toString(lastVisiblePos));
-            Log.d("Vinney",Integer.toString(totalItemCount));
-            Log.d("Vinney",Integer.toString(isSlidingToLast?1:0));
-            Log.d("Vinney",Integer.toString(mCurrentPageNo));
-            Log.d("Vinney",Integer.toString(mTopic.getTotalPageNo()));
-
-
             // reach bottom
             if (lastVisiblePos == (totalItemCount - 1) && isSlidingToLast && (mCurrentPageNo < mTopic.getTotalPageNo())) {
               //Toast.makeText(getApplicationContext(), "加载更多", Toast.LENGTH_SHORT).show();
               //goToNextPage();
-              Log.d("Vinney1",Integer.toString(lastVisiblePos));
               LoadMoreItems();
-            } else {
-              Log.d("Vinney2",Integer.toString(lastVisiblePos));
+            }
+            else if(lastVisiblePos == (totalItemCount - 1) && isSlidingToLast && (mCurrentPageNo ==mTopic.getTotalPageNo())) {
+              clearLoadingHints();
+            }
+            else if((!isSlidingToLast)||  (isSlidingToLast&&(lastVisiblePos < (totalItemCount - 1)))) {
               TextView mIndexView = (TextView) (manager.findViewByPosition(lastVisiblePos)).findViewById(R.id.post_index);
               String temp = mIndexView.getText().toString();
-
+               int index =0;
               if (temp.equals("楼主")) {
                 mIndex = 0;
               } else {
@@ -366,9 +350,9 @@ public class PostListActivity extends SMTHBaseActivity
                 temp = newTemp.replaceAll("楼", "");
                 mIndex = Integer.parseInt(temp);
               }
-              mCurrentPageNo = mIndex / 10 + 1;
-              mTotalPageNo = mTopic.getTotalPageNo();
-              String title = String.format("[%d/%d] %s", mCurrentPageNo, mTopic.getTotalPageNo(), mTopic.getTitle());
+              mCurrentPageNo = mIndex / POST_PER_PAGE + 1;
+             //mTotalPageNo = mTopic.getTotalPageNo();
+              String title = String.format("[%d/%d] %s", mCurrentPageNo, mTotalPageNo, mTopic.getTitle());
               mTitle.setText(title);
               mPageNo.setText(String.format("%d", mCurrentPageNo));
               mCurrentReadPageNo = mCurrentPageNo;
@@ -447,16 +431,50 @@ public class PostListActivity extends SMTHBaseActivity
     }
   }
 
-  public void reloadPostListWithoutAlertNew() {
-    PostListContent.clear();
-    mRecyclerView.getAdapter().notifyDataSetChanged();
+  public void InsertPostListWithoutAlert() {
+    //PostListContent.clear();
+    //mRecyclerView.getAdapter().notifyDataSetChanged();
     if(mCurrentPageNo != 1) {
       mCurrentPageNo = mCurrentPageNo-1;
-      loadPostListByPages();
+      loadPostListByPagesNew();
+    }
+    else {
+      //  loadPostListByPages();
+      clearLoadingHints();
+      Toast.makeText(PostListActivity.this, "已在首页", Toast.LENGTH_LONG).show();
+    }
+  }
+
+  public void reloadPostListWithoutAlertNew() {
+    //PostListContent.clear();
+    //mRecyclerView.getAdapter().notifyDataSetChanged();
+    //Two scenarios here:
+    //Case 1: if already on last item then check next page
+    //case 2: if not yet on the last item of this page. then check this page.
+    String temp = PostListContent.POSTS.get(PostListContent.POSTS.size()-1).getPosition();
+
+    int Index =0;
+    if (temp.equals("楼主")) {
+      Index = 0;
+    } else {
+      String newTemp = temp.replaceAll("第", "");
+      temp = newTemp.replaceAll("楼", "");
+      Index = Integer.parseInt(temp);
+    }
+    int tmpIndex = Index % POST_PER_PAGE;
+
+    if (mCurrentPageNo == mTopic.getTotalPageNo() && tmpIndex<9 ) {
+      loadnextpost();
+    } else if( mCurrentPageNo == mTopic.getTotalPageNo() && tmpIndex==9)  {
+      mCurrentPageNo += 1;
+      loadnextpost();
     }
     else
-      loadPostListByPages();
+    {
+      clearLoadingHints();
+    }
   }
+
   public void reloadPostListWithoutAlert() {
       PostListContent.clear();
       mRecyclerView.getAdapter().notifyDataSetChanged();
@@ -469,8 +487,7 @@ public class PostListActivity extends SMTHBaseActivity
     reloadPostListWithoutAlert();
   }
 
-
-  public void AddLoadPostList() {
+  public void loadnextpost() {
     final SMTHHelper helper = SMTHHelper.getInstance();
 
     helper.wService.getPostListByPage(mTopic.getTopicURL(), mTopic.getTopicID(), mCurrentPageNo, mFilterUser)
@@ -478,7 +495,11 @@ public class PostListActivity extends SMTHBaseActivity
               @Override public Observable<Post> apply(@NonNull ResponseBody responseBody) throws Exception {
                 try {
                   String response = responseBody.string();
+
                   List<Post> posts = SMTHHelper.ParsePostListFromWWW(response, mTopic);
+                  if(posts.size()==0) {
+                    return Observable.empty(); //handle error case
+                  }
                   if(SMTHApplication.ReadRec == false) {
                     SMTHApplication.ReadPostFirst = posts.get(0);
                     SMTHApplication.ReadRec=true;
@@ -500,10 +521,33 @@ public class PostListActivity extends SMTHBaseActivity
               }
 
               @Override public void onNext(@NonNull Post post) {
+
+                String temp = PostListContent.POSTS.get(PostListContent.POSTS.size()-1).getPosition();
+                int Index =0;
+                if (temp.equals("楼主")) {
+                  Index = 0;
+                } else {
+                  String newTemp = temp.replaceAll("第", "");
+                  temp = newTemp.replaceAll("楼", "");
+                  Index = Integer.parseInt(temp);
+                }
+
                 // Log.d(TAG, post.toString());
+                 temp = post.getPosition();
+                int mIndex =0;
+                if (temp.equals("楼主")) {
+                  mIndex = 0;
+                } else {
+                  String newTemp = temp.replaceAll("第", "");
+                  temp = newTemp.replaceAll("楼", "");
+                  mIndex = Integer.parseInt(temp);
+                }
+                if(mIndex > Index)
+                {
                 PostListContent.addItem(post);
-                mRecyclerView.getAdapter().notifyItemInserted(PostListContent.POSTS.size() - 1);
-               // mRecyclerView.getAdapter().notifyDataSetChanged();
+               // mRecyclerView.getAdapter().notifyItemInserted(PostListContent.POSTS.size()-1);
+                  mRecyclerView.getAdapter().notifyItemInserted(mIndex);
+              }
               }
 
               @Override public void onError(@NonNull Throwable e) {
@@ -512,12 +556,43 @@ public class PostListActivity extends SMTHBaseActivity
               }
 
               @Override public void onComplete() {
-                mTotalPageNo = mTopic.getTotalPageNo();
-                String title = String.format("[%d/%d] %s", mCurrentPageNo, mTopic.getTotalPageNo(), mTopic.getTitle());
-                mTitle.setText(title);
-                mPageNo.setText(String.format("%d", mCurrentPageNo));
-                mCurrentReadPageNo = mCurrentPageNo;
+                String temp = PostListContent.POSTS.get(PostListContent.POSTS.size()-1).getPosition();
+                int Index =0;
+                if (temp.equals("楼主")) {
+                  Index = 0;
+                } else {
+                  String newTemp = temp.replaceAll("第", "");
+                  temp = newTemp.replaceAll("楼", "");
+                  Index = Integer.parseInt(temp);
+                }
+                if(Index == mTotalPageNo*POST_PER_PAGE-1) {
+                  mCurrentPageNo -= 1;
+                  Toast.makeText(SMTHApplication.getAppContext(),"没有新数据",Toast.LENGTH_SHORT).show();
+                }
+                else if(Index >= mTotalPageNo*POST_PER_PAGE) {
+                  mTotalPageNo += 1;
+                  mTopic.setTotalPageNo(mTotalPageNo);
+                  Toast.makeText(SMTHApplication.getAppContext(),"没有新数据",Toast.LENGTH_SHORT).show();
+                }
+                  String title = String.format("[%d/%d] %s", mCurrentPageNo, mTotalPageNo, mTopic.getTitle());
+                  mTitle.setText(title);
+                  mPageNo.setText(String.format("%d", mCurrentPageNo));
+                  mCurrentReadPageNo = mCurrentPageNo;
+                 //mRecyclerView.getAdapter().notifyItemInserted(PostListContent.POSTS.size()-1);
                 clearLoadingHints();
+
+                  //Special User OFFLINE case: [] or [Category 第一页:]
+                  if (PostListContent.POSTS.size() == 0) {
+                    //Toast.makeText(SMTHApplication.getAppContext(),"请重新登录-"+ PostListContent.POSTS.size()+"-!",Toast.LENGTH_LONG).show();
+                    PostListContent.clear();
+                    Settings.getInstance().setUserOnline(false); //User Offline
+                    try {
+                      Thread.sleep(1000);
+                      onBackPressed();
+                    } catch (InterruptedException e) {
+                      e.printStackTrace();
+                    }
+                  }
               }
             });
   }
@@ -591,6 +666,88 @@ public class PostListActivity extends SMTHBaseActivity
         });
   }
 
+  public void loadPostListByPagesNew() {
+    final SMTHHelper helper = SMTHHelper.getInstance();
+
+    helper.wService.getPostListByPage(mTopic.getTopicURL(), mTopic.getTopicID(), mCurrentPageNo, mFilterUser)
+            .flatMap(new Function<ResponseBody, Observable<Post>>() {
+              @Override public Observable<Post> apply(@NonNull ResponseBody responseBody) throws Exception {
+                try {
+                  String response = responseBody.string();
+                  List<Post> posts = SMTHHelper.ParsePostListFromWWW(response, mTopic);
+                  if(posts.size()==0) {
+                    return Observable.empty(); //handle error case
+                  }
+                  if(SMTHApplication.ReadRec == false) {
+                    SMTHApplication.ReadPostFirst = posts.get(0);
+                    SMTHApplication.ReadRec=true;
+                  }
+                  return Observable.fromIterable(posts);
+                } catch (Exception e) {
+                  SMTHApplication.ReadRec=false;
+                  SMTHApplication.ReadPostFirst=null;
+                  Log.e(TAG, Log.getStackTraceString(e));
+                }
+                return null;
+              }
+            })
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(new Observer<Post>() {
+              @Override public void onSubscribe(@NonNull Disposable disposable) {
+
+              }
+
+              @Override public void onNext(@NonNull Post post) {
+                // Log.d(TAG, post.toString());
+
+               //
+
+                String temp = post.getPosition();
+               // Log.d("Vinney",temp);
+                int Index =0;
+                if (temp.equals("楼主")) {
+                  Index = 0;
+                } else {
+                  String newTemp = temp.replaceAll("第", "");
+                  temp = newTemp.replaceAll("楼", "");
+                  Index = Integer.parseInt(temp);
+                }
+                Index = Index % POST_PER_PAGE;
+                //PostListContent.addItem(Index,post);
+                PostListContent.InsertItem(Index,post);
+                mRecyclerView.getAdapter().notifyItemInserted(Index);
+              }
+
+              @Override public void onError(@NonNull Throwable e) {
+                clearLoadingHints();
+                Toast.makeText(SMTHApplication.getAppContext(), "加载失败！\n" + e.toString(), Toast.LENGTH_LONG).show();
+              }
+
+              @Override public void onComplete() {
+                mTotalPageNo = mTopic.getTotalPageNo();
+                String title = String.format("[%d/%d] %s", mCurrentPageNo, mTopic.getTotalPageNo(), mTopic.getTitle());
+                mTitle.setText(title);
+                mPageNo.setText(String.format("%d", mCurrentPageNo));
+                mCurrentReadPageNo = mCurrentPageNo;
+                clearLoadingHints();
+
+                //Special User OFFLINE case: [] or [Category 第一页:]
+                if(PostListContent.POSTS.size() == 0)
+                {
+                  //Toast.makeText(SMTHApplication.getAppContext(),"请重新登录-"+ PostListContent.POSTS.size()+"-!",Toast.LENGTH_LONG).show();
+                  PostListContent.clear();
+                  Settings.getInstance().setUserOnline(false); //User Offline
+                  try {
+                    Thread.sleep(1000);
+                    onBackPressed();
+                  } catch (InterruptedException e) {
+                    e.printStackTrace();
+                  }
+                }
+              }
+            });
+  }
 
   @Override public boolean onCreateOptionsMenu(Menu menu) {
     // http://stackoverflow.com/questions/10692755/how-do-i-hide-a-menu-item-in-the-actionbar
@@ -774,7 +931,7 @@ public class PostListActivity extends SMTHBaseActivity
     else{
       if (mCurrentPageNo == mTopic.getTotalPageNo()) {
         reloadPostList();
-      } else {
+      } else if(mCurrentPageNo < mTopic.getTotalPageNo()) {
         mCurrentPageNo += 1;
         reloadPostList();
       }
@@ -789,8 +946,10 @@ public class PostListActivity extends SMTHBaseActivity
       clearLoadingHints();
     } else {
       synchronized (this) {
+
         mCurrentPageNo += 1;
         //reloadPostList();
+       // showProgress("加载文章中, 请稍候...");
         loadPostListByPages();
       }
     }

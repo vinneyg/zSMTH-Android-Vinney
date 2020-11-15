@@ -154,7 +154,7 @@ public class MainActivity extends SMTHBaseActivity
     }
 
     mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-    setDrawerLeftEdgeSize (this, mDrawer, (float)0.2) ;//To support Mail Deletion
+    setDrawerLeftEdgeSize (this, mDrawer, (float)0.15) ;//To support Mail Deletion
 
     mDrawer.addDrawerListener(new ActionBarDrawerToggle(this,mDrawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
       @Override

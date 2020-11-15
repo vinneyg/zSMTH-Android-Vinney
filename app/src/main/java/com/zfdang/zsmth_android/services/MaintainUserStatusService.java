@@ -59,7 +59,7 @@ public class MaintainUserStatusService extends IntentService {
 
     AlarmManager alarm = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
     // first triggered in 20 second, repeated every 1 minute
-    alarm.setRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 20000, AlarmManager.INTERVAL_FIFTEEN_MINUTES / 15,
+    alarm.setRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 20000, AlarmManager.INTERVAL_FIFTEEN_MINUTES / 5,
         pIntent);
   }
 
@@ -86,7 +86,6 @@ public class MaintainUserStatusService extends IntentService {
     if (userStatus.hasNewReply()  && settings.isNotificationReply()) {
       message += SMTHApplication.NOTIFICATION_NEW_REPLY + "  ";
     }
-  //  Log.d("Vinney", message);
     return message;
   }
 

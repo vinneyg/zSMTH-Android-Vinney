@@ -71,6 +71,10 @@ public class Topic implements Parcelable {
     return totalPageNo;
   }
 
+  public int setTotalPageNo( int page) {
+    return this.totalPageNo = page;
+  }
+
   public String getTotalPostNoAsStr() {
     if (this.totalPostNo == 0) return "";
 

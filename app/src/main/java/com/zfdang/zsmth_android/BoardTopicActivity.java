@@ -115,8 +115,6 @@ public class BoardTopicActivity extends SMTHBaseActivity
     }
     super.onBackPressed();
 
-   // Log.d("Vinney", SMTHApplication.activeUser.getId());
-
     if(SMTHApplication.isValidUser()&&!Settings.getInstance().isUserOnline()) {
       Intent intent = new Intent(BoardTopicActivity.this, LoginActivity.class);
       startActivityForResult(intent, MainActivity.LOGIN_ACTIVITY_REQUEST_CODE);
@@ -398,9 +396,9 @@ public class BoardTopicActivity extends SMTHBaseActivity
               //Toast.makeText(SMTHApplication.getAppContext(),"请重新登录！",Toast.LENGTH_SHORT).show();
               TopicListContent.clearBoardTopics();
              // SMTHApplication.activeUser = null;
-              Settings.getInstance().setUserOnline(false); //User Offline
               try {
                 Thread.sleep(1500);
+                Settings.getInstance().setUserOnline(false); //User Offline
                 onBackPressed();
               } catch (InterruptedException e) {
                 e.printStackTrace();

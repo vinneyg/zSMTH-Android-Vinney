@@ -64,7 +64,7 @@
         android:title="帖子快速导航栏"/>
 
     <CheckBoxPreference
-        android:defaultValue="on"
+        android:defaultValue="off"
         android:key="auto_load_more"
         android:summaryOff="自动加载页面"
         android:summaryOn="默认单页加载"

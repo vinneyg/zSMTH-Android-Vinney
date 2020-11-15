@@ -1,5 +1,6 @@
 package com.zfdang.zsmth_android.fresco;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -65,6 +66,7 @@ public class LoadingProgressDrawable extends Drawable {
     mPaint.setColorFilter(cf);
   }
 
+  @SuppressLint("WrongConstant")
   @Override public int getOpacity() {
     return Color.TRANSPARENT;
   }
