@@ -358,7 +358,7 @@ public class PostListActivity extends SMTHBaseActivity
               mCurrentReadPageNo = mCurrentPageNo;
               //recyclerView.getAdapter().notifyDataSetChanged();
              // recyclerView.getAdapter().notifyItemRangeChanged(1,1,"x");
-              recyclerView.getAdapter().notifyItemRangeChanged(1,1);
+              //recyclerView.getAdapter().notifyItemRangeChanged(0,1);
             }
           }
         }
@@ -585,9 +585,9 @@ public class PostListActivity extends SMTHBaseActivity
                   if (PostListContent.POSTS.size() == 0) {
                     //Toast.makeText(SMTHApplication.getAppContext(),"请重新登录-"+ PostListContent.POSTS.size()+"-!",Toast.LENGTH_LONG).show();
                     PostListContent.clear();
-                    Settings.getInstance().setUserOnline(false); //User Offline
                     try {
                       Thread.sleep(1000);
+                      Settings.getInstance().setUserOnline(false); //User Offline
                       onBackPressed();
                     } catch (InterruptedException e) {
                       e.printStackTrace();
@@ -654,9 +654,9 @@ public class PostListActivity extends SMTHBaseActivity
             {
               //Toast.makeText(SMTHApplication.getAppContext(),"请重新登录-"+ PostListContent.POSTS.size()+"-!",Toast.LENGTH_LONG).show();
               PostListContent.clear();
-              Settings.getInstance().setUserOnline(false); //User Offline
               try {
                 Thread.sleep(1000);
+                Settings.getInstance().setUserOnline(false); //User Offline
                 onBackPressed();
               } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -737,9 +737,10 @@ public class PostListActivity extends SMTHBaseActivity
                 {
                   //Toast.makeText(SMTHApplication.getAppContext(),"请重新登录-"+ PostListContent.POSTS.size()+"-!",Toast.LENGTH_LONG).show();
                   PostListContent.clear();
-                  Settings.getInstance().setUserOnline(false); //User Offline
+
                   try {
                     Thread.sleep(1000);
+                    Settings.getInstance().setUserOnline(false); //User Offline
                     onBackPressed();
                   } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -1244,8 +1245,8 @@ public class PostListActivity extends SMTHBaseActivity
 
       @Override public void onComplete() {
         //Vinney：修改删除回复后导致页面减少显示不正常。删除后，退回board再进入文章显示第一页
-      mCurrentPageNo = 1;
-      mCurrentReadPageNo =1;
+          mCurrentPageNo = 1;
+          mCurrentReadPageNo = 1;
       }
     });
   }

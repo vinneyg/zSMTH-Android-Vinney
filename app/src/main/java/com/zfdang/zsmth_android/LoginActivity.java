@@ -160,7 +160,7 @@ public class LoginActivity extends SMTHBaseActivity implements OnClickListener {
                 finish();
                 break;
               default:
-                Toast.makeText(SMTHApplication.getAppContext(), ajaxResponse.toString(), Toast.LENGTH_LONG).show();
+                  Toast.makeText(SMTHApplication.getAppContext(), ajaxResponse.toString(), Toast.LENGTH_LONG).show();
                 break;
             }
           }

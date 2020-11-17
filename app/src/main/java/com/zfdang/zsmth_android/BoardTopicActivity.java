@@ -104,7 +104,6 @@ public class BoardTopicActivity extends SMTHBaseActivity
         Settings.getInstance().setUserOnline(true);
         UpdateNavigationViewHeaderNew();
       }
-
     }
     super.onActivityResult(requestCode, resultCode, data);
   }
