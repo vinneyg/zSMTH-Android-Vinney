@@ -35,7 +35,7 @@ public class Post {
   private Date date;
   private String position;
 
-  private List<String> likes;
+  private List<Like> likes;
   private List<Attachment> attachFiles;
   private List<Attachment> attachVideoFiles;
   private String htmlContent; // likes are not included
@@ -157,7 +157,6 @@ public class Post {
         Elements nodes = likeNode.select("div.like_name");
         if (nodes.size() == 1) {
             Element node = nodes.first();
-            likes.add(node.text());
         }
 
         // <li><span class="like_score_0">[&nbsp;&nbsp;]</span><span class="like_user">fly891198061:</span>
@@ -165,8 +164,12 @@ public class Post {
         // <span class="like_time">(2016-03-27 15:04)</span></li>
         nodes = likeNode.select("li");
         for (Element n : nodes) {
-            likes.add(n.text());
+          Elements spans = n.select("span");
+          if(spans.size() == 4) {
+            Like like = new Like(spans.get(0).text(), spans.get(1).text(), spans.get(2).text(), spans.get(3).text());
+            likes.add(like);
         }
+    }
     }
 
   // parse post pure content, then merge them to htmlCompleteContent, then split it into htmlSegments
@@ -186,6 +189,9 @@ public class Post {
     // <a target="_blank" href="//static.mysmth.net/nForum/att/FamilyLife/1763462541/17096">
     // <img border="0" title="单击此查看原图" src="//static.mysmth.net/nForum/att/FamilyLife/1763462541/17096/large" class="resizeable" /></a>
   
+    // other attachment
+    // 		<a href="//static.mysmth.net/nForum/att/Test/943486/245" target="_blank">《三国演义》_(果麦经典)_罗贯中.epub</a>
+
     Elements as = content.select("a[href]");
     for (Element a : as) {
       // process each a|href
@@ -213,8 +219,7 @@ public class Post {
           this.addAttachFile(attach);
 
           a.html(ATTACHMENT_MARK + " ");
-        }
-        if (attachName != null && attachName.endsWith(".mp4")) {
+        } else if (attachName != null && attachName.endsWith(".mp4")) {
           // this is a video attachment, show it as text with link
 
           String origVideoSrc = a.attr("href");
@@ -222,6 +227,14 @@ public class Post {
         //  Log.d("Vinney-Attach",attachName +"$"+SMTHHelper.preprocessSMTHImageURL(origVideoSrc));
           Attachment attach = new Attachment(origVideoSrc);
           this.addAttachVideoFile(attach);
+        } else {
+          // other attachment, add link for downloading
+          String downloadURL = a.attr("href");
+          downloadURL = SMTHHelper.preprocessSMTHImageURL(downloadURL);
+          if (downloadURL.contains("/nForum/att/")) {
+            a.append("<br>" + downloadURL);
+
+          }
         }
       }
     }
@@ -239,11 +252,17 @@ public class Post {
 
       if (likes != null && likes.size() > 0) {
           StringBuilder wordList = new StringBuilder();
-          wordList.append("<br/><small><cite>");
-          for (String word : likes) {
-              wordList.append(word).append("<br/>");
-          }
-          wordList.append("</cite></small>");
+        wordList.append("有" + likes.size() + "位用户评价了这篇文章:");
+        wordList.append("<br/>");
+        wordList.append("<small>");
+        for (Like like : likes) {
+          wordList.append("[<font face='monospace'>" + like.score + "</font>]");
+          wordList.append(" " + like.msg);
+          wordList.append(" ( " + like.user);
+          wordList.append(" @ " + like.time);
+          wordList.append(" )<br/>");
+        }
+        wordList.append("</small>");
           htmlContentAndLikes += new String(wordList);
       }
   }

@@ -1,15 +1,15 @@
 package com.zfdang.zsmth_android;
 
-import android.content.Context;
 import android.content.Intent;
+
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.appcompat.app.ActionBar;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -28,21 +28,19 @@ import com.zfdang.zsmth_android.fresco.WrapContentDraweeView;
 import com.zfdang.zsmth_android.helpers.RecyclerViewUtil;
 import com.zfdang.zsmth_android.listeners.EndlessRecyclerOnScrollListener;
 import com.zfdang.zsmth_android.listeners.OnTopicFragmentInteractionListener;
-import com.zfdang.zsmth_android.listeners.ShakeListener;
 import com.zfdang.zsmth_android.models.Board;
 import com.zfdang.zsmth_android.models.ComposePostContext;
 import com.zfdang.zsmth_android.models.Topic;
 import com.zfdang.zsmth_android.models.TopicListContent;
 import com.zfdang.zsmth_android.newsmth.AjaxResponse;
 import com.zfdang.zsmth_android.newsmth.SMTHHelper;
-import com.zfdang.zsmth_android.newsmth.UserStatus;
 
 import io.reactivex.ObservableSource;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
+
 import java.util.List;
 
-import io.reactivex.internal.operators.observable.ObservableEmpty;
 import okhttp3.ResponseBody;
 import io.reactivex.Observable;
 import io.reactivex.Observer;

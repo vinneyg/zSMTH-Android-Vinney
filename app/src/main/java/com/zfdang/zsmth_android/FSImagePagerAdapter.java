@@ -2,16 +2,19 @@ package com.zfdang.zsmth_android;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.v4.view.PagerAdapter;
+import androidx.viewpager.widget.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import com.github.chrisbanes.photoview.OnOutsidePhotoTapListener;
+import com.github.chrisbanes.photoview.OnPhotoTapListener;
+import com.github.chrisbanes.photoview.PhotoViewAttacher;
 import com.zfdang.SMTHApplication;
 import com.zfdang.zsmth_android.fresco.MyPhotoView;
 import java.util.List;
 import java.util.Map;
-import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**
  * Created by zfdang on 2016-3-31.
@@ -54,16 +57,20 @@ public class FSImagePagerAdapter extends PagerAdapter {
     //                return false;
     //            }
     //        });
-    image.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
-      @Override public void onPhotoTap(View view, float x, float y) {
-        if (mListener != null && mListener instanceof PhotoViewAttacher.OnPhotoTapListener) {
-          ((PhotoViewAttacher.OnPhotoTapListener) mListener).onPhotoTap(view, x, y);
+    image.setOnPhotoTapListener(new OnPhotoTapListener() {
+      @Override
+      public void onPhotoTap(ImageView view, float x, float y) {
+        if (mListener != null && mListener instanceof OnPhotoTapListener) {
+          ((OnPhotoTapListener) mListener).onPhotoTap(view, x, y);
         }
       }
+    });
 
-      @Override public void onOutsidePhotoTap() {
-        if (mListener != null && mListener instanceof PhotoViewAttacher.OnPhotoTapListener) {
-          ((PhotoViewAttacher.OnPhotoTapListener) mListener).onOutsidePhotoTap();
+    image.setOnOutsidePhotoTapListener(new OnOutsidePhotoTapListener() {
+      @Override
+      public void onOutsidePhotoTap(ImageView imageView) {
+        if (mListener != null && mListener instanceof OnOutsidePhotoTapListener) {
+          ((OnOutsidePhotoTapListener) mListener).onOutsidePhotoTap(imageView);
         }
       }
     });

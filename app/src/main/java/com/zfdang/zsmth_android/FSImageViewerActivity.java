@@ -1,34 +1,34 @@
 package com.zfdang.zsmth_android;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.github.chrisbanes.photoview.OnOutsidePhotoTapListener;
+import com.github.chrisbanes.photoview.OnPhotoTapListener;
+import com.github.chrisbanes.photoview.PhotoViewAttacher;
 import com.jude.swipbackhelper.SwipeBackHelper;
 import com.zfdang.SMTHApplication;
-import com.zfdang.multiple_images_selector.ImagesSelectorActivity;
 import com.zfdang.zsmth_android.fresco.FrescoUtils;
 import com.zfdang.zsmth_android.fresco.MyPhotoView;
-import com.zfdang.zsmth_android.helpers.ActivityUtils;
 import com.zfdang.zsmth_android.helpers.FileSizeUtil;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -39,13 +39,11 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import me.relex.circleindicator.CircleIndicator;
-import uk.co.senab.photoview.PhotoViewAttacher;
+import com.github.chrisbanes.photoview.OnPhotoTapListener;
 
-public class FSImageViewerActivity extends AppCompatActivity implements PhotoViewAttacher.OnPhotoTapListener {
+public class FSImageViewerActivity extends AppCompatActivity implements OnPhotoTapListener, OnOutsidePhotoTapListener {
 
   private static final String TAG = "FullViewer";
-
-  private static final int MY_PERMISSIONS_REQUEST_STORAGE_CODE = 299;
 
   private HackyViewPager mViewPager;
 
@@ -61,15 +59,19 @@ public class FSImageViewerActivity extends AppCompatActivity implements PhotoVie
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    setContentView(R.layout.activity_fs_image_viewer);
-    ActionBar bar = getSupportActionBar();
-    if (bar != null) {
-      bar.hide();
+    // 延伸显示区域到刘海
+    Window window = this.getWindow();
+    WindowManager.LayoutParams lp = this.getWindow().getAttributes();
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+      lp.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
     }
+    window.setAttributes(lp);
+
+    setContentView(R.layout.activity_fs_image_viewer);
 
     mViewPager = (HackyViewPager) findViewById(R.id.fullscreen_image_pager);
 
-    // find paramenters from parent
+    // find parameters from parent
     mURLs = getIntent().getStringArrayListExtra(SMTHApplication.ATTACHMENT_URLS);
     assert mURLs != null;
     int pos = getIntent().getIntExtra(SMTHApplication.ATTACHMENT_CURRENT_POS, 0);
@@ -107,89 +109,61 @@ public class FSImageViewerActivity extends AppCompatActivity implements PhotoVie
     btSave = (ImageView) findViewById(R.id.fullscreen_button_save);
     btSave.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
+        int position = mViewPager.getCurrentItem();
+        final String imagePath = mURLs.get(position);
 
-        if (ContextCompat.checkSelfPermission(FSImageViewerActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-          ActivityCompat.requestPermissions(FSImageViewerActivity.this,
-                  new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                  MY_PERMISSIONS_REQUEST_STORAGE_CODE);
+        View currentView = mPagerAdapter.mCurrentView;
+        boolean isAnimation = false;
+        if (currentView instanceof MyPhotoView) {
+          MyPhotoView photoView = (MyPhotoView) currentView;
+          isAnimation = photoView.isAnimation();
         }
-        else
-        {
-          realSaveImageToFile();
-        }
+        saveImageToFile(imagePath, isAnimation);
       }
     });
 
-    hide();
 
     SwipeBackHelper.onCreate(this);
     SwipeBackHelper.getCurrentPage(this).setSwipeEdgePercent(0.2f);
   }
 
-  public void realSaveImageToFile()
-  {
-    int position = mViewPager.getCurrentItem();
-    final String imagePath = mURLs.get(position);
-
-    View currentView = mPagerAdapter.mCurrentView;
-    boolean isAnimation = false;
-    if (currentView instanceof MyPhotoView) {
-      MyPhotoView photoView = (MyPhotoView) currentView;
-      isAnimation = photoView.isAnimation();
-    }
-
-    saveImageToFile(imagePath, isAnimation);
-  }
   @Override
-  public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-    switch (requestCode) {
-      case MY_PERMISSIONS_REQUEST_STORAGE_CODE:
-      {
-        // If request is cancelled, the result arrays are empty.
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q ){
-
-          if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            // permission was granted, yay! Do the
-            // contacts-related task you need to do.
-            realSaveImageToFile();
-
-          } else{
-            //在版本低于此的时候，做一些处理
-
-            // permission denied, boo! Disable the
-            // functionality that depends on this permission.
-            Toast.makeText(FSImageViewerActivity.this, getString(com.zfdang.multiple_images_selector.R.string.selector_permission_error), Toast.LENGTH_SHORT).show();
-          }
-        }
-        else //Build >= 29.Android Q
-        {
-          if (grantResults.length == 2 && grantResults[0] == PackageManager.PERMISSION_GRANTED
-                  && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-            // permission was granted, yay! Do the
-            // contacts-related task you need to do.
-            realSaveImageToFile();
-          } else {
-            // permission denied, boo! Disable the
-            // functionality that depends on this permission.
-            Toast.makeText(FSImageViewerActivity.this, getString(com.zfdang.multiple_images_selector.R.string.selector_permission_error), Toast.LENGTH_SHORT).show();
-          }
-          return;
-        }
-        return;
-      }
+  public void onWindowFocusChanged(boolean hasFocus) {
+    super.onWindowFocusChanged(hasFocus);
+    if (hasFocus) {
+      hideSystemUI();
+      layoutToolbar.setVisibility(LinearLayout.GONE);
     }
   }
-  private void hide() {
-    // Hide status bar and navigation bar
-    mViewPager.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-        // hide nav bar
-        | View.SYSTEM_UI_FLAG_FULLSCREEN
-        // hide status bar
-        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+
+  private void hideSystemUI() {
+    // Enables regular immersive mode.
+    // For "lean back" mode, remove SYSTEM_UI_FLAG_IMMERSIVE.
+    // Or for "sticky immersive," replace it with SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+    View decorView = getWindow().getDecorView();
+    decorView.setSystemUiVisibility(
+            View.SYSTEM_UI_FLAG_IMMERSIVE
+                    // Hide the nav bar and status bar
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN
+                    // Set the content to appear under the system bars so that the
+                    // content doesn't resize when the system bars hide and show.
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+    );
   }
+
+  // Shows the system bars by removing all the flags
+  // except for the ones that make the content appear under the system bars.
+  private void showSystemUI() {
+    View decorView = getWindow().getDecorView();
+    decorView.setSystemUiVisibility(
+            View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+  }
+
 
   @Override protected void onPostCreate(Bundle savedInstanceState) {
     super.onPostCreate(savedInstanceState);
@@ -268,7 +242,7 @@ public class FSImageViewerActivity extends AppCompatActivity implements PhotoVie
       }
     } catch (Exception e) {
       Log.e(TAG, "saveImageToFile: " + Log.getStackTraceString(e));
-      Toast.makeText(FSImageViewerActivity.this, "保存图片失败:\n 请授予应用存储权限！\n" + e.toString(), Toast.LENGTH_LONG).show();
+      Toast.makeText(FSImageViewerActivity.this, "保存图片失败:\n请授予应用存储权限！\n" + e.toString(), Toast.LENGTH_LONG).show();
     }
   }
 
@@ -454,7 +428,6 @@ public class FSImageViewerActivity extends AppCompatActivity implements PhotoVie
 
     new AlertDialog.Builder(FSImageViewerActivity.this).setView(layout).setOnDismissListener(new DialogInterface.OnDismissListener() {
       @Override public void onDismiss(DialogInterface dialog) {
-        hide();
       }
     }).show();
   }
@@ -462,17 +435,21 @@ public class FSImageViewerActivity extends AppCompatActivity implements PhotoVie
   private void toggleToobarVisibility() {
     int visibility = layoutToolbar.getVisibility();
     if (visibility == LinearLayout.GONE) {
+      showSystemUI();
       layoutToolbar.setVisibility(LinearLayout.VISIBLE);
     } else {
+      hideSystemUI();
       layoutToolbar.setVisibility(LinearLayout.GONE);
     }
   }
 
-  @Override public void onPhotoTap(View view, float v, float v1) {
+  @Override
+  public void onOutsidePhotoTap(ImageView imageView) {
     toggleToobarVisibility();
   }
 
-  @Override public void onOutsidePhotoTap() {
+  @Override
+  public void onPhotoTap(ImageView view, float x, float y) {
     toggleToobarVisibility();
   }
 }

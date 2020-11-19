@@ -2,7 +2,7 @@ package com.zfdang;
 
 import android.app.Application;
 import android.content.Context;
-import android.support.v7.app.AppCompatDelegate;
+import androidx.appcompat.app.AppCompatDelegate;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.backends.okhttp3.OkHttpImagePipelineConfigFactory;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
@@ -14,10 +14,7 @@ import com.zfdang.zsmth_android.models.Post;
 import com.zfdang.zsmth_android.newsmth.SMTHHelper;
 import com.zfdang.zsmth_android.newsmth.UserStatus;
 import okhttp3.OkHttpClient;
-import android.support.multidex.MultiDex;
-
-import com.zfdang.zsmth_android.models.Topic;
-import com.zfdang.zsmth_android.models.TopicListContent;
+import androidx.multidex.MultiDex;
 
 import java.util.ArrayList;
 import java.util.List;

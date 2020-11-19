@@ -1,65 +1,50 @@
 package com.zfdang.zsmth_android;
 
-//import android.annotation.SuppressLint;
-import android.annotation.SuppressLint;
+
 import android.app.Activity;
-//import android.app.Application;
+
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-//import android.content.ClipboardManager;
-//import android.content.Context;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 //import android.content.res.ColorStateList;
 import android.graphics.Point;
-//import android.net.Uri;
+
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
-//import android.support.design.internal.BottomNavigationItemView;
-//import android.support.design.internal.BottomNavigationMenuView;
-import android.os.Vibrator;
-import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-//import android.support.v4.app.NotificationCompat;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.ViewDragHelper;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatDelegate;
-import android.support.v7.widget.PopupMenu;
-import android.support.v7.widget.Toolbar;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.customview.widget.ViewDragHelper;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.util.Log;
-//import android.view.GestureDetector;
-import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-//import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
-//import android.widget.ImageView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.mikepenz.aboutlibraries.LibsBuilder;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
-//import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 import com.umeng.analytics.MobclickAgent;
 import com.zfdang.SMTHApplication;
@@ -75,25 +60,18 @@ import com.zfdang.zsmth_android.models.MailListContent;
 import com.zfdang.zsmth_android.models.Topic;
 import com.zfdang.zsmth_android.newsmth.AjaxResponse;
 import com.zfdang.zsmth_android.newsmth.SMTHHelper;
+import com.zfdang.zsmth_android.services.AlarmBroadcastReceiver;
 import com.zfdang.zsmth_android.services.MaintainUserStatusService;
 import com.zfdang.zsmth_android.services.UserStatusReceiver;
 
-//import io.reactivex.Observable;
+import java.lang.reflect.Field;
+
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
-//import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
-//import okhttp3.OkHttpClient;
-//import okhttp3.Request;
-//import okhttp3.Response;
 
-import java.lang.reflect.Field;
-//import java.util.ArrayList;
-//import java.util.Random;
-
-//import org.reactivestreams.Subscriber;
 
 public class MainActivity extends SMTHBaseActivity
     implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, OnTopicFragmentInteractionListener,
@@ -232,13 +210,17 @@ public class MainActivity extends SMTHBaseActivity
       }
     });
 
-    // start service to maintain user status
+    // setup receiver to receive user status update from periodical background service
     setupUserStatusReceiver();
+
+    // schedule the periodical background service
+    AlarmBroadcastReceiver.schedule(getApplicationContext(), mReceiver);
+    // run the background service now
     updateUserStatusNow();
     UpdateNavigationViewHeader();
 
     // schedule the periodical run
-    MaintainUserStatusService.schedule(MainActivity.this, mReceiver);
+    //MaintainUserStatusService.schedule(MainActivity.this, mReceiver);
 
     if (Settings.getInstance().isFirstRun()) {
       // show info dialog after 5 seconds for the first run
@@ -248,7 +230,7 @@ public class MainActivity extends SMTHBaseActivity
         public void run() {
           showInfoDialog();
         }
-      }, 2000);
+      }, 1000);
     }
 
     ShakeListener shakeListener = new ShakeListener(this);
@@ -509,6 +491,7 @@ public class MainActivity extends SMTHBaseActivity
         setTitle(SMTHApplication.App_Title_Prefix + subTitle);
       }
     }
+    super.onNewIntent(intent);
   }
 
   @Override
@@ -624,7 +607,7 @@ public class MainActivity extends SMTHBaseActivity
 
   private void quitNow() {
     // stop background service
-    MaintainUserStatusService.unschedule(MainActivity.this);
+    AlarmBroadcastReceiver.unschedule();
 
     // quit
     finish();
@@ -737,7 +720,7 @@ public class MainActivity extends SMTHBaseActivity
     Settings.getInstance().setAutoLogin(false);
   }
 
-  @SuppressWarnings("StatementWithEmptyBody")
+  //@SuppressWarnings("StatementWithEmptyBody")
   @Override
   public boolean onNavigationItemSelected(MenuItem item) {
     int id = item.getItemId();
@@ -971,7 +954,7 @@ public class MainActivity extends SMTHBaseActivity
             dialog.dismiss();
 
             SMTHHelper helper = SMTHHelper.getInstance();
-            Log.d(TAG, "Vinney: " + board.getFolderID() + "&&" + board.getFolderName() + "&&" + String.valueOf(Integer.parseInt(board.getFolderID()) - 1));
+            //Log.d(TAG, "Vinney: " + board.getFolderID() + "&&" + board.getFolderName() + "&&" + String.valueOf(Integer.parseInt(board.getFolderID()) - 1));
             Log.d(TAG, favoriteBoardFragment.getCurrentFavoritePath());
             helper.wService.manageFavoriteBoard("0", "dg", String.valueOf(Integer.parseInt(board.getFolderID()) - 1))
                     .subscribeOn(Schedulers.io())

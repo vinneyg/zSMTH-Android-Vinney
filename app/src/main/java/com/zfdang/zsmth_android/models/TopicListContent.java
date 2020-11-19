@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class TopicListContent {
 
-  public static final List<Topic> HOT_TOPICS = new ArrayList<Topic>();
+  public static final List<Topic> HOT_TOPICS = new ArrayList<>();
 
   public static void addHotTopic(Topic item) {
     HOT_TOPICS.add(item);
@@ -21,7 +21,7 @@ public class TopicListContent {
     HOT_TOPICS.clear();
   }
 
-  public static final List<Topic> BOARD_TOPICS = new ArrayList<Topic>();
+  public static final List<Topic> BOARD_TOPICS = new ArrayList<>();
 
   public static void addBoardTopic(Topic item, String boardName) {
     BOARD_TOPICS.add(item);
@@ -30,5 +30,4 @@ public class TopicListContent {
   public static void clearBoardTopics() {
     BOARD_TOPICS.clear();
   }
-
 }

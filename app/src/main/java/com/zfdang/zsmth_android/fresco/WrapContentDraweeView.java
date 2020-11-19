@@ -8,7 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Animatable;
 import android.net.Uri;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ViewGroup;
@@ -166,7 +166,7 @@ public class WrapContentDraweeView extends SimpleDraweeView {
               imageMaxAllowedHeight = ImageUtils.getMaxHeight();
             }
             int imageCount = getTimes(imageTotalHeight, imageMaxAllowedHeight);
-            //Log.d(TAG, "process: h = " + imageTotalHeight + " w = " + destBitmap.getWidth() + " allowed: " + imageMaxAllowedHeight + " count: " + imageCount);
+            // Log.d(TAG, "process: h = " + imageTotalHeight + " w = " + destBitmap.getWidth() + " allowed: " + imageMaxAllowedHeight + " count: " + imageCount);
             if (imageCount > 1) {
               bmps = new ArrayList<Bitmap>();
               Rect bsrc = new Rect();

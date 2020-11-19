@@ -1,10 +1,9 @@
 package com.zfdang.zsmth_android;
 
 import android.annotation.SuppressLint;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +57,7 @@ public class BoardTopicRecyclerViewAdapter extends RecyclerView.Adapter<BoardTop
 
       //Vinney
       if(Settings.getInstance().isDiffReadTopic()) {
-        if ((!SMTHApplication.ReadTopicLists.isEmpty()) && SMTHApplication.ReadTopicLists.contains(holder.mTopic.getTopicID())) {
+        if ((!SMTHApplication.ReadTopicLists.isEmpty()) && SMTHApplication.ReadTopicLists.contains(holder.mTopic.getTitle())) {
           if (Settings.getInstance().isNightMode()) {
             holder.mTitle.setTextColor(Color.DKGRAY);
             holder.mAuthor.setTextColor(Color.DKGRAY);
@@ -106,7 +105,8 @@ public class BoardTopicRecyclerViewAdapter extends RecyclerView.Adapter<BoardTop
           mListener.onTopicFragmentInteraction(holder.mTopic);
           //Vinney
           if(Settings.getInstance().isDiffReadTopic()) {
-            SMTHApplication.ReadTopicLists.add(holder.mTopic.getTopicID());
+            //SMTHApplication.ReadTopicLists.add(holder.mTopic.getTopicID());
+            SMTHApplication.ReadTopicLists.add(holder.mTopic.getTitle());
             if (Settings.getInstance().isNightMode()) {
               holder.mTitle.setTextColor(Color.DKGRAY);
               holder.mAuthor.setTextColor(Color.DKGRAY);

@@ -1,14 +1,13 @@
 package com.zfdang.zsmth_android;
 
 import android.content.Context;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.zfdang.zsmth_android.helpers.RecyclerViewUtil;
 
