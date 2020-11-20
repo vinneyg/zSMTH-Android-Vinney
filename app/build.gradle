@@ -100,12 +100,12 @@ dependencies {
 
     // Support library
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'com.google.android.material:material:1.2.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     // http://stackoverflow.com/questions/9783368/alternatives-to-preferencefragment-with-android-support-v4
     // https://github.com/Gericop/Android-Support-Preference-V7-Fix
-    implementation 'androidx.preference:preference:1.1.1'
+    implementation 'androidx.preference:preference:1.0.0'
     implementation 'androidx.legacy:legacy-preference-v14:1.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
 
@@ -149,7 +149,6 @@ dependencies {
 
     implementation 'com.github.nisrulz:screenshott:2.0.0'
 
-    implementation 'com.google.android.material:material:1.2.1'
     // my gradles
     implementation project(':multiple-images-selector')
     implementation project(':device_model_to_marketing_name')

@@ -61,7 +61,7 @@ import com.zfdang.zsmth_android.models.Topic;
 import com.zfdang.zsmth_android.newsmth.AjaxResponse;
 import com.zfdang.zsmth_android.newsmth.SMTHHelper;
 import com.zfdang.zsmth_android.services.AlarmBroadcastReceiver;
-import com.zfdang.zsmth_android.services.MaintainUserStatusService;
+
 import com.zfdang.zsmth_android.services.UserStatusReceiver;
 
 import java.lang.reflect.Field;
@@ -219,9 +219,6 @@ public class MainActivity extends SMTHBaseActivity
     updateUserStatusNow();
     UpdateNavigationViewHeader();
 
-    // schedule the periodical run
-    //MaintainUserStatusService.schedule(MainActivity.this, mReceiver);
-
     if (Settings.getInstance().isFirstRun()) {
       // show info dialog after 5 seconds for the first run
       final Handler handler = new Handler();
@@ -362,9 +359,7 @@ public class MainActivity extends SMTHBaseActivity
 
   // triger the background service right now
   private void updateUserStatusNow() {
-    Intent intent = new Intent(this, MaintainUserStatusService.class);
-    intent.putExtra(SMTHApplication.USER_SERVICE_RECEIVER, mReceiver);
-    startService(intent);
+    AlarmBroadcastReceiver.runJobNow(getApplicationContext(), mReceiver);
   }
 
   private void setupUserStatusReceiver() {
