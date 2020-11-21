@@ -120,7 +120,6 @@ public class Topic implements Parcelable {
 
   public String getBoardName() {
     if (boardChsName != null && boardChsName.length() > 0) {
-      //return "[" + boardEngName + "]" + boardChsName;
       return boardChsName + " [" + boardEngName + "]";
     } else {
       return boardEngName;

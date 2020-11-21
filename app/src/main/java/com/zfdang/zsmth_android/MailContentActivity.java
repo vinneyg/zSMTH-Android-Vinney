@@ -202,7 +202,9 @@ public class MailContentActivity extends AppCompatActivity {
     if (id == android.R.id.home) {
       if (mMail.isRefferedPost() ) {
           //Toast.makeText(MailContentActivity.this, "回复POST提醒", Toast.LENGTH_LONG).show();
-          Board board = new Board("", mMail.fromBoard, mMail.fromBoard);
+          Board board = new Board();
+          board.initAsBoard(mMail.fromBoard, mMail.fromBoard, "", "");
+
           Intent intent = new Intent(this, BoardTopicActivity.class);
           intent.putExtra(SMTHApplication.BOARD_OBJECT, (Parcelable)board);
           startActivity(intent);

@@ -505,7 +505,7 @@ public class MainActivity extends SMTHBaseActivity
 
     preferenceFragment = new MyPreferenceFragment();
     aboutFragment = new LibsBuilder()
-            .withLicenseShown(true)
+            .withLicenseShown(false)
             .supportFragment();
 
   }
@@ -563,8 +563,8 @@ public class MainActivity extends SMTHBaseActivity
     // handle back button for all fragment
     Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.content_frame);
     if (fragment instanceof FavoriteBoardFragment) {
-      if (!favoriteBoardFragment.atFavoriteRoot()) {
-        favoriteBoardFragment.popFavoritePathAndName();
+      if (!favoriteBoardFragment.isAtRoot()) {
+        favoriteBoardFragment.popPath();
         favoriteBoardFragment.RefreshFavoriteBoards();
         return;
       }
@@ -759,20 +759,24 @@ public class MainActivity extends SMTHBaseActivity
     else if( id == R.id.read_board1)
     {
       if(SMTHApplication.ReadBoardEng1 != null) {
-        Board item = new Board(null, SMTHApplication.ReadBoard1, SMTHApplication.ReadBoardEng1);
-        startBoardTopicActivity(item);
+       // Board item = new Board(null, SMTHApplication.ReadBoard1, SMTHApplication.ReadBoardEng1);
+        Board board = new Board();
+        board.initAsBoard(SMTHApplication.ReadBoard1, SMTHApplication.ReadBoardEng1, "", "");
+        startBoardTopicActivity(board);
       }
     } else if( id == R.id.read_board2)
     {
       if(SMTHApplication.ReadBoardEng2 != null) {
-        Board item = new Board(null, SMTHApplication.ReadBoard2, SMTHApplication.ReadBoardEng2);
-        startBoardTopicActivity(item);
+        Board board = new Board();
+        board.initAsBoard(SMTHApplication.ReadBoard2, SMTHApplication.ReadBoardEng2, "", "");
+        startBoardTopicActivity(board);
       }
     }else if( id == R.id.read_board3)
     {
       if(SMTHApplication.ReadBoardEng3 != null) {
-        Board item = new Board(null, SMTHApplication.ReadBoard3, SMTHApplication.ReadBoardEng3);
-        startBoardTopicActivity(item);
+        Board board = new Board();
+        board.initAsBoard(SMTHApplication.ReadBoard3, SMTHApplication.ReadBoardEng3, "", "");
+        startBoardTopicActivity(board);
       }
     }
 
@@ -860,16 +864,15 @@ public class MainActivity extends SMTHBaseActivity
     // shared by FavoriteBoard & AllBoard fragment
     Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.content_frame);
     if (fragment == favoriteBoardFragment) {
-      // favorite fragment, we might enter a folder
-      if (item.isFolder()) {
-        if (item.isValidFolder()) {
-          favoriteBoardFragment.pushFavoritePathAndName(item.getFolderID(), item.getFolderName());
-          favoriteBoardFragment.RefreshFavoriteBoards();
-        }
-      } else {
-        startBoardTopicActivity(item);
+      // favorite fragment, we might enter a folder or section
+      if (item.isFolder() || item.isSection()) {
+        favoriteBoardFragment.pushPath(item);
+        favoriteBoardFragment.RefreshFavoriteBoards();
+        return;
       }
-    } else if (fragment == allBoardFragment) {
+    }
+    // if it's a normal board, show postlist in the board
+    if(item.isBoard()) {
       startBoardTopicActivity(item);
     }
   }
@@ -881,8 +884,7 @@ public class MainActivity extends SMTHBaseActivity
     Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.content_frame);
     if (fragment == favoriteBoardFragment) {
       // favorite fragment, remove the board
-      Log.d(TAG, (board.isFolder())?"true":"false");
-      if (!board.isFolder()) {
+      if (board.isBoard()) {
         // confirm dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         String title = String.format("将版面\"%s\"从收藏夹中删除么？", board.getBoardName());
@@ -937,7 +939,7 @@ public class MainActivity extends SMTHBaseActivity
         });
         AlertDialog noticeDialog = builder.create();
         noticeDialog.show();
-      } else {
+      } else if(board.isSection()) {
         //* +Vinney confirm Folder
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         String title = String.format("将版面二级目录\"%s\"从收藏夹中删除么？", board.getFolderName());
@@ -950,8 +952,8 @@ public class MainActivity extends SMTHBaseActivity
 
             SMTHHelper helper = SMTHHelper.getInstance();
             //Log.d(TAG, "Vinney: " + board.getFolderID() + "&&" + board.getFolderName() + "&&" + String.valueOf(Integer.parseInt(board.getFolderID()) - 1));
-            Log.d(TAG, favoriteBoardFragment.getCurrentFavoritePath());
-            helper.wService.manageFavoriteBoard("0", "dg", String.valueOf(Integer.parseInt(board.getFolderID()) - 1))
+            Log.d(TAG, favoriteBoardFragment.getCurrentPathInString());
+            helper.wService.manageFavoriteBoard("0", "db", board.getSectionID())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Observer<AjaxResponse>() {
@@ -993,8 +995,64 @@ public class MainActivity extends SMTHBaseActivity
         AlertDialog noticeDialog = builder.create();
         noticeDialog.show();
       }
+      else if (board.isFolder())
+      {
+          AlertDialog.Builder builder = new AlertDialog.Builder(this);
+          String title = String.format("将版面二级目录\"%s\"从收藏夹中删除么？", board.getFolderName());
+          builder.setTitle("收藏夹操作").setMessage(title);
+
+          builder.setPositiveButton("删除", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+              dialog.dismiss();
+
+              SMTHHelper helper = SMTHHelper.getInstance();
+              //Log.d(TAG, "Vinney: " + board.getFolderID() + "&&" + board.getFolderName() + "&&" + String.valueOf(Integer.parseInt(board.getFolderID()) - 1));
+              Log.d(TAG, favoriteBoardFragment.getCurrentPathInString());
+              helper.wService.manageFavoriteBoard("0", "db", board.getFolderID())
+                      .subscribeOn(Schedulers.io())
+                      .observeOn(AndroidSchedulers.mainThread())
+                      .subscribe(new Observer<AjaxResponse>() {
+                        @Override
+                        public void onSubscribe(@NonNull Disposable disposable) {
+
+                        }
+
+                        @Override
+                        public void onNext(@NonNull AjaxResponse ajaxResponse) {
+                          Log.d(TAG, "onNext: " + ajaxResponse.toString());
+                          if (ajaxResponse.getAjax_st() == AjaxResponse.AJAX_RESULT_OK) {
+                            Toast.makeText(MainActivity.this, ajaxResponse.getAjax_msg() + "\n" + "请刷新收藏夹！", Toast.LENGTH_SHORT).show();
+                          } else {
+                            Toast.makeText(MainActivity.this, ajaxResponse.toString(), Toast.LENGTH_LONG).show();
+                          }
+
+                        }
+
+                        @Override
+                        public void onError(@NonNull Throwable e) {
+                          Toast.makeText(MainActivity.this, "删除收藏目录失败！\n" + e.toString(), Toast.LENGTH_LONG).show();
+
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                      });
+            }
+          });
+          builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+              dialog.dismiss();
+            }
+          });
+          AlertDialog noticeDialog = builder.create();
+          noticeDialog.show();
+        }
+      }
       //-Vinney confirm Folder */
-    }
   }
 
 

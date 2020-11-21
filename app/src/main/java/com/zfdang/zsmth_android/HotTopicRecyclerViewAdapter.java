@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.graphics.Color;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,7 +55,7 @@ public class HotTopicRecyclerViewAdapter extends RecyclerView.Adapter<HotTopicRe
 
       //Vinney
       if(Settings.getInstance().isDiffReadTopic()) {
-        if ((!SMTHApplication.ReadTopicLists.isEmpty()) && SMTHApplication.ReadTopicLists.contains(holder.mItem.getTitle())) {
+        if ((!SMTHApplication.ReadTopicLists.isEmpty()) && SMTHApplication.ReadTopicLists.contains(holder.mItem.getTopicID())) {
           if (Settings.getInstance().isNightMode()) {
             holder.mTopicTitle.setTextColor(Color.DKGRAY);
             holder.mBoardName.setTextColor(Color.DKGRAY);
@@ -81,8 +82,7 @@ public class HotTopicRecyclerViewAdapter extends RecyclerView.Adapter<HotTopicRe
 
           //Vinney
           if (Settings.getInstance().isDiffReadTopic()) {
-            //SMTHApplication.ReadTopicLists.add(holder.mItem.getTopicID());
-            SMTHApplication.ReadTopicLists.add(holder.mItem.getTitle());
+            SMTHApplication.ReadTopicLists.add(holder.mItem.getTopicID());
             if (Settings.getInstance().isNightMode()) {
               holder.mTopicTitle.setTextColor(Color.DKGRAY);
               holder.mBoardName.setTextColor(Color.DKGRAY);

@@ -35,6 +35,14 @@ public class BoardListContent {
     }
   }
 
+  public static class EnglishComparator implements Comparator<Board> {
+    RuleBasedCollator collator = (RuleBasedCollator) Collator.getInstance(Locale.CHINA);
+
+    public int compare(Board b1, Board b2) {
+      return collator.compare(b1.getBoardEngName(), b2.getBoardEngName());
+    }
+  }
+
   public static void sortAllBoardItem() {
     // sort boards by chinese name
     Collections.sort(ALL_BOARDS, new BoardListContent.ChineseComparator());
