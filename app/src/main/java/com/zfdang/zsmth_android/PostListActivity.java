@@ -785,9 +785,7 @@ public class PostListActivity extends SMTHBaseActivity
     return super.onOptionsItemSelected(item);
   }
   @Override public void onBackPressed() {
-
     super.onBackPressed();
-
     // Log.d("Vinney", SMTHApplication.activeUser.getId());
 
     if(SMTHApplication.isValidUser()&&!Settings.getInstance().isUserOnline()) {

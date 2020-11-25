@@ -1,8 +1,10 @@
 package com.zfdang.zsmth_android;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
@@ -10,6 +12,9 @@ import android.os.Bundle;
 import android.os.Environment;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -45,6 +50,7 @@ public class FSImageViewerActivity extends AppCompatActivity implements OnPhotoT
 
   private static final String TAG = "FullViewer";
 
+  private static final int MY_PERMISSIONS_REQUEST_STORAGE_CODE = 299;
   private HackyViewPager mViewPager;
 
   private FSImagePagerAdapter mPagerAdapter;
@@ -109,24 +115,78 @@ public class FSImageViewerActivity extends AppCompatActivity implements OnPhotoT
     btSave = (ImageView) findViewById(R.id.fullscreen_button_save);
     btSave.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
-        int position = mViewPager.getCurrentItem();
-        final String imagePath = mURLs.get(position);
 
-        View currentView = mPagerAdapter.mCurrentView;
-        boolean isAnimation = false;
-        if (currentView instanceof MyPhotoView) {
-          MyPhotoView photoView = (MyPhotoView) currentView;
-          isAnimation = photoView.isAnimation();
+        if (ContextCompat.checkSelfPermission(FSImageViewerActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+          ActivityCompat.requestPermissions(FSImageViewerActivity.this,
+                  new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                  MY_PERMISSIONS_REQUEST_STORAGE_CODE);
         }
-        saveImageToFile(imagePath, isAnimation);
+        else
+        {
+          realSaveImageToFile();
+        }
       }
     });
 
+    hideSystemUI();
 
     SwipeBackHelper.onCreate(this);
     SwipeBackHelper.getCurrentPage(this).setSwipeEdgePercent(0.2f);
   }
 
+  public void realSaveImageToFile()
+  {
+    int position = mViewPager.getCurrentItem();
+    final String imagePath = mURLs.get(position);
+
+    View currentView = mPagerAdapter.mCurrentView;
+    boolean isAnimation = false;
+    if (currentView instanceof MyPhotoView) {
+      MyPhotoView photoView = (MyPhotoView) currentView;
+      isAnimation = photoView.isAnimation();
+    }
+
+    saveImageToFile(imagePath, isAnimation);
+  }
+  @Override
+  public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    switch (requestCode) {
+      case MY_PERMISSIONS_REQUEST_STORAGE_CODE:
+      {
+        // If request is cancelled, the result arrays are empty.
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q ){
+
+          if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            // permission was granted, yay! Do the
+            // contacts-related task you need to do.
+            realSaveImageToFile();
+
+          } else{
+            //在版本低于此的时候，做一些处理
+
+            // permission denied, boo! Disable the
+            // functionality that depends on this permission.
+            Toast.makeText(FSImageViewerActivity.this, getString(com.zfdang.multiple_images_selector.R.string.selector_permission_error), Toast.LENGTH_SHORT).show();
+          }
+        }
+        else //Build >= 29.Android Q
+        {
+          if (grantResults.length == 2 && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                  && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+            // permission was granted, yay! Do the
+            // contacts-related task you need to do.
+            realSaveImageToFile();
+          } else {
+            // permission denied, boo! Disable the
+            // functionality that depends on this permission.
+            Toast.makeText(FSImageViewerActivity.this, getString(com.zfdang.multiple_images_selector.R.string.selector_permission_error), Toast.LENGTH_SHORT).show();
+          }
+          return;
+        }
+        return;
+      }
+    }
+  }
   @Override
   public void onWindowFocusChanged(boolean hasFocus) {
     super.onWindowFocusChanged(hasFocus);
