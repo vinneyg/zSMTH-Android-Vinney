@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -186,6 +187,10 @@ public class MailListFragment extends Fragment implements OnVolumeUpDownListener
                 }
               });
         }
+        else{
+          recyclerView.getAdapter().notifyItemChanged(position);
+          Toast.makeText(SMTHApplication.getAppContext(), "目录无法删除", Toast.LENGTH_LONG).show();
+        }
       }
     };
     ItemTouchHelper itemTouchHelper = new ItemTouchHelper(mCallback);
@@ -263,11 +268,12 @@ public class MailListFragment extends Fragment implements OnVolumeUpDownListener
 
     if (currentPage >= MailListContent.totalPages) {
       // reach the last page, do nothing
-      Mail mail = new Mail(".END.");
-      MailListContent.addItem(mail);
-
-      recyclerView.getAdapter().notifyItemChanged(MailListContent.MAILS.size() - 1);
-      return;
+      if(!MailListContent.MAILS.contains(".END.")) {
+        Mail mail = new Mail(".END.");
+        MailListContent.addItem(mail);
+        recyclerView.getAdapter().notifyItemChanged(MailListContent.MAILS.size() - 1);
+        return;
+      }
     }
 
     currentPage += 1;
