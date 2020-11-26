@@ -56,6 +56,7 @@ public class HotTopicRecyclerViewAdapter extends RecyclerView.Adapter<HotTopicRe
       //Vinney
       if(Settings.getInstance().isDiffReadTopic()) {
         if ((!SMTHApplication.ReadTopicLists.isEmpty()) && SMTHApplication.ReadTopicLists.contains(holder.mItem.getTopicID())) {
+         Log.d("Vinney",holder.mItem.getTopicID());
           if (Settings.getInstance().isNightMode()) {
             holder.mTopicTitle.setTextColor(Color.DKGRAY);
             holder.mBoardName.setTextColor(Color.DKGRAY);

@@ -96,12 +96,15 @@ public class HotTopicFragment extends Fragment implements OnVolumeUpDownListener
         @Override
         public void onScrollStateChanged(@androidx.annotation.NonNull RecyclerView recyclerView, int newState) {
           super.onScrollStateChanged(recyclerView, newState);
+          mRecyclerView.getAdapter().notifyDataSetChanged();
         }
         @Override
         public void onScrolled (RecyclerView recyclerView,int dx , int dy){
-          Log.d("Vinney2","Hello");
+          super.onScrolled(recyclerView,dx,dy);
+          mRecyclerView.getAdapter().notifyDataSetChanged();
         }
       });
+
     }
 
     getActivity().setTitle(SMTHApplication.App_Title_Prefix + "首页导读");
@@ -212,7 +215,6 @@ public class HotTopicFragment extends Fragment implements OnVolumeUpDownListener
       RecyclerViewUtil.ScrollRecyclerViewByKey(mRecyclerView, keyCode);
       ( (MainActivity) getActivity()).findViewById(R.id.bv_bottomNavigation).setVisibility(View.GONE);
     }
-    Log.d("Vinney3",Integer.toString(keyCode));
     return true;
   }
 }

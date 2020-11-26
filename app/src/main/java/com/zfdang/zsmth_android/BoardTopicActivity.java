@@ -176,6 +176,16 @@ public class BoardTopicActivity extends SMTHBaseActivity
         // do something...
         loadMoreItems();
       }
+      @Override
+      public void onScrollStateChanged(@androidx.annotation.NonNull RecyclerView recyclerView, int newState) {
+        super.onScrollStateChanged(recyclerView, newState);
+        mRecyclerView.getAdapter().notifyDataSetChanged();
+      }
+      @Override
+      public void onScrolled (RecyclerView recyclerView,int dx , int dy){
+        super.onScrolled(recyclerView,dx,dy);
+        mRecyclerView.getAdapter().notifyDataSetChanged();
+      }
     };
     mRecyclerView.addOnScrollListener(mScrollListener);
 
