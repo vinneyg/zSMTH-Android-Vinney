@@ -268,12 +268,15 @@ public class MailListFragment extends Fragment implements OnVolumeUpDownListener
 
     if (currentPage >= MailListContent.totalPages) {
       // reach the last page, do nothing
-      if(!MailListContent.MAILS.contains(".END.")) {
-        Mail mail = new Mail(".END.");
-        MailListContent.addItem(mail);
-        recyclerView.getAdapter().notifyItemChanged(MailListContent.MAILS.size() - 1);
-        return;
-      }
+
+    //   if (!(MailListContent.MAILS.contains(".END."))) {
+
+          Log.d("Vinney","HELLO");
+          Mail mail = new Mail(".END.");
+          MailListContent.addItem(mail);
+          //recyclerView.getAdapter().notifyItemChanged(MailListContent.MAILS.size() - 1);
+          return;
+
     }
 
     currentPage += 1;

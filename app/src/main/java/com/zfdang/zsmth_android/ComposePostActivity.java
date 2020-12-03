@@ -94,6 +94,11 @@ public class ComposePostActivity extends SMTHBaseActivity {
         // https://stackoverflow.com/questions/3609174/android-insert-text-into-edittext-at-current-position
         mContent.getText().insert(mContent.getSelectionStart(), attachments);
       }
+    } else if(requestCode == MainActivity.LOGIN_ACTIVITY_REQUEST_CODE){
+      if (resultCode == RESULT_OK)
+      {
+        publishPost();
+      }
     }
     super.onActivityResult(requestCode,resultCode,data);
   }
@@ -399,6 +404,9 @@ public class ComposePostActivity extends SMTHBaseActivity {
             if (postPublishResult != AjaxResponse.AJAX_RESULT_OK) {
               message = "操作失败! \n错误信息:\n" + postPublishMessage;
               Toast.makeText(ComposePostActivity.this, message, Toast.LENGTH_LONG).show();
+              Log.d("Vinney", postPublishMessage);
+              Intent intent = new Intent(ComposePostActivity.this, LoginActivity.class);
+              startActivityForResult(intent, MainActivity.LOGIN_ACTIVITY_REQUEST_CODE);
             } else {
               if (lastResponse != null) {
                 // if we have valid last response, use the message.

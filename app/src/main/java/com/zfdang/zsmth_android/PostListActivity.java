@@ -602,6 +602,7 @@ public class PostListActivity extends SMTHBaseActivity
           @Override public Observable<Post> apply(@NonNull ResponseBody responseBody) throws Exception {
             try {
               String response = responseBody.string();
+              Log.d("Vinney",response);
               List<Post> posts = SMTHHelper.ParsePostListFromWWW(response, mTopic);
               if(posts.size()==0) {
                 return Observable.empty(); //handle error case
@@ -646,17 +647,16 @@ public class PostListActivity extends SMTHBaseActivity
             clearLoadingHints();
 
             //Special User OFFLINE case: [] or [Category 第一页:]
-            if(PostListContent.POSTS.size() == 0)
-            {
-              //Toast.makeText(SMTHApplication.getAppContext(),"请重新登录-"+ PostListContent.POSTS.size()+"-!",Toast.LENGTH_LONG).show();
-              PostListContent.clear();
-              try {
-                Thread.sleep(1000);
-                Settings.getInstance().setUserOnline(false); //User Offline
-                onBackPressed();
-              } catch (InterruptedException e) {
-                e.printStackTrace();
-              }
+            if(PostListContent.POSTS.size() == 0 ) {
+                //Toast.makeText(SMTHApplication.getAppContext(),"请重新登录-"+ PostListContent.POSTS.size()+"-!",Toast.LENGTH_LONG).show();
+                PostListContent.clear();
+                try {
+                  Thread.sleep(1000);
+                  Settings.getInstance().setUserOnline(false); //User Offline
+                  onBackPressed();
+                } catch (InterruptedException e) {
+                  e.printStackTrace();
+                }
             }
           }
         });
@@ -785,12 +785,17 @@ public class PostListActivity extends SMTHBaseActivity
     return super.onOptionsItemSelected(item);
   }
   @Override public void onBackPressed() {
+
     super.onBackPressed();
     // Log.d("Vinney", SMTHApplication.activeUser.getId());
 
-    if(SMTHApplication.isValidUser()&&!Settings.getInstance().isUserOnline()) {
+    if(SMTHApplication.isValidUser()&&!Settings.getInstance().isUserOnline() && !SMTHApplication.deletionPost) {
       Intent intent = new Intent(PostListActivity.this, LoginActivity.class);
       startActivityForResult(intent, MainActivity.LOGIN_ACTIVITY_REQUEST_CODE);
+    } else if(SMTHApplication.deletionPost)
+    {
+     //reloadPostListWithoutAlert();
+      SMTHApplication.deletionPost = false;
     }
   }
 
@@ -1128,6 +1133,7 @@ public class PostListActivity extends SMTHBaseActivity
       sharePost(post);
     } else if (which == 9) {
       // delete post
+      SMTHApplication.deletionPost = true;
       deletePost(post);
     } else if (which == 10) {
       // edit post
@@ -1242,6 +1248,7 @@ public class PostListActivity extends SMTHBaseActivity
         //Vinney：修改删除回复后导致页面减少显示不正常。删除后，退回board再进入文章显示第一页
           mCurrentPageNo = 1;
           mCurrentReadPageNo = 1;
+          //reloadPostListWithoutAlert();
       }
     });
   }
