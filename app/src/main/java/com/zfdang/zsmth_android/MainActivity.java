@@ -21,6 +21,7 @@ import android.os.Parcelable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.core.view.GravityCompat;
@@ -57,7 +58,7 @@ import com.zfdang.zsmth_android.listeners.ShakeListener;
 import com.zfdang.zsmth_android.models.Board;
 import com.zfdang.zsmth_android.models.Mail;
 import com.zfdang.zsmth_android.models.MailListContent;
-import com.zfdang.zsmth_android.models.PostListContent;
+//import com.zfdang.zsmth_android.models.PostListContent;
 import com.zfdang.zsmth_android.models.Topic;
 import com.zfdang.zsmth_android.newsmth.AjaxResponse;
 import com.zfdang.zsmth_android.newsmth.SMTHHelper;
@@ -122,24 +123,22 @@ public class MainActivity extends SMTHBaseActivity
     // Add Vinney Switch
     // fab.hide()
     //BottomNavigationView mBottomNavigationView = findViewById(R.id.bv_bottomNavigation);
-    if(Settings.getInstance().isLaunchBottomNavi()) {
+    if (Settings.getInstance().isLaunchBottomNavi()) {
       fab.hide();
       findViewById(R.id.bv_bottomNavigation).setVisibility(View.VISIBLE);
-    }
-    else
-    {
+    } else {
       fab.show();
       findViewById(R.id.bv_bottomNavigation).setVisibility(View.GONE);
     }
 
     mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-    setDrawerLeftEdgeSize (this, mDrawer, (float)0.15) ;//To support Mail Deletion
+    setDrawerLeftEdgeSize(this, mDrawer, (float) 0.15);//To support Mail Deletion
 
-    mDrawer.addDrawerListener(new ActionBarDrawerToggle(this,mDrawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+    mDrawer.addDrawerListener(new ActionBarDrawerToggle(this, mDrawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
       @Override
       public void onDrawerOpened(View drawerView) {
         //mNavigationView = (NavigationView) findViewById(R.id.nav_view);
-        Menu menu=((NavigationView) findViewById(R.id.nav_view)).getMenu();
+        Menu menu = ((NavigationView) findViewById(R.id.nav_view)).getMenu();
 
         menu.findItem(R.id.read_board1).setTitle(SMTHApplication.ReadBoard1);
         menu.findItem(R.id.read_board2).setTitle(SMTHApplication.ReadBoard2);
@@ -147,7 +146,7 @@ public class MainActivity extends SMTHBaseActivity
 
         super.onDrawerOpened(drawerView);
       }
-     });
+    });
 
     mToggle = new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
     //mDrawer.addDrawerListener(mToggle);
@@ -231,16 +230,15 @@ public class MainActivity extends SMTHBaseActivity
       }, 1000);
     }
 
+
     ShakeListener shakeListener = new ShakeListener(this);
-    shakeListener.setOnShakeListener(new ShakeListener.OnShakeListener(){
+    shakeListener.setOnShakeListener(new ShakeListener.OnShakeListener() {
       @Override
       public void onShake() {
-       // onVibrator(getApplicationContext());
+        // onVibrator(getApplicationContext());
         quitNow();
       }
-
     });
-
   }
 
   /*

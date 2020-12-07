@@ -48,6 +48,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
+import static androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE;
+
 /**
  * An activity representing a list of Topics. This activity
  * has different presentations for handset and tablet-size devices. On
@@ -179,7 +181,8 @@ public class BoardTopicActivity extends SMTHBaseActivity
       @Override
       public void onScrollStateChanged(@androidx.annotation.NonNull RecyclerView recyclerView, int newState) {
         super.onScrollStateChanged(recyclerView, newState);
-        mRecyclerView.getAdapter().notifyDataSetChanged();
+      //  if(newState == SCROLL_STATE_IDLE)
+      //  mRecyclerView.getAdapter().notifyDataSetChanged();
       }
       @Override
       public void onScrolled (RecyclerView recyclerView,int dx , int dy){

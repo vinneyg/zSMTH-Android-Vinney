@@ -36,6 +36,8 @@ import io.reactivex.schedulers.Schedulers;
 import java.util.List;
 import okhttp3.ResponseBody;
 
+import static androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE;
+
 /**
  * A fragment representing a list of Items.
  * <p/>
@@ -96,7 +98,8 @@ public class HotTopicFragment extends Fragment implements OnVolumeUpDownListener
         @Override
         public void onScrollStateChanged(@androidx.annotation.NonNull RecyclerView recyclerView, int newState) {
           super.onScrollStateChanged(recyclerView, newState);
-          mRecyclerView.getAdapter().notifyDataSetChanged();
+         // if(newState == SCROLL_STATE_IDLE)
+         // mRecyclerView.getAdapter().notifyDataSetChanged();
         }
         @Override
         public void onScrolled (RecyclerView recyclerView,int dx , int dy){

@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 import com.zfdang.SMTHApplication;
+import com.zfdang.multiple_images_selector.SelectorSettings;
 import com.zfdang.zsmth_android.listeners.EndlessRecyclerOnScrollListener;
 import com.zfdang.zsmth_android.listeners.OnMailInteractionListener;
 import com.zfdang.zsmth_android.listeners.OnVolumeUpDownListener;
@@ -268,15 +269,15 @@ public class MailListFragment extends Fragment implements OnVolumeUpDownListener
 
     if (currentPage >= MailListContent.totalPages) {
       // reach the last page, do nothing
-
-    //   if (!(MailListContent.MAILS.contains(".END."))) {
-
-          Log.d("Vinney","HELLO");
+       if (!(MailListContent.MAILS.get(MailListContent.MAILS.size()-1).isCategory&&MailListContent.MAILS.get(MailListContent.MAILS.size()-1).category.equals(".END."))) {
           Mail mail = new Mail(".END.");
           MailListContent.addItem(mail);
-          //recyclerView.getAdapter().notifyItemChanged(MailListContent.MAILS.size() - 1);
+         // recyclerView.getAdapter().notifyItemChanged(MailListContent.MAILS.size() - 1);
           return;
-
+         }
+         else {
+         return;
+       }
     }
 
     currentPage += 1;

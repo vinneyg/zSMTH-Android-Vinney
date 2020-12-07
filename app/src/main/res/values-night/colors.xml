@@ -21,8 +21,8 @@
 
   <color name="body_background_night">#000000</color>
   <color name="status_text_night">#ABC2DA</color>
-  <color name="blue_text_night">#FBA50E</color>
-
+  <color name="blue_text_night">#0077CC</color>
+  <!-- color name="blue_text_night">#FBA50E</color> -->
   <!--seperator指的是类别item-->
   <color name="recycler_view_seperator">#3a3b3e</color>
   <color name="recycler_view_item_normal">#000000</color>
