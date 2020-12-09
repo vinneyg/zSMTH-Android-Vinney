@@ -20,6 +20,8 @@ import com.zfdang.SMTHApplication;
 import com.zfdang.zsmth_android.helpers.ActivityUtils;
 import com.zfdang.zsmth_android.helpers.FileLess;
 import com.zfdang.zsmth_android.helpers.FileSizeUtil;
+import com.zfdang.zsmth_android.models.ComposePostContext;
+
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -60,6 +62,7 @@ public class MyPreferenceFragment extends PreferenceFragmentCompat {
   CheckBoxPreference topic_fwd_self; //Vinney
   CheckBoxPreference set_id_check; //Vinney
 
+  Preference app_feedback;
   Preference app_version;
 
   @Override public void onCreate(Bundle savedInstanceState) {
@@ -377,6 +380,19 @@ public class MyPreferenceFragment extends PreferenceFragmentCompat {
           bValue = boolVal;
         }
         Settings.getInstance().SetIdCheck(bValue);
+        return true;
+      }
+    });
+
+    app_feedback = findPreference("app_feedback");
+    app_feedback.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+      @Override public boolean onPreferenceClick(Preference preference) {
+        ComposePostContext postContext = new ComposePostContext();
+        postContext.setComposingMode(ComposePostContext.MODE_NEW_MAIL_TO_USER);
+        postContext.setPostAuthor("VINNEY");
+        Intent intent = new Intent(getActivity(), ComposePostActivity.class);
+        intent.putExtra(SMTHApplication.COMPOSE_POST_CONTEXT, postContext);
+        startActivity(intent);
         return true;
       }
     });
