@@ -85,7 +85,6 @@ public class ComposePostActivity extends SMTHBaseActivity {
       if (resultCode == RESULT_OK && data != null) {
         mPhotos = data.getStringArrayListExtra(SelectorSettings.SELECTOR_RESULTS);
         mAttachments.setText(String.format("共有%d个附件", mPhotos.size()));
-
         String attachments = "";
         for (int i = 0; i < mPhotos.size(); i++) {
           attachments += String.format(UPLOAD_TEMPLATE, i + 1);
@@ -317,6 +316,7 @@ public class ComposePostActivity extends SMTHBaseActivity {
     final String progressHint = "发表文章中(%d/%d)...";
     ComposePostActivity.totalSteps = 1;
     ComposePostActivity.currentStep = 1;
+
     if (mPhotos != null) {
       ComposePostActivity.totalSteps += mPhotos.size();
     }

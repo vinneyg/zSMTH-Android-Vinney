@@ -991,7 +991,8 @@ public class PostListActivity extends SMTHBaseActivity
         new PostActionAlertDialogItem(getString(R.string.post_delete_post), R.drawable.ic_delete_black_48dp), // 9
         new PostActionAlertDialogItem(getString(R.string.post_edit_post), R.drawable.ic_edit_black_48dp), // 10
         new PostActionAlertDialogItem(getString(R.string.post_convert_image), R.drawable.ic_photo_black_48dp), // 11
-        new PostActionAlertDialogItem(getString(R.string.post_reply_author),R.drawable.ic_arrow_upward_36dp), // 11
+        //new PostActionAlertDialogItem(getString(R.string.post_reply_author),R.drawable.ic_expand_less_36dp) // 11
+        new PostActionAlertDialogItem(getString(R.string.post_reply_author),R.drawable.ic_reply_black_48dp) // 11
         //Vinney add reply head author
     };
 
