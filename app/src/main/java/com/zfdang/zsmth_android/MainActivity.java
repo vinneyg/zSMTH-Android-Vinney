@@ -12,6 +12,8 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 //import android.content.res.ColorStateList;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.Point;
 
 import android.os.Build;
@@ -258,10 +260,22 @@ public class MainActivity extends SMTHBaseActivity
   private void initBottomNavigation() {
     BottomNavigationView mBottomNavigationView = findViewById(R.id.bv_bottomNavigation);
 
-    if (Settings.getInstance().isNightMode())
-    {
-      mBottomNavigationView.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark,getTheme()));
-    }
+    mBottomNavigationView.setItemIconTintList(null);
+    mBottomNavigationView.setItemTextAppearanceActive(R.style.bottom_selected_text);
+    mBottomNavigationView.setItemTextAppearanceInactive(R.style.bottom_normal_text);
+
+    int[][] states = new int[][]{
+            new int[]{-android.R.attr.state_checked},
+            new int[]{android.R.attr.state_checked}
+    };
+
+    int[] colors = new int[]{getResources().getColor(R.color.colorSecondaryText),
+            getResources().getColor(R.color.blue_text_night)
+    };
+    ColorStateList csl = new ColorStateList(states, colors);
+    mBottomNavigationView.setItemTextColor(csl);
+    mBottomNavigationView.setItemIconTintList(csl);
+
 
     mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
       @Override

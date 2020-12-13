@@ -379,7 +379,6 @@ public class MailListFragment extends Fragment implements OnVolumeUpDownListener
       }
 
       @Override public void onNext(@NonNull Mail mail) {
-        // Log.d(TAG, "onNext: " + mail.toString());
         MailListContent.addItem(mail);
         recyclerView.getAdapter().notifyItemChanged(MailListContent.MAILS.size() - 1);
       }
