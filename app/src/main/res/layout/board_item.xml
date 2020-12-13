@@ -38,4 +38,14 @@
       android:textColor="@color/status_text_night"
       android:textSize="@dimen/zsmth_font_size_medium"
       />
+  <TextView
+      android:id="@+id/BoardEngName"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/CategoryName"
+      android:text="engBoard"
+      android:gravity="right"
+      android:textColor="@color/status_text_night"
+      android:textSize="@dimen/zsmth_font_size_medium"
+      />
 </RelativeLayout>

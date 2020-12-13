@@ -42,19 +42,26 @@ public class BoardRecyclerViewAdapter extends RecyclerView.Adapter<BoardRecycler
       holder.mCategoryView.setText("[" + board.getCategoryName() + "]");
       holder.mModeratorView.setVisibility(View.GONE);
       holder.mNameView.setText(board.getFolderName());
+      holder.mEngNameView.setVisibility(View.GONE);
     } else if (board.isSection()) {
       holder.mCategoryView.setText("[" + board.getCategoryName() + "]");
       holder.mModeratorView.setVisibility(View.GONE);
       holder.mNameView.setText(board.getSectionName());
+      holder.mEngNameView.setVisibility(View.GONE);
     } else if(board.isBoard()){
       holder.mCategoryView.setText("[" + board.getCategoryName() + "]");
-      holder.mModeratorView.setVisibility(View.VISIBLE);
+      //holder.mModeratorView.setVisibility(View.VISIBLE);
+	  holder.mModeratorView.setVisibility(View.GONE);
       holder.mModeratorView.setText(board.getModerator());
-      holder.mNameView.setText(board.getBoardName());
+      //holder.mNameView.setText(board.getBoardName());
+      holder.mNameView.setText(board.getBoardChsName());
+      holder.mEngNameView.setText(board.getBoardEngName());
+      holder.mEngNameView.setVisibility(View.VISIBLE);
     } else if(board.isInvalid()) {
       holder.mCategoryView.setText("[" + board.getCategoryName() + "]");
       holder.mModeratorView.setVisibility(View.GONE);
       holder.mNameView.setText(board.getBoardName());
+      holder.mEngNameView.setVisibility(View.GONE);
     }
 
     holder.mView.setOnClickListener(new View.OnClickListener() {
@@ -139,12 +146,15 @@ public class BoardRecyclerViewAdapter extends RecyclerView.Adapter<BoardRecycler
     public final TextView mModeratorView;
     public final TextView mNameView;
 
+    public final TextView mEngNameView;
+
     public ViewHolder(View view) {
       super(view);
       mView = view;
       mCategoryView = (TextView) view.findViewById(R.id.CategoryName);
       mModeratorView = (TextView) view.findViewById(R.id.ModeratorID);
       mNameView = (TextView) view.findViewById(R.id.BoardName);
+      mEngNameView = (TextView) view.findViewById(R.id.BoardEngName);
     }
 
     @Override public String toString() {
