@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.graphics.Color;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,8 +55,12 @@ public class BoardTopicRecyclerViewAdapter extends RecyclerView.Adapter<BoardTop
       holder.mStatusRow.setVisibility(View.VISIBLE);
 
       holder.mTitle.setText(topic.getTitle());
+      holder.mAuthor.setText(topic.getAuthor());
+      holder.mReplier.setText(topic.getReplier());
+      holder.mPublishDate.setText(topic.getPublishDate());
+      holder.mReplyDate.setText(topic.getReplyDate());
+      holder.mStatusSummary.setText(topic.getStatusSummary());
 
-      //Vinney
       if(Settings.getInstance().isDiffReadTopic()) {
         if ((!SMTHApplication.ReadTopicLists.isEmpty()) && SMTHApplication.ReadTopicLists.contains(holder.mTopic.getTopicID())) {
           if (Settings.getInstance().isNightMode()) {
@@ -75,13 +80,7 @@ public class BoardTopicRecyclerViewAdapter extends RecyclerView.Adapter<BoardTop
           }
         }
       }
-      //
 
-      holder.mAuthor.setText(topic.getAuthor());
-      holder.mReplier.setText(topic.getReplier());
-      holder.mPublishDate.setText(topic.getPublishDate());
-      holder.mReplyDate.setText(topic.getReplyDate());
-      holder.mStatusSummary.setText(topic.getStatusSummary());
 
       if (topic.hasAttach()) {
         holder.mAttach.setVisibility(View.VISIBLE);
@@ -102,7 +101,7 @@ public class BoardTopicRecyclerViewAdapter extends RecyclerView.Adapter<BoardTop
         if (null != mListener) {
           // Notify the active callbacks interface (the activity, if the
           // fragment is attached to one) that an item has been selected.
-          mListener.onTopicFragmentInteraction(holder.mTopic);
+
           //Vinney
           if(Settings.getInstance().isDiffReadTopic()) {
             SMTHApplication.ReadTopicLists.add(holder.mTopic.getTopicID());
@@ -121,7 +120,7 @@ public class BoardTopicRecyclerViewAdapter extends RecyclerView.Adapter<BoardTop
               holder.mPublishDate.setTextColor(R.color.colorSecondaryText);
               holder.mStatusSummary.setTextColor(R.color.colorSecondaryText);
             }
-
+            mListener.onTopicFragmentInteraction(holder.mTopic);
           }
         }
       }

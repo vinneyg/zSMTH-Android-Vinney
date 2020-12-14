@@ -113,6 +113,7 @@ public class BoardTopicActivity extends SMTHBaseActivity
       onRefresh();
     }
     super.onBackPressed();
+    //mRecyclerView.getAdapter().notifyDataSetChanged();
 
     if(SMTHApplication.isValidUser()&&!Settings.getInstance().isUserOnline()) {
       Intent intent = new Intent(BoardTopicActivity.this, LoginActivity.class);
@@ -172,6 +173,8 @@ public class BoardTopicActivity extends SMTHBaseActivity
     mRecyclerView.setLayoutManager(linearLayoutManager);
     mRecyclerView.setAdapter(new BoardTopicRecyclerViewAdapter(TopicListContent.BOARD_TOPICS, this));
 
+    mRecyclerView.setItemViewCacheSize(40);
+
     // enable endless loading
     mScrollListener = new EndlessRecyclerOnScrollListener(linearLayoutManager) {
       @Override public void onLoadMore(int current_page) {
@@ -181,14 +184,15 @@ public class BoardTopicActivity extends SMTHBaseActivity
       @Override
       public void onScrollStateChanged(@androidx.annotation.NonNull RecyclerView recyclerView, int newState) {
         super.onScrollStateChanged(recyclerView, newState);
-      //  if(newState == SCROLL_STATE_IDLE)
+       if(newState == RecyclerView.SCROLL_STATE_IDLE)
         mRecyclerView.getAdapter().notifyDataSetChanged();
       }
+
       @Override
       public void onScrolled (RecyclerView recyclerView,int dx , int dy){
         super.onScrolled(recyclerView,dx,dy);
-        mRecyclerView.getAdapter().notifyDataSetChanged();
       }
+
     };
     mRecyclerView.addOnScrollListener(mScrollListener);
 
