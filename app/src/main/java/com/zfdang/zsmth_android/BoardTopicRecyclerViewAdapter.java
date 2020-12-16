@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.graphics.Color;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,13 +54,7 @@ public class BoardTopicRecyclerViewAdapter extends RecyclerView.Adapter<BoardTop
       holder.mStatusRow.setVisibility(View.VISIBLE);
 
       holder.mTitle.setText(topic.getTitle());
-      holder.mAuthor.setText(topic.getAuthor());
-      holder.mReplier.setText(topic.getReplier());
-      holder.mPublishDate.setText(topic.getPublishDate());
-      holder.mReplyDate.setText(topic.getReplyDate());
-      holder.mStatusSummary.setText(topic.getStatusSummary());
-
-      if(Settings.getInstance().isDiffReadTopic()) {
+      if (Settings.getInstance().isDiffReadTopic()) {
         if ((!SMTHApplication.ReadTopicLists.isEmpty()) && SMTHApplication.ReadTopicLists.contains(holder.mTopic.getTopicID())) {
           if (Settings.getInstance().isNightMode()) {
             holder.mTitle.setTextColor(Color.DKGRAY);
@@ -80,7 +73,13 @@ public class BoardTopicRecyclerViewAdapter extends RecyclerView.Adapter<BoardTop
           }
         }
       }
+      //
 
+      holder.mAuthor.setText(topic.getAuthor());
+      holder.mReplier.setText(topic.getReplier());
+      holder.mPublishDate.setText(topic.getPublishDate());
+      holder.mReplyDate.setText(topic.getReplyDate());
+      holder.mStatusSummary.setText(topic.getStatusSummary());
 
       if (topic.hasAttach()) {
         holder.mAttach.setVisibility(View.VISIBLE);
@@ -95,37 +94,38 @@ public class BoardTopicRecyclerViewAdapter extends RecyclerView.Adapter<BoardTop
       }
     }
 
-    holder.mView.setOnClickListener(new View.OnClickListener() {
-      @SuppressLint("ResourceAsColor")
-      @Override public void onClick(View v) {
-        if (null != mListener) {
-          // Notify the active callbacks interface (the activity, if the
-          // fragment is attached to one) that an item has been selected.
+      holder.mView.setOnClickListener(new View.OnClickListener() {
+        @SuppressLint("ResourceAsColor")
+        @Override
+        public void onClick(View v) {
+          if (null != mListener) {
+            // Notify the active callbacks interface (the activity, if the
+            // fragment is attached to one) that an item has been selected.
+          mListener.onTopicFragmentInteraction(holder.mTopic);
+            //Vinney
+            if (Settings.getInstance().isDiffReadTopic()) {
+              SMTHApplication.ReadTopicLists.add(holder.mTopic.getTopicID());
+              if (Settings.getInstance().isNightMode()) {
+                holder.mTitle.setTextColor(Color.DKGRAY);
+                holder.mAuthor.setTextColor(Color.DKGRAY);
+                holder.mReplier.setTextColor(Color.DKGRAY);
+                holder.mReplyDate.setTextColor(Color.DKGRAY);
+                holder.mPublishDate.setTextColor(Color.DKGRAY);
+                holder.mStatusSummary.setTextColor(Color.DKGRAY);
+              } else {
+                holder.mTitle.setTextColor(R.color.colorSecondaryText);
+                holder.mAuthor.setTextColor(R.color.colorSecondaryText);
+                holder.mReplier.setTextColor(R.color.colorSecondaryText);
+                holder.mReplyDate.setTextColor(R.color.colorSecondaryText);
+                holder.mPublishDate.setTextColor(R.color.colorSecondaryText);
+                holder.mStatusSummary.setTextColor(R.color.colorSecondaryText);
+              }
 
-          //Vinney
-          if(Settings.getInstance().isDiffReadTopic()) {
-            SMTHApplication.ReadTopicLists.add(holder.mTopic.getTopicID());
-            if (Settings.getInstance().isNightMode()) {
-              holder.mTitle.setTextColor(Color.DKGRAY);
-              holder.mAuthor.setTextColor(Color.DKGRAY);
-              holder.mReplier.setTextColor(Color.DKGRAY);
-              holder.mReplyDate.setTextColor(Color.DKGRAY);
-              holder.mPublishDate.setTextColor(Color.DKGRAY);
-              holder.mStatusSummary.setTextColor(Color.DKGRAY);
-            } else {
-              holder.mTitle.setTextColor(R.color.colorSecondaryText);
-              holder.mAuthor.setTextColor(R.color.colorSecondaryText);
-              holder.mReplier.setTextColor(R.color.colorSecondaryText);
-              holder.mReplyDate.setTextColor(R.color.colorSecondaryText);
-              holder.mPublishDate.setTextColor(R.color.colorSecondaryText);
-              holder.mStatusSummary.setTextColor(R.color.colorSecondaryText);
             }
-            mListener.onTopicFragmentInteraction(holder.mTopic);
           }
         }
-      }
-    });
-  }
+      });
+    }
 
   @Override public int getItemCount() {
     return mTopics.size();

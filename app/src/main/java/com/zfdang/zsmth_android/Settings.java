@@ -526,6 +526,21 @@ public class Settings {
     }
   }
 
+  private static final String left_nav_slide = "left_nav_slide";
+  private boolean bLeftNavSlide;
+
+  public boolean isLeftNavSlide() {
+    return bLeftNavSlide;
+  }
+
+  public void setLeftNavSlide(boolean bLeftNavSlide) {
+    if (this.bLeftNavSlide != bLeftNavSlide) {
+      this.bLeftNavSlide = bLeftNavSlide;
+      mEditor.putBoolean(left_nav_slide, this.bLeftNavSlide);
+      mEditor.commit();
+    }
+  }
+
   private final String Preference_Name = "ZSMTH_Config";
 
   private SharedPreferences mPreference;
@@ -599,5 +614,7 @@ public class Settings {
     bThread = mPreference.getBoolean(Target_Thread,false);
     bRef = mPreference.getBoolean(Target_Ref,false);
     bAtt =mPreference.getBoolean(Target_Att,false);
+
+    bLeftNavSlide =mPreference.getBoolean(left_nav_slide,false);
   }
 }

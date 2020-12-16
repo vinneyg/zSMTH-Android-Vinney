@@ -62,6 +62,8 @@ public class MyPreferenceFragment extends PreferenceFragmentCompat {
   CheckBoxPreference topic_fwd_self; //Vinney
   CheckBoxPreference set_id_check; //Vinney
 
+  CheckBoxPreference set_left_nav_slide;
+
   Preference app_feedback;
   Preference app_version;
 
@@ -380,6 +382,27 @@ public class MyPreferenceFragment extends PreferenceFragmentCompat {
           bValue = boolVal;
         }
         Settings.getInstance().SetIdCheck(bValue);
+        return true;
+      }
+    });
+
+    set_left_nav_slide = (CheckBoxPreference) findPreference("left_nav_slide");
+    set_left_nav_slide.setChecked(Settings.getInstance().isLeftNavSlide());
+    set_left_nav_slide.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+      @Override public boolean onPreferenceChange(Preference preference, Object newValue) {
+        boolean bValue = Settings.getInstance().isLeftNavSlide();
+        if (newValue instanceof Boolean) {
+          Boolean boolVal = (Boolean) newValue;
+          bValue = boolVal;
+        }
+        Settings.getInstance().setLeftNavSlide(bValue);
+        Activity activity = getActivity();
+        if (activity != null) {
+          Intent intent = new Intent(activity.getApplicationContext(), MainActivity.class);
+          intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+          startActivity(intent);
+          activity.finish();
+        }
         return true;
       }
     });

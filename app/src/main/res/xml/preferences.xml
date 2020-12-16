@@ -17,6 +17,12 @@
 
   <PreferenceCategory android:title="程序设置">
     <CheckBoxPreference
+        android:defaultValue="off"
+        android:key="left_nav_slide"
+        android:summaryOff="左侧边缘右滑出"
+        android:summaryOn="全屏右滑出"
+        android:title="左侧导航栏滑动设置"/>
+    <CheckBoxPreference
         android:defaultValue="on"
         android:key="launch_bottom_navi"
         android:summaryOff="ZPad"

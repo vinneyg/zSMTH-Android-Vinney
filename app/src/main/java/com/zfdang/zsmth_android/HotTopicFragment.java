@@ -93,22 +93,26 @@ public class HotTopicFragment extends Fragment implements OnVolumeUpDownListener
       mRecyclerView.setLayoutManager(new WrapContentLinearLayoutManager(context));
       mRecyclerView.setItemAnimator(new DefaultItemAnimator());
       mRecyclerView.setAdapter(new HotTopicRecyclerViewAdapter(TopicListContent.HOT_TOPICS, mListener));
+      mRecyclerView.setItemViewCacheSize(40);
 
-      mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-        @Override
-        public void onScrollStateChanged(@androidx.annotation.NonNull RecyclerView recyclerView, int newState) {
-          super.onScrollStateChanged(recyclerView, newState);
-         // if(newState == SCROLL_STATE_IDLE)
-          mRecyclerView.getAdapter().notifyDataSetChanged();
-        }
+
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+          @Override
+          public void onScrollStateChanged(@androidx.annotation.NonNull RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+            if (newState == SCROLL_STATE_IDLE)
+              mRecyclerView.getAdapter().notifyDataSetChanged();
+          }
+
         @Override
         public void onScrolled (RecyclerView recyclerView,int dx , int dy){
           super.onScrolled(recyclerView,dx,dy);
-          mRecyclerView.getAdapter().notifyDataSetChanged();
+         // mRecyclerView.getAdapter().notifyDataSetChanged();
         }
-      });
 
-    }
+        });
+      }
+
 
     getActivity().setTitle(SMTHApplication.App_Title_Prefix + "首页导读");
 
