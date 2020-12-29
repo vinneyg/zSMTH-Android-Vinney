@@ -100,8 +100,10 @@ public class HotTopicFragment extends Fragment implements OnVolumeUpDownListener
           @Override
           public void onScrollStateChanged(@androidx.annotation.NonNull RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
+            /*
             if (newState == SCROLL_STATE_IDLE)
               mRecyclerView.getAdapter().notifyDataSetChanged();
+          */
           }
 
         @Override

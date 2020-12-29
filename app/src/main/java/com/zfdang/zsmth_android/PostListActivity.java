@@ -789,12 +789,12 @@ public class PostListActivity extends SMTHBaseActivity
     // Log.d("Vinney", SMTHApplication.activeUser.getId());
 
     if(SMTHApplication.isValidUser()&&!Settings.getInstance().isUserOnline() && !SMTHApplication.deletionPost) {
-      Log.d("VINNEY","HELLO1");
+      //Log.d("VINNEY","HELLO1");
       Intent intent = new Intent(PostListActivity.this, LoginActivity.class);
       startActivityForResult(intent, MainActivity.LOGIN_ACTIVITY_REQUEST_CODE);
     } else if(SMTHApplication.deletionPost)
     {
-      Log.d("VINNEY","HELLO2");
+    //  Log.d("VINNEY","HELLO2");
 
       if (mRecyclerView.isComputingLayout()) {
         mRecyclerView.post(new Runnable() {
@@ -805,7 +805,7 @@ public class PostListActivity extends SMTHBaseActivity
         });
       } else {
 
-        Log.d("VINNEY","HELLO3");
+     //   Log.d("VINNEY","HELLO3");
         reloadPostList();
       }
       SMTHApplication.deletionPost = false;

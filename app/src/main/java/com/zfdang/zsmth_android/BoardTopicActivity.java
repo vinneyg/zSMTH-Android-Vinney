@@ -182,13 +182,16 @@ public class BoardTopicActivity extends SMTHBaseActivity
         loadMoreItems();
       }
 
+
       @Override
       public void onScrollStateChanged(@androidx.annotation.NonNull RecyclerView recyclerView, int newState) {
         super.onScrollStateChanged(recyclerView, newState);
+        /*
        if(newState == RecyclerView.SCROLL_STATE_IDLE)
         mRecyclerView.getAdapter().notifyDataSetChanged();
-      }
 
+         */
+      }
       /*
       @Override
       public void onScrolled (RecyclerView recyclerView,int dx , int dy){
