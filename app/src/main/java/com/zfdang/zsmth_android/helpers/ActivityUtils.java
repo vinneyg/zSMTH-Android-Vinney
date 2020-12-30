@@ -57,7 +57,8 @@ public class ActivityUtils {
 
     // web URL link
     Link weburl = new Link(Regex.WEB_URL_PATTERN);
-    weburl.setTextColor(Color.parseColor("#00BCD4"));
+    //weburl.setTextColor(Color.parseColor("#00BCD4"));
+    weburl.setTextColor(Color.parseColor("#607D8B"));
     weburl.setHighlightAlpha(.4f);
     weburl.setOnClickListener(new Link.OnClickListener() {
       @Override public void onClick(String clickedText) {
@@ -82,7 +83,8 @@ public class ActivityUtils {
 
     // email link
     Link emaillink = new Link(Regex.EMAIL_ADDRESS_PATTERN);
-    emaillink.setTextColor(Color.parseColor("#00BCD4"));
+    //emaillink.setTextColor(Color.parseColor("#00BCD4"));
+    emaillink.setTextColor(Color.parseColor("#607D8B"));
     emaillink.setHighlightAlpha(.4f);
     emaillink.setOnClickListener(new Link.OnClickListener() {
       @Override public void onClick(String clickedText) {
