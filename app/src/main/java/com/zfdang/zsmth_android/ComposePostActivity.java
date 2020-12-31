@@ -6,9 +6,13 @@ import android.os.Bundle;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.ActionMode;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +28,7 @@ import com.zfdang.multiple_images_selector.SelectorSettings;
 import com.zfdang.zsmth_android.helpers.KeyboardLess;
 import com.zfdang.zsmth_android.helpers.StringUtils;
 import com.zfdang.zsmth_android.models.ComposePostContext;
+import com.zfdang.zsmth_android.models.PostListContent;
 import com.zfdang.zsmth_android.newsmth.AjaxResponse;
 import com.zfdang.zsmth_android.newsmth.SMTHHelper;
 import io.reactivex.Observable;
@@ -79,6 +84,7 @@ public class ComposePostActivity extends SMTHBaseActivity {
     // start the selector
     startActivityForResult(intent, REQUEST_CODE);
   }
+
 
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     if (requestCode == REQUEST_CODE) {
@@ -144,6 +150,9 @@ public class ComposePostActivity extends SMTHBaseActivity {
         mContentCount.setText(String.format("文章字数:%d", s.length()));
       }
     });
+
+    mContent.setLongClickable(false);
+    mTitle.setLongClickable(false);
 
     // init controls from Intent
     initFromIntent();
@@ -452,4 +461,5 @@ public class ComposePostActivity extends SMTHBaseActivity {
         .create()
         .show();
   }
+
 }
