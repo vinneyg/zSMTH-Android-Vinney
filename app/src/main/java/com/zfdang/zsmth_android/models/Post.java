@@ -384,6 +384,20 @@ public class Post {
       }
 
       // handle quoted content
+      if (line.contains("的大作中提到:")) {
+        // line = "<font color=#00b4ae>" + line + "</font>";
+        line = "<font color=#727272>" + line + "</font>";
+        sb.append(line).append("<br />");
+        continue;
+      }
+      // handle quoted content
+      if (line.contains("的来信中提到:")) {
+        // line = "<font color=#00b4ae>" + line + "</font>";
+        line = "<font color=#727272>" + line + "</font>";
+        sb.append(line).append("<br />");
+        continue;
+      }
+      // handle quoted content
       if (line.startsWith(":")) {
        // line = "<font color=#00b4ae>" + line + "</font>";
         line = "<font color=#727272>" + line + "</font>";

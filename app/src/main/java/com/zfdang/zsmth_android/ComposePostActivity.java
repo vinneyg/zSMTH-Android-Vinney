@@ -150,10 +150,7 @@ public class ComposePostActivity extends SMTHBaseActivity {
         mContentCount.setText(String.format("文章字数:%d", s.length()));
       }
     });
-
-    mContent.setLongClickable(false);
-    mTitle.setLongClickable(false);
-
+    
     // init controls from Intent
     initFromIntent();
 
