@@ -1,5 +1,5 @@
 <resources>
-  <string name="app_name">zSMTH</string>
+  <string name="app_name">zSMTH-v</string>
 
   <string name="navigation_drawer_open">打开侧边导航栏</string>
   <string name="navigation_drawer_close">关闭侧边导航栏</string>

@@ -65,7 +65,7 @@ public class SMTHApplication extends Application {
   public static int ReadBoardCount = 0;
 
   public static  boolean deletionPost = false;
-
+  public static  int deletionCount = 0;
 
   // IP database
   public static GEODatabase geoDB;

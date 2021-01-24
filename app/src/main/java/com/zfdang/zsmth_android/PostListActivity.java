@@ -644,9 +644,10 @@ public class PostListActivity extends SMTHBaseActivity
             mPageNo.setText(String.format("%d", mCurrentPageNo));
             mCurrentReadPageNo = mCurrentPageNo;
             clearLoadingHints();
+            SMTHApplication.deletionCount++;
 
             //Special User OFFLINE case: [] or [Category 第一页:]
-            if(PostListContent.POSTS.size() == 0 ) {
+            if(PostListContent.POSTS.size() == 0) {
                 //Toast.makeText(SMTHApplication.getAppContext(),"请重新登录-"+ PostListContent.POSTS.size()+"-!",Toast.LENGTH_LONG).show();
                 PostListContent.clear();
                 try {
@@ -694,12 +695,7 @@ public class PostListActivity extends SMTHBaseActivity
               }
 
               @Override public void onNext(@NonNull Post post) {
-                // Log.d(TAG, post.toString());
-
-               //
-
                 String temp = post.getPosition();
-               // Log.d("Vinney",temp);
                 int Index =0;
                 if (temp.equals("楼主")) {
                   Index = 0;
@@ -786,15 +782,18 @@ public class PostListActivity extends SMTHBaseActivity
   @Override public void onBackPressed() {
 
     super.onBackPressed();
-    // Log.d("Vinney", SMTHApplication.activeUser.getId());
 
     if(SMTHApplication.isValidUser()&&!Settings.getInstance().isUserOnline() && !SMTHApplication.deletionPost) {
-      //Log.d("VINNEY","HELLO1");
-      Intent intent = new Intent(PostListActivity.this, LoginActivity.class);
-      startActivityForResult(intent, MainActivity.LOGIN_ACTIVITY_REQUEST_CODE);
+        if(SMTHApplication.deletionCount < 2) {
+          Intent intent = new Intent(PostListActivity.this, LoginActivity.class);
+          startActivityForResult(intent, MainActivity.LOGIN_ACTIVITY_REQUEST_CODE);
+        }else {
+          SMTHApplication.deletionCount = 0;
+          BoardTopicActivity.getInstance().RefreshBoardTopicFromPageOne();
+        }
+
     } else if(SMTHApplication.deletionPost)
     {
-    //  Log.d("VINNEY","HELLO2");
 
       if (mRecyclerView.isComputingLayout()) {
         mRecyclerView.post(new Runnable() {
@@ -804,12 +803,11 @@ public class PostListActivity extends SMTHBaseActivity
           }
         });
       } else {
-
-     //   Log.d("VINNEY","HELLO3");
         reloadPostList();
       }
       SMTHApplication.deletionPost = false;
     }
+
   }
 
   @SuppressLint("NonConstantResourceId")

@@ -147,9 +147,12 @@ public class BoardTopicActivity extends SMTHBaseActivity
   }
 
 
+  private static BoardTopicActivity mActivity1 = null;
+
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     SwipeBackHelper.onCreate(this);
+    mActivity1  = this;
 
     setContentView(R.layout.activity_board_topic);
 
@@ -243,6 +246,14 @@ public class BoardTopicActivity extends SMTHBaseActivity
       // only load boards on the first time
       RefreshBoardTopicsWithoutClear();
     }
+  }
+
+
+  public static BoardTopicActivity getInstance () {
+    if (mActivity1 != null) {
+      return mActivity1;
+    }
+    return null;
   }
 
   public void updateTitle() {
