@@ -158,10 +158,22 @@ public class MainActivity extends SMTHBaseActivity
     mToggle.syncState();
     //Vinney Full Screen Drawer
 
+    int[][] states = new int[][]{
+            new int[]{-android.R.attr.state_checked},
+            new int[]{android.R.attr.state_checked}
+    };
+
+    int[] colors = new int[]{getResources().getColor(R.color.colorPrimary),
+            getResources().getColor(R.color.status_text_night)
+    };
+    ColorStateList csl = new ColorStateList(states, colors);
+
+
     mNavigationView = (NavigationView) findViewById(R.id.nav_view);
     mNavigationView.setNavigationItemSelectedListener(this);
+    mNavigationView.setItemTextColor(csl);
+    mNavigationView.setItemIconTintList(csl);
     mNavigationView.setCheckedItem(R.id.nav_guidance);
-
 
     // http://stackoverflow.com/questions/33161345/android-support-v23-1-0-update-breaks-navigationview-get-find-header
     View headerView = mNavigationView.getHeaderView(0);
@@ -272,8 +284,8 @@ public class MainActivity extends SMTHBaseActivity
             new int[]{android.R.attr.state_checked}
     };
 
-    int[] colors = new int[]{getResources().getColor(R.color.colorSecondaryText),
-            getResources().getColor(R.color.blue_text_night)
+    int[] colors = new int[]{getResources().getColor(R.color.status_text_night),
+            getResources().getColor(R.color.colorPrimary)
     };
     ColorStateList csl = new ColorStateList(states, colors);
     mBottomNavigationView.setItemTextColor(csl);

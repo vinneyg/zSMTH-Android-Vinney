@@ -49,7 +49,7 @@
         android:gravity="left"
         android:paddingLeft="2dp"
         android:text="boardName"
-        android:textColor="@color/blue_text_night"
+        android:textColor="@color/colorPrimary"
         />
   </LinearLayout>
 
@@ -61,7 +61,7 @@
       android:gravity="right"
       android:paddingRight="8dp"
       android:text="Author"
-      android:textColor="@color/blue_text_night"
+      android:textColor="@color/colorPrimary"
       />
 
 </RelativeLayout>

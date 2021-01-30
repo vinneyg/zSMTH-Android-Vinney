@@ -126,7 +126,8 @@ public class MailListFragment extends Fragment implements OnVolumeUpDownListener
     btLike.setOnClickListener(this);
 
     colorNormal = getResources().getColor(R.color.status_text_night);
-    colorBlue = getResources().getColor(R.color.blue_text_night);
+    //colorBlue = getResources().getColor(R.color.blue_text_night);
+    colorBlue = getResources().getColor(R.color.colorPrimary);
 
     if (MailListContent.MAILS.size() == 0) {
       LoadMailsFromBeginning();

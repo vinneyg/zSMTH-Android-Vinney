@@ -70,7 +70,7 @@
               android:layout_height="wrap_content"
               android:layout_marginLeft="10dp"
               android:text=""
-              android:textColor="@color/blue_text_night"
+              android:textColor="@color/colorPrimary"
               />
         </TableRow>
 
