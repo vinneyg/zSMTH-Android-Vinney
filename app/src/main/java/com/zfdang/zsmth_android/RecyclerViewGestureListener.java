@@ -8,7 +8,9 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Toast;
 
+import com.zfdang.SMTHApplication;
 import com.zfdang.zsmth_android.helpers.RecyclerViewUtil;
 
 /**
@@ -19,11 +21,15 @@ public class RecyclerViewGestureListener extends GestureDetector.SimpleOnGesture
 
   public interface OnItemLongClickListener {
     boolean onItemLongClicked(int position, View v);
+    boolean onItemLeftClicked(int position, View v);
+    boolean onItemRightClicked(int position, View v);
   }
 
   private OnItemLongClickListener mListener;
   private RecyclerView recyclerView;
   private int mScreenHeight;
+  private int mScreenWidth;
+
 
   public RecyclerViewGestureListener() {
   }
@@ -34,8 +40,9 @@ public class RecyclerViewGestureListener extends GestureDetector.SimpleOnGesture
 
     WindowManager wm = (WindowManager) this.recyclerView.getContext().getSystemService(Context.WINDOW_SERVICE);
     mScreenHeight = wm.getDefaultDisplay().getHeight();
+    mScreenWidth = wm.getDefaultDisplay().getWidth();
   }
-
+/*
   @Override public boolean onSingleTapUp(MotionEvent e) {
     int touchY = (int) e.getRawY();
     //        Log.d("Gesture", "onSingleTapUp: " + String.format("%d / %d = %f", touchY, mScreenHeight, touchY * 1.0 / mScreenHeight));
@@ -50,6 +57,7 @@ public class RecyclerViewGestureListener extends GestureDetector.SimpleOnGesture
     return super.onSingleTapUp(e);
   }
 
+  */
   @Override public void onLongPress(MotionEvent e) {
     float x = e.getRawX();
     float y = e.getRawY();
@@ -65,5 +73,28 @@ public class RecyclerViewGestureListener extends GestureDetector.SimpleOnGesture
     }
 
     super.onLongPress(e);
+  }
+
+  @Override
+  public boolean onSingleTapConfirmed(MotionEvent e) {
+    float x = e.getRawX();
+    float y = e.getRawY();
+
+    int[] location = new int[2];
+    recyclerView.getLocationOnScreen(location);
+
+    View targetView = recyclerView.findChildViewUnder(x - location[0], y - location[1]);
+    int position = recyclerView.getChildAdapterPosition(targetView);
+
+    //        Log.d("Gesture", "onLongPress: " + String.format("position = %d", position));
+    if (mListener != null) {
+
+      if (x < 0.2 * mScreenWidth) {
+        mListener.onItemLeftClicked(position,targetView);
+      } else if (x > 0.8 * mScreenWidth) {
+        mListener.onItemRightClicked(position,targetView);
+      }
+    }
+      return super.onSingleTapConfirmed(e);
   }
 }
