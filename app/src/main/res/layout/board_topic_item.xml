@@ -52,7 +52,7 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_weight="1"
-          android:paddingLeft="2dp"
+          android:paddingLeft="-4dp"
           android:text="作者"
           android:textColor="@color/colorPrimary"
           />
@@ -109,7 +109,7 @@
         android:id="@+id/topic_status_summary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="9dp"
+        android:paddingLeft="3dp"
         android:text="Like: +15, 分数： -15; 回帖数: 129"
         android:textColor="@color/colorPrimary"
         />

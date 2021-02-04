@@ -58,9 +58,9 @@ public class HotTopicRecyclerViewAdapter extends RecyclerView.Adapter<HotTopicRe
         if ((!SMTHApplication.ReadTopicLists.isEmpty()) && SMTHApplication.ReadTopicLists.contains(holder.mItem.getTopicID())) {
          Log.d("Vinney",holder.mItem.getTopicID());
           if (Settings.getInstance().isNightMode()) {
-            holder.mTopicTitle.setTextColor(Color.DKGRAY);
-            holder.mBoardName.setTextColor(Color.DKGRAY);
-            holder.mReplyCount.setTextColor(Color.DKGRAY);
+            holder.mTopicTitle.setTextColor(Color.GRAY);
+            holder.mBoardName.setTextColor(Color.GRAY);
+            holder.mReplyCount.setTextColor(Color.GRAY);
           } else {
             holder.mTopicTitle.setTextColor(R.color.colorSecondaryText);
             holder.mBoardName.setTextColor(R.color.colorSecondaryText);
@@ -85,9 +85,9 @@ public class HotTopicRecyclerViewAdapter extends RecyclerView.Adapter<HotTopicRe
           if (Settings.getInstance().isDiffReadTopic()) {
             SMTHApplication.ReadTopicLists.add(holder.mItem.getTopicID());
             if (Settings.getInstance().isNightMode()) {
-              holder.mTopicTitle.setTextColor(Color.DKGRAY);
-              holder.mBoardName.setTextColor(Color.DKGRAY);
-              holder.mReplyCount.setTextColor(Color.DKGRAY);
+              holder.mTopicTitle.setTextColor(Color.GRAY);
+              holder.mBoardName.setTextColor(Color.GRAY);
+              holder.mReplyCount.setTextColor(Color.GRAY);
             } else {
               holder.mTopicTitle.setTextColor(R.color.colorSecondaryText);
               holder.mBoardName.setTextColor(R.color.colorSecondaryText);

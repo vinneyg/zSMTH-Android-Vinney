@@ -57,12 +57,12 @@ public class BoardTopicRecyclerViewAdapter extends RecyclerView.Adapter<BoardTop
       if (Settings.getInstance().isDiffReadTopic()) {
         if ((!SMTHApplication.ReadTopicLists.isEmpty()) && SMTHApplication.ReadTopicLists.contains(holder.mTopic.getTopicID())) {
           if (Settings.getInstance().isNightMode()) {
-            holder.mTitle.setTextColor(Color.DKGRAY);
-            holder.mAuthor.setTextColor(Color.DKGRAY);
-            holder.mReplier.setTextColor(Color.DKGRAY);
-            holder.mReplyDate.setTextColor(Color.DKGRAY);
-            holder.mPublishDate.setTextColor(Color.DKGRAY);
-            holder.mStatusSummary.setTextColor(Color.DKGRAY);
+            holder.mTitle.setTextColor(Color.GRAY);
+            holder.mAuthor.setTextColor(Color.GRAY);
+            holder.mReplier.setTextColor(Color.GRAY);
+            holder.mReplyDate.setTextColor(Color.GRAY);
+            holder.mPublishDate.setTextColor(Color.GRAY);
+            holder.mStatusSummary.setTextColor(Color.GRAY);
           } else {
             holder.mTitle.setTextColor(R.color.colorSecondaryText);
             holder.mAuthor.setTextColor(R.color.colorSecondaryText);
@@ -106,12 +106,12 @@ public class BoardTopicRecyclerViewAdapter extends RecyclerView.Adapter<BoardTop
             if (Settings.getInstance().isDiffReadTopic()) {
               SMTHApplication.ReadTopicLists.add(holder.mTopic.getTopicID());
               if (Settings.getInstance().isNightMode()) {
-                holder.mTitle.setTextColor(Color.DKGRAY);
-                holder.mAuthor.setTextColor(Color.DKGRAY);
-                holder.mReplier.setTextColor(Color.DKGRAY);
-                holder.mReplyDate.setTextColor(Color.DKGRAY);
-                holder.mPublishDate.setTextColor(Color.DKGRAY);
-                holder.mStatusSummary.setTextColor(Color.DKGRAY);
+                holder.mTitle.setTextColor(Color.GRAY);
+                holder.mAuthor.setTextColor(Color.GRAY);
+                holder.mReplier.setTextColor(Color.GRAY);
+                holder.mReplyDate.setTextColor(Color.GRAY);
+                holder.mPublishDate.setTextColor(Color.GRAY);
+                holder.mStatusSummary.setTextColor(Color.GRAY);
               } else {
                 holder.mTitle.setTextColor(R.color.colorSecondaryText);
                 holder.mAuthor.setTextColor(R.color.colorSecondaryText);
