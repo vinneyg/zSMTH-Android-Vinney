@@ -224,7 +224,7 @@ public class Post {
 
           String origVideoSrc = a.attr("href");
 
-        //  Log.d("Vinney-Attach",attachName +"$"+SMTHHelper.preprocessSMTHImageURL(origVideoSrc));
+         // Log.d("Vinney-Attach",attachName +"$"+SMTHHelper.preprocessSMTHImageURL(origVideoSrc));
           Attachment attach = new Attachment(origVideoSrc);
           this.addAttachVideoFile(attach);
         } else {

@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.util.Log;
+import android.widget.Toast;
+
 import com.zfdang.SMTHApplication;
 import com.zfdang.devicemodeltomarketingname.DeviceMarketingName;
 

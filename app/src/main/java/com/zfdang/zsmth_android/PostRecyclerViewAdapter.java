@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.net.Uri;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -57,7 +58,8 @@ public class PostRecyclerViewAdapter extends RecyclerView.Adapter<PostRecyclerVi
       // contentView is always available, we don't have to inflate it again
       ContentSegment content = contents.get(0);
 
-      if (content.getSpanned().toString().contains("mp4") && content.getSpanned().toString().contains("附件")) { //Video
+      if (content.getSpanned().toString().contains("mp4") && content.getSpanned().toString().contains("附件")
+      && !(content.getSpanned().toString().contains(": 附件"))){ //Video
         List<Attachment> attaches = post.getAttachVideoFiles();
         for (int i = 0; i < attaches.size(); i++) {
           Attachment attach = attaches.get(i);
