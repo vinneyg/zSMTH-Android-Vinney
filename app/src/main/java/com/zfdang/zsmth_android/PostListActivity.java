@@ -1095,6 +1095,28 @@ public class PostListActivity extends SMTHBaseActivity
     return true;
   }
 
+  public boolean onItemBottomClicked(final int position, View v) {
+    //goToNextPage();
+    LinearLayoutManager manager = (LinearLayoutManager) mRecyclerView.getLayoutManager();
+
+        //LastItemPosition
+    int lastVisiblePos = manager.findLastVisibleItemPosition();
+    int totalItemCount = manager.getItemCount();
+    if(lastVisiblePos <= totalItemCount-1 )
+    mRecyclerView.scrollToPosition(lastVisiblePos+1);
+
+    return true;
+  }
+
+  public boolean onItemTopClicked(final int position, View v) {
+    LinearLayoutManager manager = (LinearLayoutManager) mRecyclerView.getLayoutManager();
+
+    //LastItemPosition
+    int FirstVisiblePos = manager.findFirstVisibleItemPosition();
+    if(FirstVisiblePos > 1 )
+      mRecyclerView.scrollToPosition(FirstVisiblePos-1);
+    return true;
+  }
   private void onPostPopupMenuItem(int position, int which) {
     //        Log.d(TAG, String.format("MenuItem %d was clicked", which));
     if (position >= PostListContent.POSTS.size()) {

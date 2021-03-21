@@ -23,6 +23,8 @@ public class RecyclerViewGestureListener extends GestureDetector.SimpleOnGesture
     boolean onItemLongClicked(int position, View v);
     boolean onItemLeftClicked(int position, View v);
     boolean onItemRightClicked(int position, View v);
+    boolean onItemBottomClicked(int position, View v);
+    boolean onItemTopClicked(int position, View v);
   }
 
   private OnItemLongClickListener mListener;
@@ -93,7 +95,12 @@ public class RecyclerViewGestureListener extends GestureDetector.SimpleOnGesture
         mListener.onItemLeftClicked(position,targetView);
       } else if (x > 0.8 * mScreenWidth) {
         mListener.onItemRightClicked(position,targetView);
+      } else if (y < 0.4 * mScreenHeight){
+        mListener.onItemTopClicked(position,targetView);
+      } else if (y > 0.6 * mScreenHeight){
+        mListener.onItemBottomClicked(position,targetView);
       }
+
     }
       return super.onSingleTapConfirmed(e);
   }
