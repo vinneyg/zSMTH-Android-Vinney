@@ -91,13 +91,13 @@ public class RecyclerViewGestureListener extends GestureDetector.SimpleOnGesture
     //        Log.d("Gesture", "onLongPress: " + String.format("position = %d", position));
     if (mListener != null) {
 
-      if (x < 0.2 * mScreenWidth) {
+      if (x < 0.15 * mScreenWidth) {
         mListener.onItemLeftClicked(position,targetView);
-      } else if (x > 0.8 * mScreenWidth) {
+      } else if (x > 0.85 * mScreenWidth) {
         mListener.onItemRightClicked(position,targetView);
-      } else if (y < 0.4 * mScreenHeight){
+      } else if (y < 0.3 * mScreenHeight){
         mListener.onItemTopClicked(position,targetView);
-      } else if (y > 0.6 * mScreenHeight){
+      } else if (y > 0.7 * mScreenHeight){
         mListener.onItemBottomClicked(position,targetView);
       }
 
