@@ -5,14 +5,14 @@
     "kind": "Directory"
   },
   "applicationId": "com.zfdang.zsmth_android",
-  "variantName": "processReleaseResources",
+  "variantName": "release",
   "elements": [
     {
       "type": "SINGLE",
       "filters": [],
-      "versionCode": 168,
-      "versionName": "2021.04.19",
-      "outputFile": "zSMTH-v-release-v2021.04.19-168.apk"
+      "versionCode": 169,
+      "versionName": "2021.05.19",
+      "outputFile": "zSMTH-v-release-v2021.05.19-169.apk"
     }
   ]
 }

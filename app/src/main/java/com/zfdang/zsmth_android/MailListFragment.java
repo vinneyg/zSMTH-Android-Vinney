@@ -3,13 +3,13 @@ package com.zfdang.zsmth_android;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
+//import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import android.text.TextUtils;
-import android.util.Log;
+//import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -48,7 +48,7 @@ import io.reactivex.schedulers.Schedulers;
  * Activities containing this fragment MUST implement the {@link OnMailInteractionListener}
  * interface.
  */
-public class MailListFragment extends Fragment implements OnVolumeUpDownListener, View.OnClickListener {
+public class MailListFragment extends androidx.fragment.app.Fragment implements OnVolumeUpDownListener, View.OnClickListener {
 
   private static final String TAG = "MailListFragment";
   public static final String INBOX_LABEL = "inbox";
