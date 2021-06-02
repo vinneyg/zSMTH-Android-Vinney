@@ -426,7 +426,7 @@ public class MyPreferenceFragment extends PreferenceFragmentCompat {
 
        // ActivityUtils.openLink("http://zsmth-android.zfdang.com/release.html", getActivity());
         Toast.makeText(SMTHApplication.getAppContext(),"这是Vinney的zSMTH改进版本!",Toast.LENGTH_LONG).show();
-        ActivityUtils.openLink("https://wws.lanzous.com/b01noyh6b", getActivity());
+        ActivityUtils.openLink("https://lanzoui.com/b01noyh6b", getActivity());
         return true;
       }
     });
