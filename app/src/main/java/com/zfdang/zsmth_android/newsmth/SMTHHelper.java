@@ -17,6 +17,7 @@ import com.franmontiel.persistentcookiejar.PersistentCookieJar;
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
 import com.zfdang.SMTHApplication;
+import com.zfdang.zsmth_android.Settings;
 import com.zfdang.zsmth_android.helpers.ActivityUtils;
 import com.zfdang.zsmth_android.helpers.MakeList;
 import com.zfdang.zsmth_android.helpers.StringUtils;
@@ -74,7 +75,9 @@ public class SMTHHelper {
 
   // WWW service of SMTH, but actually most of services are actually from nForum
   //private final String SMTH_WWW_URL = "https://www.newsmth.net";
-  private final String SMTH_WWW_URL = "https://www.mysmth.net";
+  //private final String SMTH_WWW_URL = "https://www.mysmth.net";
+  private  String SMTH_WWW_URL = SMTHApplication.getWebAddress();
+
   private Retrofit wRetrofit = null;
   public SMTHWWWService wService = null;
   static private final String SMTH_WWW_ENCODING = "GB2312";
@@ -154,7 +157,6 @@ public class SMTHHelper {
     //                .addConverterFactory(ScalarsConverterFactory.create())
     //                .client(mHttpClient)
     //                .build();
-
     wRetrofit = new Retrofit.Builder().baseUrl(SMTH_WWW_URL)
         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .addConverterFactory(ScalarsConverterFactory.create())

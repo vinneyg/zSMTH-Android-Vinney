@@ -1,6 +1,7 @@
 package com.zfdang.zsmth_android;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -41,7 +42,7 @@ public class MyPreferenceFragment extends PreferenceFragmentCompat {
 
   CheckBoxPreference signature_control;
   Preference signature_content;
-
+  Preference web_content;
   CheckBoxPreference launch_bottom_navi;
   CheckBoxPreference launch_hottopic_as_entry;
   CheckBoxPreference open_topic_add;
@@ -354,6 +355,30 @@ public class MyPreferenceFragment extends PreferenceFragmentCompat {
         String signature = newValue.toString();
         Settings.getInstance().setSignature(signature);
         signature_content.setSummary(signature);
+        return true;
+      }
+    });
+
+    web_content = findPreference("WebAddr");
+    web_content.setSummary(Settings.getInstance().getWebAddr());
+    if (web_content instanceof EditTextPreference) {
+      // set default value in editing dialog
+      EditTextPreference et = (EditTextPreference) web_content;
+      et.setText(Settings.getInstance().getWebAddr());
+    }
+    web_content.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+      @Override public boolean onPreferenceChange(Preference preference, Object newValue) {
+        String webContent = newValue.toString();
+        Settings.getInstance().setWebAddr(webContent);
+        web_content.setSummary(webContent);
+
+        Activity activity = getActivity();
+        Intent intent = new Intent(activity.getApplicationContext(), MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        activity.finish();
+        android.os.Process.killProcess(android.os.Process.myPid());
+        System.exit(0);
         return true;
       }
     });

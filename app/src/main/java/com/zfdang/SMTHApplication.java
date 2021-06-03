@@ -70,6 +70,11 @@ public class SMTHApplication extends Application {
   // IP database
   public static GEODatabase geoDB;
 
+  public static String getWebAddress()
+  {
+    return Settings.getInstance().getWebAddr();
+  }
+
   public static boolean isValidUser() {
     //return activeUser != null && !activeUser.getId().equals("guest");
     return activeUser != null && !activeUser.getId().equalsIgnoreCase("guest");
@@ -114,6 +119,7 @@ public class SMTHApplication extends Application {
     } else {
       AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
     }
+
   }
 
   public static Context getAppContext() {

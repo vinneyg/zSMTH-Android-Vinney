@@ -141,6 +141,25 @@ public class Settings {
     }
   }
 
+  private static final String WEB_ADDR = "web_address";
+  private String mWebAddr = "https://www.newsmth.net";
+
+  public String getWebAddr() {
+    if (mWebAddr != null && mWebAddr.length() > 0) {
+      return mWebAddr;
+    } else {
+      return "https://www.newsmth.net";
+    }
+  }
+
+  public void setWebAddr(String webAddr) {
+    if (this.mWebAddr == null || !this.mWebAddr.equals(webAddr)) {
+      this.mWebAddr = webAddr;
+      mEditor.putString(WEB_ADDR, this.mWebAddr);
+      mEditor.commit();
+    }
+  }
+
   private static final String SHOW_STICKY_TOPIC = "show_sticky_topic";
   private boolean mShowSticky;
 
@@ -579,6 +598,12 @@ public class Settings {
     if (mSignature.length() == 0) {
       String marketingName = DeviceMarketingName.getInstance(SMTHApplication.getAppContext()).getDeviceMarketingName(false);
       setSignature(marketingName);
+    }
+
+    mWebAddr = mPreference.getString(WEB_ADDR, "");
+    if (mWebAddr.length() == 0) {
+      String webAddr = "https://www.newsmth.net";
+      setWebAddr(webAddr);
     }
 
     mTarget = mPreference.getString(FORWARD_TAEGET, "");

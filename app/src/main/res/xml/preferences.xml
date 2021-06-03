@@ -154,6 +154,12 @@
         android:key="app_feedback"
         android:summary=""
         android:title="反馈建议"/>
+    <EditTextPreference
+        android:dialogTitle="输入水木社区站点地址"
+        android:key="WebAddr"
+        android:summary="https://www.newsmth.net"
+        android:title="水木社区站点"
+        />
     <Preference
         android:key="setting_app_version"
         android:summary="版本号: 未知"
