@@ -330,7 +330,7 @@ public class MainActivity extends SMTHBaseActivity
     mBottomNavigationView.setItemTextColor(csl);
     mBottomNavigationView.setItemIconTintList(csl);
 
-    disableShiftMode(mBottomNavigationView);
+    //disableShiftMode(mBottomNavigationView);
 
     mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
       @Override

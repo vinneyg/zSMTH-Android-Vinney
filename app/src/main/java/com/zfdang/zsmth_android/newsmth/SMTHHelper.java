@@ -1306,7 +1306,8 @@ public class SMTHHelper {
           // images in post or avatar
           return "http:" + original;
         } else if (original.startsWith("/nForum")) {
-          return "http://att.newsmth.net" + original;
+          //return "http://att.newsmth.net" + original;
+          return Settings.getInstance().getWebAddr()+original;
         }
       }
       return original;

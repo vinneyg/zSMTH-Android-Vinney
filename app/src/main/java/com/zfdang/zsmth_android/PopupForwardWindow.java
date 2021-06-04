@@ -17,6 +17,9 @@ import com.wx.wheelview.widget.WheelView;
 import com.zfdang.SMTHApplication;
 import com.zfdang.zsmth_android.models.Post;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 /**
  * Created by zfdang on 2016-4-26.
  */
@@ -165,8 +168,33 @@ public class PopupForwardWindow extends PopupWindow {
       @Override public void onClick(View v) {
         if (mListener != null) {
           String target = mTargetBoard.getText().toString().trim();
-          mListener.OnRePostAction(PopupForwardWindow.post, target, "on");
-        }
+          String [] newTarget = target.split(",");
+          ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
+          for(int i=0;i<newTarget.length;i++) {
+            Log.d("Vinney", newTarget[i]);
+            Log.d("Vinney", PopupForwardWindow.post.getPostID());
+            //mListener.OnRePostAction(PopupForwardWindow.post, target, "on");
+            mListener.OnRePostAction(PopupForwardWindow.post, newTarget[i], "on");
+
+            /*
+             final int index = i;
+              singleThreadExecutor.execute(new Runnable() {
+                @Override
+                public void run() {
+                  try {
+                    System.out.println(newTarget[index]);
+                    mListener.OnRePostAction(PopupForwardWindow.post, newTarget[index], "on");
+                    Thread.sleep(1000);
+
+                  } catch (InterruptedException e) {
+                    e.printStackTrace();
+                  }
+
+                }
+              });
+            */
+            }
+          }
         dismiss();
       }
     });

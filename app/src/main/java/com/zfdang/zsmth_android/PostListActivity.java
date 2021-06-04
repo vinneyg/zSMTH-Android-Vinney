@@ -1482,10 +1482,12 @@ public class PostListActivity extends SMTHBaseActivity
 
   @Override public void OnRePostAction(Post post, String target, String outgo) {
     SMTHHelper helper = SMTHHelper.getInstance();
+    Log.d("Vinney-1",mTopic.getBoardEngName());
     helper.wService.repostPost(mTopic.getBoardEngName(), post.getPostID(), target, outgo).map(new Function<ResponseBody, String>() {
       @Override public String apply(@NonNull ResponseBody responseBody) throws Exception {
         try {
           String response = SMTHHelper.DecodeResponseFromWWW(responseBody.bytes());
+          Log.d("Vinney-R",response);
           return SMTHHelper.parseRepostResponse(response);
         } catch (Exception e) {
           Log.e(TAG, "call: " + Log.getStackTraceString(e));
@@ -1506,7 +1508,7 @@ public class PostListActivity extends SMTHBaseActivity
       }
 
       @Override public void onComplete() {
-
+      //  Toast.makeText(SMTHApplication.getAppContext(), "Vinney", Toast.LENGTH_SHORT).show();
       }
     });
   }
