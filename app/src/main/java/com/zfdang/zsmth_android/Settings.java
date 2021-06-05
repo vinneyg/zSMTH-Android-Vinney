@@ -287,6 +287,21 @@ public class Settings {
     }
   }
 
+  private static final String QUICK_REPLY = "QUICK_REPLY";
+  private boolean bQuickReply;
+
+  public boolean isQuickReply() {
+    return bQuickReply;
+  }
+
+  public void SetQuickReply(boolean bQuickReply) {
+    if (this.bQuickReply != bQuickReply) {
+      this.bQuickReply = bQuickReply;
+      mEditor.putBoolean(QUICK_REPLY, this.bQuickReply);
+      mEditor.commit();
+    }
+  }
+
 
   private static final String SET_ID_CHECK = "SET_ID_CHECK";
   private boolean bSetIdCheck;
@@ -628,6 +643,7 @@ public class Settings {
 
     bTopicFwdSelf = mPreference.getBoolean(SET_FWD_ADDRESS,true);
     bAutoLoadMore = mPreference.getBoolean(AUTO_LOAD_MORE,false);
+    bQuickReply = mPreference.getBoolean(QUICK_REPLY,true);
     bSetIdCheck = mPreference.getBoolean(SET_ID_CHECK,true);
 
     bOpenTopicAdd =mPreference.getBoolean(OPEN_TOPIC_ADD,false);

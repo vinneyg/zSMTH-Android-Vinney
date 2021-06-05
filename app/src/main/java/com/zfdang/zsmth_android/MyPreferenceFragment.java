@@ -50,6 +50,7 @@ public class MyPreferenceFragment extends PreferenceFragmentCompat {
   CheckBoxPreference daynight_control;
   CheckBoxPreference setting_post_navigation_control;
   CheckBoxPreference auto_load_more;
+  CheckBoxPreference quick_reply;
 
   CheckBoxPreference setting_volume_key_scroll;
   ListPreference setting_fontsize_control;
@@ -191,6 +192,20 @@ public class MyPreferenceFragment extends PreferenceFragmentCompat {
           bValue = boolVal;
         }
         Settings.getInstance().Setautoloadmore(bValue);
+        return true;
+      }
+    });
+
+    quick_reply = (CheckBoxPreference) findPreference("quick_reply");
+    quick_reply.setChecked(Settings.getInstance().isQuickReply());
+    quick_reply.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+      @Override public boolean onPreferenceChange(Preference preference, Object newValue) {
+        boolean bValue = Settings.getInstance().isQuickReply();
+        if (newValue instanceof Boolean) {
+          Boolean boolVal = (Boolean) newValue;
+          bValue = boolVal;
+        }
+        Settings.getInstance().SetQuickReply(bValue);
         return true;
       }
     });

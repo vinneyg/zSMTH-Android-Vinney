@@ -1052,47 +1052,51 @@ public class PostListActivity extends SMTHBaseActivity
   }
 
    public boolean onItemLeftClicked(final int position, View v) {
-     // post_reply_mail
-     // Toast.makeText(PostListActivity.this, "回复到作者信箱:TBD", Toast.LENGTH_SHORT).show();
-     if (position >= PostListContent.POSTS.size()) {
-       Log.e(TAG, "onItemRightClicked: " + "Invalid Post index" + position);
-       return false;
-     }
+    if(Settings.getInstance().isQuickReply()) {
+      // post_reply_mail
+      // Toast.makeText(PostListActivity.this, "回复到作者信箱:TBD", Toast.LENGTH_SHORT).show();
+      if (position >= PostListContent.POSTS.size()) {
+        Log.e(TAG, "onItemRightClicked: " + "Invalid Post index" + position);
+        return false;
+      }
 
-     Post post = PostListContent.POSTS.get(position);
-     ComposePostContext postContext = new ComposePostContext();
-     postContext.setBoardEngName(mTopic.getBoardEngName());
-     postContext.setPostId(post.getPostID());
-     postContext.setPostTitle(mTopic.getTitle());
-     postContext.setPostAuthor(post.getRawAuthor());
-     postContext.setPostContent(post.getRawContent());
-     postContext.setComposingMode(ComposePostContext.MODE_REPLY_MAIL);
+      Post post = PostListContent.POSTS.get(position);
+      ComposePostContext postContext = new ComposePostContext();
+      postContext.setBoardEngName(mTopic.getBoardEngName());
+      postContext.setPostId(post.getPostID());
+      postContext.setPostTitle(mTopic.getTitle());
+      postContext.setPostAuthor(post.getRawAuthor());
+      postContext.setPostContent(post.getRawContent());
+      postContext.setComposingMode(ComposePostContext.MODE_REPLY_MAIL);
 
-     Intent intent = new Intent(this, ComposePostActivity.class);
-     intent.putExtra(SMTHApplication.COMPOSE_POST_CONTEXT, postContext);
-     startActivity(intent);
+      Intent intent = new Intent(this, ComposePostActivity.class);
+      intent.putExtra(SMTHApplication.COMPOSE_POST_CONTEXT, postContext);
+      startActivity(intent);
+    }
     return true;
   }
    public boolean onItemRightClicked(final int position, View v) {
-     // post_reply_post
-     if (position >= PostListContent.POSTS.size()) {
-       Log.e(TAG, "onItemRightClicked: " + "Invalid Post index" + position);
-       return false;
+     if (Settings.getInstance().isQuickReply()) {
+       // post_reply_post
+       if (position >= PostListContent.POSTS.size()) {
+         Log.e(TAG, "onItemRightClicked: " + "Invalid Post index" + position);
+         return false;
+       }
+
+       Post post = PostListContent.POSTS.get(position);
+       ComposePostContext postContext = new ComposePostContext();
+       postContext.setBoardEngName(mTopic.getBoardEngName());
+       postContext.setPostId(post.getPostID());
+       postContext.setPostTitle(mTopic.getTitle());
+       postContext.setPostAuthor(post.getRawAuthor());
+       postContext.setPostContent(post.getRawContent());
+       postContext.setComposingMode(ComposePostContext.MODE_REPLY_POST);
+
+       Intent intent = new Intent(this, ComposePostActivity.class);
+       intent.putExtra(SMTHApplication.COMPOSE_POST_CONTEXT, postContext);
+       startActivityForResult(intent, ComposePostActivity.COMPOSE_ACTIVITY_REQUEST_CODE);
      }
-
-     Post post = PostListContent.POSTS.get(position);
-     ComposePostContext postContext = new ComposePostContext();
-     postContext.setBoardEngName(mTopic.getBoardEngName());
-     postContext.setPostId(post.getPostID());
-     postContext.setPostTitle(mTopic.getTitle());
-     postContext.setPostAuthor(post.getRawAuthor());
-     postContext.setPostContent(post.getRawContent());
-     postContext.setComposingMode(ComposePostContext.MODE_REPLY_POST);
-
-     Intent intent = new Intent(this, ComposePostActivity.class);
-     intent.putExtra(SMTHApplication.COMPOSE_POST_CONTEXT, postContext);
-     startActivityForResult(intent, ComposePostActivity.COMPOSE_ACTIVITY_REQUEST_CODE);
-    return true;
+     return true;
   }
 
   public boolean onItemBottomClicked(final int position, View v) {

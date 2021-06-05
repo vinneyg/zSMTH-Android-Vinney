@@ -18,7 +18,7 @@ import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
 import com.zfdang.SMTHApplication;
 import com.zfdang.zsmth_android.Settings;
-import com.zfdang.zsmth_android.helpers.ActivityUtils;
+//import com.zfdang.zsmth_android.helpers.ActivityUtils;
 import com.zfdang.zsmth_android.helpers.MakeList;
 import com.zfdang.zsmth_android.helpers.StringUtils;
 import com.zfdang.zsmth_android.models.Board;
@@ -78,8 +78,8 @@ public class SMTHHelper {
   //private final String SMTH_WWW_URL = "https://www.mysmth.net";
   private  String SMTH_WWW_URL = SMTHApplication.getWebAddress();
 
-  private Retrofit wRetrofit = null;
-  public SMTHWWWService wService = null;
+  private Retrofit wRetrofit;
+  public SMTHWWWService wService;
   static private final String SMTH_WWW_ENCODING = "GB2312";
 
   // Mobile service of SMTH
@@ -191,7 +191,7 @@ public class SMTHHelper {
   private static Bitmap loadResizedBitmapFromFile(final String filename, final int targetWidth, final int targetHeight, boolean bCompress) {
     try {
       BitmapFactory.Options option = null;
-      Bitmap bitmap = null;
+      Bitmap bitmap;
 
       // o.inPurgeable = true;
       bitmap = BitmapFactory.decodeFile(filename, option);
@@ -245,7 +245,7 @@ public class SMTHHelper {
 
       // Read in the bytes
       int offset = 0;
-      int numRead = 0;
+      int numRead;
       while ((offset < bytes.length) && ((numRead = is.read(bytes, offset, bytes.length - offset)) >= 0)) {
         offset += numRead;
       }
@@ -291,13 +291,13 @@ public class SMTHHelper {
     try {
       ExifInterface oldExif = new ExifInterface(oldPath);
       String[] attributes = new String[] {
-          ExifInterface.TAG_APERTURE, ExifInterface.TAG_DATETIME, ExifInterface.TAG_DATETIME_DIGITIZED, ExifInterface.TAG_EXPOSURE_TIME,
+          ExifInterface.TAG_F_NUMBER, ExifInterface.TAG_DATETIME, ExifInterface.TAG_DATETIME_DIGITIZED, ExifInterface.TAG_EXPOSURE_TIME,
           ExifInterface.TAG_FLASH, ExifInterface.TAG_FOCAL_LENGTH, ExifInterface.TAG_GPS_ALTITUDE, ExifInterface.TAG_GPS_ALTITUDE_REF,
           ExifInterface.TAG_GPS_DATESTAMP, ExifInterface.TAG_GPS_LATITUDE, ExifInterface.TAG_GPS_LATITUDE_REF,
           ExifInterface.TAG_GPS_LONGITUDE, ExifInterface.TAG_GPS_LONGITUDE_REF, ExifInterface.TAG_GPS_PROCESSING_METHOD,
-          ExifInterface.TAG_GPS_TIMESTAMP, ExifInterface.TAG_IMAGE_LENGTH, ExifInterface.TAG_IMAGE_WIDTH, ExifInterface.TAG_ISO,
+          ExifInterface.TAG_GPS_TIMESTAMP, ExifInterface.TAG_IMAGE_LENGTH, ExifInterface.TAG_IMAGE_WIDTH, ExifInterface.TAG_ISO_SPEED_RATINGS,
           ExifInterface.TAG_MAKE, ExifInterface.TAG_MODEL, ExifInterface.TAG_ORIENTATION, ExifInterface.TAG_SUBSEC_TIME,
-          ExifInterface.TAG_SUBSEC_TIME_DIG, ExifInterface.TAG_SUBSEC_TIME_ORIG, ExifInterface.TAG_WHITE_BALANCE
+          ExifInterface.TAG_SUBSEC_TIME_DIGITIZED, ExifInterface.TAG_SUBSEC_TIME_ORIGINAL, ExifInterface.TAG_WHITE_BALANCE
       };
 
       ExifInterface newExif = new ExifInterface(newPath);
@@ -364,7 +364,7 @@ public class SMTHHelper {
   }
 
   public static List<Post> ParsePostListFromWWW(String content, Topic topic) {
-    final String TAG = "ParsePostListFromWWW";
+    //final String TAG = "ParsePostListFromWWW";
     List<Post> results = new ArrayList<>();
 
     Document doc = Jsoup.parse(content);
@@ -531,7 +531,7 @@ public class SMTHHelper {
       return results;
     }
 
-    Topic topic = null;
+    Topic topic;
     Document doc = Jsoup.parse(content);
 
     // find top10
@@ -646,7 +646,7 @@ public class SMTHHelper {
 
     if (lis.size() > 0) {
       Element li = lis.first();
-      currentPage = li.text();
+      //currentPage = li.text();
       //            Log.d(TAG, "ParseBoardTopicsFromWWW: " + currentPage);
     }
     // To handle Error case :  <title>水木社区-错误信息</title>
@@ -1090,7 +1090,7 @@ public class SMTHHelper {
     try {
       if (SMTHApplication.getAppContext().deleteFile(filename)) {
         Log.d("ClearBoardListCache", String.format("delete cache file %s successfully", filename));
-        return;
+        //return;
       }
     } catch (Exception e) {
       Log.d("ClearBoardListCache", e.toString());
@@ -1244,11 +1244,11 @@ public class SMTHHelper {
         Element link1 = t1links.first();
         String temp = link1.attr("href");
 
-        String chsBoardName = "";
-        String engBoardName = "";
+        String chsBoardName;
+        String engBoardName;
         String moderator = "";
-        String folderChsName = "";
-        String folderEngName = "";
+        String folderChsName;
+        String folderEngName;
 
         Pattern boardPattern = Pattern.compile("/nForum/board/(\\w+)");
         Matcher boardMatcher = boardPattern.matcher(temp);
@@ -1307,6 +1307,7 @@ public class SMTHHelper {
           return "http:" + original;
         } else if (original.startsWith("/nForum")) {
           //return "http://att.newsmth.net" + original;
+          //CDN to be done
           return Settings.getInstance().getWebAddr()+original;
         }
       }
