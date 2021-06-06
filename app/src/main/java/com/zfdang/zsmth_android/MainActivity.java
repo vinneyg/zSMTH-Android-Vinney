@@ -40,6 +40,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.preference.CheckBoxPreference;
 //import androidx.appcompat.app.ActionBar;
 //import androidx.preference.PreferenceFragment;
 
@@ -88,6 +89,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+
+import static com.google.android.material.bottomnavigation.LabelVisibilityMode.LABEL_VISIBILITY_UNLABELED;
 
 
 public class MainActivity extends SMTHBaseActivity
@@ -317,6 +320,9 @@ public class MainActivity extends SMTHBaseActivity
     mBottomNavigationView.setItemIconTintList(null);
     mBottomNavigationView.setItemTextAppearanceActive(R.style.bottom_selected_text);
     mBottomNavigationView.setItemTextAppearanceInactive(R.style.bottom_normal_text);
+    //Vinney to do
+    if(!Settings.getInstance().isMenuTextOn())
+      mBottomNavigationView.setLabelVisibilityMode(LABEL_VISIBILITY_UNLABELED);
 
     int[][] states = new int[][]{
             new int[]{-android.R.attr.state_checked},
@@ -359,7 +365,6 @@ public class MainActivity extends SMTHBaseActivity
     });
 
   }
-
 
 
   private void initCircularActionMenu(FloatingActionButton fab) {

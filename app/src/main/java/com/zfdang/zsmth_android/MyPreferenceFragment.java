@@ -51,6 +51,7 @@ public class MyPreferenceFragment extends PreferenceFragmentCompat {
   CheckBoxPreference setting_post_navigation_control;
   CheckBoxPreference auto_load_more;
   CheckBoxPreference quick_reply;
+  CheckBoxPreference menu_text;
 
   CheckBoxPreference setting_volume_key_scroll;
   ListPreference setting_fontsize_control;
@@ -112,6 +113,12 @@ public class MyPreferenceFragment extends PreferenceFragmentCompat {
           bValue = boolVal;
         }
         Settings.getInstance().setLaunchBottomNavi(bValue);
+
+        if(!bValue)
+          findPreference("menu_text").setEnabled(false);
+        else
+          findPreference("menu_text").setEnabled(true);
+
         Activity activity = getActivity();
         if (activity != null) {
           Intent intent = new Intent(activity.getApplicationContext(), MainActivity.class);
@@ -207,6 +214,34 @@ public class MyPreferenceFragment extends PreferenceFragmentCompat {
         }
         Settings.getInstance().SetQuickReply(bValue);
         return true;
+      }
+    });
+
+    menu_text = (CheckBoxPreference) findPreference("menu_text");
+    menu_text.setChecked(Settings.getInstance().isMenuTextOn());
+    menu_text.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+      @Override public boolean onPreferenceChange(Preference preference, Object newValue) {
+
+        if (!Settings.getInstance().isLaunchBottomNavi()) {
+          return false;
+        }
+        else {
+          boolean bValue = Settings.getInstance().isMenuTextOn();
+          if (newValue instanceof Boolean) {
+            Boolean boolVal = (Boolean) newValue;
+            bValue = boolVal;
+          }
+          Settings.getInstance().SetMenuText(bValue);
+
+          Activity activity = getActivity();
+          if (activity != null) {
+            Intent intent = new Intent(activity.getApplicationContext(), MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            activity.finish();
+          }
+          return true;
+        }
       }
     });
 
