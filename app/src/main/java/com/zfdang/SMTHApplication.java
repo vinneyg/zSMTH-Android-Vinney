@@ -27,7 +27,7 @@ public class SMTHApplication extends Application {
   // http://blog.csdn.net/lieren666/article/details/7598288
   // Android Application的作用
   private static Context context;
-  public static String App_Title_Prefix = "zSMTH - ";
+  public static String App_Title_Prefix = "zSMTH-v - ";
 
   public static final String FROM_BOARD = "From_Board";
   public static final String FROM_BOARD_HOT = "FROM_HOTTOPICS";

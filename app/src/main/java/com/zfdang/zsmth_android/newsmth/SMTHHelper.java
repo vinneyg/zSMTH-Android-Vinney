@@ -77,6 +77,13 @@ public class SMTHHelper {
   //private final String SMTH_WWW_URL = "https://www.newsmth.net";
   //private final String SMTH_WWW_URL = "https://www.mysmth.net";
   private  String SMTH_WWW_URL = SMTHApplication.getWebAddress();
+  //static private final String SMTH_IMAGE_PREFIX_CDN = "https://static.mysmth.net";
+  //static private final String SMTH_IMAGE_PREFIX_DIRECT = "https://www.mysmth.net";
+  static private final String SMTH_IMAGE_PREFIX_CDN = "static";
+  static private final String SMTH_IMAGE_PREFIX_DIRECT = "www";
+
+  // Mobile service of SMTH; this is used for webchat sharing & open in browser
+  static public final String SMTH_MOBILE_URL = "https://m.mysmth.net";
 
   private Retrofit wRetrofit;
   public SMTHWWWService wService;
@@ -1301,17 +1308,23 @@ public class SMTHHelper {
     // <img border="0" title="单击此查看原图" src="//static.mysmth.net/nForum/att/FamilyLife/1763462541/17096/large" class="resizeable" /></a>
 
     public static String preprocessSMTHImageURL(String original) {
+      String url = original;
       if(null != original) {
         if (original.startsWith("//")) {
           // images in post or avatar
           return "http:" + original;
         } else if (original.startsWith("/nForum")) {
           //return "http://att.newsmth.net" + original;
-          //CDN to be done
-          return Settings.getInstance().getWebAddr()+original;
+          //return Settings.getInstance().getWebAddr()+original;
+          url = Settings.getInstance().getWebAddr() + original;
+        }
+        if(Settings.getInstance().isImageSourceCDN()) {
+          url = url.replace(SMTH_IMAGE_PREFIX_DIRECT, SMTH_IMAGE_PREFIX_CDN);
+        } else {
+          url = url.replace(SMTH_IMAGE_PREFIX_CDN, SMTH_IMAGE_PREFIX_DIRECT);
         }
       }
-      return original;
+      return url;
     }
 
 }

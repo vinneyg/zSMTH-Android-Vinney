@@ -114,6 +114,13 @@
 
     <CheckBoxPreference
         android:defaultValue="on"
+        android:key="setting_image_source_cdn"
+        android:summaryOff="从水木加载图片(海外访问使用)"
+        android:summaryOn="从CDN加载图片(推荐)"
+        android:title="图片来源"/>
+
+    <CheckBoxPreference
+        android:defaultValue="on"
         android:key="set_id_check"
         android:summaryOff="不支持点击用户ID查询"
         android:summaryOn="支持点击用户ID查询"
@@ -171,7 +178,7 @@
     <EditTextPreference
         android:dialogTitle="输入水木社区站点地址"
         android:key="WebAddr"
-        android:summary="https://www.newsmth.net"
+        android:summary="https://www.mysmth.net"
         android:title="水木社区站点"
         />
     <Preference

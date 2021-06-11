@@ -142,13 +142,13 @@ public class Settings {
   }
 
   private static final String WEB_ADDR = "web_address";
-  private String mWebAddr = "https://www.newsmth.net";
+  private String mWebAddr = "https://www.mysmth.net";
 
   public String getWebAddr() {
     if (mWebAddr != null && mWebAddr.length() > 0) {
       return mWebAddr;
     } else {
-      return "https://www.newsmth.net";
+      return "https://www.mysmth.net";
     }
   }
 
@@ -253,6 +253,24 @@ public class Settings {
     if (this.bLoadOriginalImage != bLoadOriginalImage) {
       this.bLoadOriginalImage = bLoadOriginalImage;
       mEditor.putBoolean(LOAD_ORIGINAL_IMAGE, this.bLoadOriginalImage);
+      mEditor.commit();
+    }
+  }
+
+  // load image from cdn, or from smth website directly
+  // https://www.mysmth.net/nForum/#!article/PocketLife/3100239
+  // https://static.mysmth.net/nForum/#!article/PocketLife/3100239
+  private static final String IMAGE_SOURCE_CDN = "IMAGE_SOURCE_CDN";
+  private boolean bImageSourceCDN;
+
+  public boolean isImageSourceCDN() {
+    return bImageSourceCDN;
+  }
+
+  public void setImageSourceCDN(boolean value) {
+    if (this.bImageSourceCDN != value) {
+      this.bImageSourceCDN = value;
+      mEditor.putBoolean(IMAGE_SOURCE_CDN, this.bImageSourceCDN);
       mEditor.commit();
     }
   }
@@ -631,7 +649,7 @@ public class Settings {
 
     mWebAddr = mPreference.getString(WEB_ADDR, "");
     if (mWebAddr.length() == 0) {
-      String webAddr = "https://www.newsmth.net";
+      String webAddr = "https://www.mysmth.net";
       setWebAddr(webAddr);
     }
 
@@ -640,6 +658,7 @@ public class Settings {
     bUserOnline = mPreference.getBoolean(USER_ONLINE, false);
 
     bLoadOriginalImage = mPreference.getBoolean(LOAD_ORIGINAL_IMAGE, false);
+    bImageSourceCDN = mPreference.getBoolean(IMAGE_SOURCE_CDN, true);
 
     bNightMode = mPreference.getBoolean(NIGHT_MODE, true);
 
@@ -657,8 +676,8 @@ public class Settings {
 
     bTopicFwdSelf = mPreference.getBoolean(SET_FWD_ADDRESS,true);
     bAutoLoadMore = mPreference.getBoolean(AUTO_LOAD_MORE,false);
-    bQuickReply = mPreference.getBoolean(QUICK_REPLY,true);
-    bMenuTextOn = mPreference.getBoolean(MENU_TEXT,true);
+    bQuickReply = mPreference.getBoolean(QUICK_REPLY,false);
+    bMenuTextOn = mPreference.getBoolean(MENU_TEXT,false);
 
     bSetIdCheck = mPreference.getBoolean(SET_ID_CHECK,true);
 
