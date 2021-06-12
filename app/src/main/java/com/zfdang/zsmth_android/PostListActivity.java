@@ -1056,7 +1056,7 @@ public class PostListActivity extends SMTHBaseActivity
       // post_reply_mail
       // Toast.makeText(PostListActivity.this, "回复到作者信箱:TBD", Toast.LENGTH_SHORT).show();
       if (position >= PostListContent.POSTS.size()) {
-        Log.e(TAG, "onItemRightClicked: " + "Invalid Post index" + position);
+        Log.e(TAG, "onItemLeftClicked: " + "Invalid Post index" + position);
         return false;
       }
 

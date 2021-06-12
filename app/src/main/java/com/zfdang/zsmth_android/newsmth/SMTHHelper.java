@@ -77,11 +77,9 @@ public class SMTHHelper {
   //private final String SMTH_WWW_URL = "https://www.newsmth.net";
   //private final String SMTH_WWW_URL = "https://www.mysmth.net";
   private  String SMTH_WWW_URL = SMTHApplication.getWebAddress();
-  //static private final String SMTH_IMAGE_PREFIX_CDN = "https://static.mysmth.net";
-  //static private final String SMTH_IMAGE_PREFIX_DIRECT = "https://www.mysmth.net";
-  static private final String SMTH_IMAGE_PREFIX_CDN = "static";
-  static private final String SMTH_IMAGE_PREFIX_DIRECT = "www";
-
+  //https://att.mysmth.net OR https://static.mysmth.net"
+  static private final String SMTH_IMAGE_PREFIX_CDN = "https://att.mysmth.net";
+  static private final String SMTH_IMAGE_PREFIX_DIRECT = "https://www.mysmth.net";
   // Mobile service of SMTH; this is used for webchat sharing & open in browser
   static public final String SMTH_MOBILE_URL = "https://m.mysmth.net";
 
