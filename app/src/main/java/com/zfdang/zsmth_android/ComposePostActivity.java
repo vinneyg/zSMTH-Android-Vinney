@@ -39,6 +39,8 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import java.util.ArrayList;
+import java.util.Locale;
+
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
@@ -90,10 +92,10 @@ public class ComposePostActivity extends SMTHBaseActivity {
     if (requestCode == REQUEST_CODE) {
       if (resultCode == RESULT_OK && data != null) {
         mPhotos = data.getStringArrayListExtra(SelectorSettings.SELECTOR_RESULTS);
-        mAttachments.setText(String.format("共有%d个附件", mPhotos.size()));
+        mAttachments.setText(String.format(Locale.CHINA,"共有%d个附件", mPhotos.size()));
         String attachments = "";
         for (int i = 0; i < mPhotos.size(); i++) {
-          attachments += String.format(UPLOAD_TEMPLATE, i + 1);
+          attachments += String.format(Locale.CHINA,UPLOAD_TEMPLATE, i + 1);
         }
 
         // https://stackoverflow.com/questions/3609174/android-insert-text-into-edittext-at-current-position
@@ -147,7 +149,7 @@ public class ComposePostActivity extends SMTHBaseActivity {
       }
 
       @Override public void afterTextChanged(Editable s) {
-        mContentCount.setText(String.format("文章字数:%d", s.length()));
+        mContentCount.setText(String.format(Locale.CHINA,"文章字数:%d", s.length()));
       }
     });
     
@@ -217,18 +219,18 @@ public class ComposePostActivity extends SMTHBaseActivity {
     // set title, hide userRow / attachRow if necessary
     if (mPostContext.getComposingMode() == ComposePostContext.MODE_NEW_POST) {
       mUserRow.setVisibility(View.GONE);
-      setTitle(String.format("发表文章@%s", mPostContext.getBoardEngName()));
+      setTitle(String.format(Locale.CHINA,"发表文章@%s", mPostContext.getBoardEngName()));
       // set focus to title
       mTitle.requestFocus();
     } else if (mPostContext.getComposingMode() == ComposePostContext.MODE_REPLY_POST) {
       mUserRow.setVisibility(View.GONE);
-      setTitle(String.format("回复文章@%s", mPostContext.getBoardEngName()));
+      setTitle(String.format(Locale.CHINA,"回复文章@%s", mPostContext.getBoardEngName()));
       // set focus to content
       mContent.requestFocus();
     } else if (mPostContext.getComposingMode() == ComposePostContext.MODE_EDIT_POST) {
       mUserRow.setVisibility(View.GONE);
       mAttachRow.setVisibility(View.GONE);
-      setTitle(String.format("修改文章@%s", mPostContext.getBoardEngName()));
+      setTitle(String.format(Locale.CHINA,"修改文章@%s", mPostContext.getBoardEngName()));
       // set focus to content
       mContent.requestFocus();
     } else if (mPostContext.getComposingMode() == ComposePostContext.MODE_NEW_MAIL) {
@@ -261,20 +263,20 @@ public class ComposePostActivity extends SMTHBaseActivity {
       } else {
         String title = mPostContext.getPostTitle();
         if (title != null && !title.startsWith("Re:")) {
-          title = String.format("Re: %s", title);
+          title = String.format(Locale.CHINA,"Re: %s", title);
         }
         mTitle.setText(title);
 
         String[] lines = mPostContext.getPostContent().split("\n");
         StringBuilder wordList = new StringBuilder();
         wordList.append("\n\n");
-        wordList.append(String.format("【 在 %s 的大作中提到: 】", mPostContext.getPostAuthor())).append("\n");
+        wordList.append(String.format(Locale.CHINA,"【 在 %s 的大作中提到: 】", mPostContext.getPostAuthor())).append("\n");
         for (int i = 0; i < lines.length && i < 5; i++) {
           if (lines[i].startsWith("--")) {
             // this might be the start of signature, ignore following lines in quote
             break;
           }
-          wordList.append(String.format(": %s", lines[i])).append("\n");
+          wordList.append(String.format(Locale.CHINA,": %s", lines[i])).append("\n");
         }
         mContent.setText(new String(wordList));
       }
@@ -327,7 +329,7 @@ public class ComposePostActivity extends SMTHBaseActivity {
       ComposePostActivity.totalSteps += mPhotos.size();
     }
 
-    showProgress(String.format(progressHint, ComposePostActivity.currentStep, ComposePostActivity.totalSteps));
+    showProgress(String.format(Locale.CHINA,progressHint, ComposePostActivity.currentStep, ComposePostActivity.totalSteps));
 
     final SMTHHelper helper = SMTHHelper.getInstance();
 
@@ -356,8 +358,8 @@ public class ComposePostActivity extends SMTHBaseActivity {
     // publish post
     String postContent = mContent.getText().toString();
     if (Settings.getInstance().bUseSignature()) {
-      postContent += "\n" + String.format("#发自zSMTH-v-@%s", Settings.getInstance().getSignature());
-      //postContent += "\n" + String.format("#发自zSMTH-v-@%s", Build.BRAND+"-"+Settings.getInstance().getSignature());
+      postContent += "\n" + String.format(Locale.CHINA,"#发自zSMTH-v-@%s", Settings.getInstance().getSignature());
+      //postContent += "\n" + String.format(Locale.CHINA,"#发自zSMTH-v-@%s", Build.BRAND+"-"+Settings.getInstance().getSignature());
     }
     Observable<AjaxResponse> resp2 = null;
     if (mPostContext.getComposingMode() == ComposePostContext.MODE_NEW_MAIL
@@ -372,7 +374,7 @@ public class ComposePostActivity extends SMTHBaseActivity {
     } else if (mPostContext.getComposingMode() == ComposePostContext.MODE_EDIT_POST) {
       postContent = mContent.getText().toString();
       if (Settings.getInstance().bUseSignature()) {
-        postContent += "\n" + String.format("#修改自zSMTH@%s", Settings.getInstance().getSignature());
+        postContent += "\n" + String.format(Locale.CHINA,"#修改自zSMTH@%s", Settings.getInstance().getSignature());
       }
       resp2 = SMTHHelper.editPost(mPostContext.getBoardEngName(), mPostContext.getPostId(), mTitle.getText().toString(), postContent);
     }
@@ -394,7 +396,7 @@ public class ComposePostActivity extends SMTHBaseActivity {
             }
             lastResponse = ajaxResponse;
             ComposePostActivity.currentStep++;
-            showProgress(String.format(progressHint, ComposePostActivity.currentStep, ComposePostActivity.totalSteps));
+            showProgress(String.format(Locale.CHINA,progressHint, ComposePostActivity.currentStep, ComposePostActivity.totalSteps));
           }
 
           @Override public void onError(@NonNull Throwable e) {

@@ -81,8 +81,8 @@ public class AllBoardFragment extends Fragment implements OnVolumeUpDownListener
     // http://stackoverflow.com/questions/11321129/is-it-possible-to-change-the-textcolor-on-an-android-searchview
     int id = mSearchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
     TextView textView = (TextView) mSearchView.findViewById(id);
-    textView.setTextColor(getResources().getColor(R.color.status_text_night));
-    textView.setHintTextColor(getResources().getColor(R.color.status_text_night));
+    textView.setTextColor(getResources().getColor(R.color.status_text_night,null));
+    textView.setHintTextColor(getResources().getColor(R.color.status_text_night,null));
 
     if (mQueryListener == null) {
       mQueryListener = new QueryTextListener((BoardRecyclerViewAdapter) mRecyclerView.getAdapter());
@@ -135,7 +135,7 @@ public class AllBoardFragment extends Fragment implements OnVolumeUpDownListener
     final Observable<List<Board>> network = Observable.create(new ObservableOnSubscribe<List<Board>>() {
       @Override public void subscribe(@NonNull ObservableEmitter<List<Board>> observableEmitter) throws Exception {
         List<Board> boards = SMTHHelper.LoadAllBoardsFromWWW();
-        if (boards != null && boards.size() > 0) {
+        if ( boards.size() > 0) {
           observableEmitter.onNext(boards);
         } else {
           observableEmitter.onComplete();
@@ -202,7 +202,7 @@ public class AllBoardFragment extends Fragment implements OnVolumeUpDownListener
   }
 
   public class QueryTextListener implements SearchView.OnQueryTextListener {
-    private BoardRecyclerViewAdapter mAdapter = null;
+    private BoardRecyclerViewAdapter mAdapter ;
 
     public QueryTextListener(BoardRecyclerViewAdapter mAdapter) {
       this.mAdapter = mAdapter;

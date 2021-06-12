@@ -319,7 +319,7 @@ public class FSImageViewerActivity extends AppCompatActivity implements OnPhotoT
     if (attribute != null) {
       // there are some special treatment
       // http://www.sno.phy.queensu.ca/~phil/exiftool/TagNames/EXIF.html
-      if (attr.equals(ExifInterface.TAG_APERTURE)) {
+      if (attr.equals(ExifInterface.TAG_F_NUMBER)) {
         attribute = "F/" + attribute;
       } else if (attr.equals(ExifInterface.TAG_EXPOSURE_TIME)) {
         try {
@@ -477,10 +477,10 @@ public class FSImageViewerActivity extends AppCompatActivity implements OnPhotoT
       setImageAttributeFromExif(layout, R.id.ii_make, exif, ExifInterface.TAG_MAKE);
       setImageAttributeFromExif(layout, R.id.ii_model, exif, ExifInterface.TAG_MODEL);
       setImageAttributeFromExif(layout, R.id.ii_focal_length, exif, ExifInterface.TAG_FOCAL_LENGTH);
-      setImageAttributeFromExif(layout, R.id.ii_aperture, exif, ExifInterface.TAG_APERTURE);
+      setImageAttributeFromExif(layout, R.id.ii_aperture, exif, ExifInterface.TAG_F_NUMBER);
       setImageAttributeFromExif(layout, R.id.ii_exposure_time, exif, ExifInterface.TAG_EXPOSURE_TIME);
       setImageAttributeFromExif(layout, R.id.ii_flash, exif, ExifInterface.TAG_FLASH);
-      setImageAttributeFromExif(layout, R.id.ii_iso, exif, ExifInterface.TAG_ISO);
+      setImageAttributeFromExif(layout, R.id.ii_iso, exif, ExifInterface.TAG_ISO_SPEED_RATINGS);
       setImageAttributeFromExif(layout, R.id.ii_white_balance, exif, ExifInterface.TAG_WHITE_BALANCE);
     } catch (IOException e) {
       Log.d("read ExifInfo", "can't read Exif information");

@@ -125,9 +125,9 @@ public class MailListFragment extends androidx.fragment.app.Fragment implements 
     btLike = (Button) view.findViewById(R.id.mail_button_like);
     btLike.setOnClickListener(this);
 
-    colorNormal = getResources().getColor(R.color.status_text_night);
+    colorNormal = getResources().getColor(R.color.status_text_night,null);
     //colorBlue = getResources().getColor(R.color.blue_text_night);
-    colorBlue = getResources().getColor(R.color.colorPrimary);
+    colorBlue = getResources().getColor(R.color.colorPrimary,null);
 
     if (MailListContent.MAILS.size() == 0) {
       LoadMailsFromBeginning();

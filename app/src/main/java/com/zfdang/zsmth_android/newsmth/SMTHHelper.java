@@ -42,6 +42,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -200,7 +201,7 @@ public class SMTHHelper {
 
       // o.inPurgeable = true;
       bitmap = BitmapFactory.decodeFile(filename, option);
-      Log.d(TAG, "loadResizedBitmapFromFile: " + String.format("Pre-sized bitmap size: (%dx%d).", bitmap.getWidth(), bitmap.getHeight()));
+      Log.d(TAG, "loadResizedBitmapFromFile: " + String.format(Locale.CHINA,"Pre-sized bitmap size: (%dx%d).", bitmap.getWidth(), bitmap.getHeight()));
 
       if (bCompress) {
         // create bitmap which matches exactly within the target size
@@ -213,14 +214,14 @@ public class SMTHHelper {
         float[] values = new float[9];
         m.getValues(values);
 
-        Log.d(TAG, "loadResizedBitmapFromFile: " + String.format("Zoom: (%fx%f).", values[0], values[4]));
+        Log.d(TAG, "loadResizedBitmapFromFile: " + String.format(Locale.CHINA,"Zoom: (%fx%f).", values[0], values[4]));
         if (values[0] < 1.0 || values[4] < 1.0) {
           bitmap = Bitmap.createScaledBitmap(bitmap, (int) (bitmap.getWidth() * values[0]), (int) (bitmap.getHeight() * values[4]), true);
           Log.d(TAG, "loadResizedBitmapFromFile: " + "reduce size");
         }
       }
 
-      Log.d(TAG, "loadResizedBitmapFromFile: " + String.format("Final bitmap size: (%dx%d).", bitmap.getWidth(), bitmap.getHeight()));
+      Log.d(TAG, "loadResizedBitmapFromFile: " + String.format(Locale.CHINA,"Final bitmap size: (%dx%d).", bitmap.getWidth(), bitmap.getHeight()));
       return bitmap;
     } catch (final OutOfMemoryError e) {
       return null;
@@ -323,8 +324,9 @@ public class SMTHHelper {
     if (filename.toLowerCase().endsWith(".gif")) {
       // gif, don't resize
       File infile = new File(filename);
-      byte[] byteArray = getBytesFromFile(infile);
-      return byteArray;
+      //byte[] byteArray = getBytesFromFile(infile);
+      //return byteArray;
+      return getBytesFromFile(infile);
     } else {
       // static image, resize it
       Bitmap theBitmap = loadResizedBitmapFromFile(filename, 1200, 1200, bCompress);
@@ -337,8 +339,9 @@ public class SMTHHelper {
 
       // read data
       File infile = new File(newfilename);
-      byte[] byteArray = getBytesFromFile(infile);
-      return byteArray;
+      //byte[] byteArray = getBytesFromFile(infile);
+      //return byteArray;
+      return getBytesFromFile(infile);
     }
   }
 
@@ -937,7 +940,7 @@ public class SMTHHelper {
       // find
       Element li = lis.first();
       String page = li.text();
-      Mail mail = new Mail(String.format("第%s页", page));
+      Mail mail = new Mail(String.format(Locale.CHINA,"第%s页", page));
       mails.add(mail);
     }
 
@@ -1055,7 +1058,7 @@ public class SMTHHelper {
       if (folder == null || folder.length() == 0) {
         folder = "ROOT";
       }
-      return String.format("%s-%s", FAVORITE_BOARD_CACHE_PREFIX, folder);
+      return String.format(Locale.CHINA,"%s-%s", FAVORITE_BOARD_CACHE_PREFIX, folder);
     }
     return null;
   }
@@ -1068,7 +1071,7 @@ public class SMTHHelper {
       Input input = new Input(SMTHApplication.getAppContext().openFileInput(filename));
       boards = kryo.readObject(input, ArrayList.class);
       input.close();
-      Log.d("LoadBoardListFromCache", String.format("%d boards loaded from cache file %s", boards.size(), filename));
+      Log.d("LoadBoardListFromCache", String.format(Locale.CHINA,"%d boards loaded from cache file %s", boards.size(), filename));
     } catch (Exception e) {
       Log.d("LoadBoardListFromCache", e.toString());
       Log.d("LoadBoardListFromCache", "failed to load boards from cache file " + filename);
@@ -1083,7 +1086,7 @@ public class SMTHHelper {
       Output output = new Output(SMTHApplication.getAppContext().openFileOutput(filename, Context.MODE_PRIVATE));
       kryo.writeObject(output, boards);
       output.close();
-      Log.d("SaveBoardListToCache", String.format("%d boards saved to cache file %s", boards.size(), filename));
+      Log.d("SaveBoardListToCache", String.format(Locale.CHINA,"%d boards saved to cache file %s", boards.size(), filename));
     } catch (Exception e) {
       Log.d("SaveBoardListToCache", e.toString());
       Log.d("SaveBoardListToCache", "failed to save boards to cache file " + filename);
@@ -1094,7 +1097,7 @@ public class SMTHHelper {
     String filename = getCacheFile(type, folder);
     try {
       if (SMTHApplication.getAppContext().deleteFile(filename)) {
-        Log.d("ClearBoardListCache", String.format("delete cache file %s successfully", filename));
+        Log.d("ClearBoardListCache", String.format(Locale.CHINA,"delete cache file %s successfully", filename));
         //return;
       }
     } catch (Exception e) {
@@ -1184,7 +1187,7 @@ public class SMTHHelper {
     // sort the board list by chinese name
     //Collections.sort(boards, new BoardListContent.ChineseComparator());
     Collections.sort(boards, new BoardListContent.EnglishComparator());
-    Log.d("LoadAllBoardsFromWWW", String.format("%d boards loaded from network", boards.size()));
+    Log.d("LoadAllBoardsFromWWW", String.format(Locale.CHINA,"%d boards loaded from network", boards.size()));
 
     // save boards to disk
     SaveBoardListToCache(boards, BOARD_TYPE_ALL, null);

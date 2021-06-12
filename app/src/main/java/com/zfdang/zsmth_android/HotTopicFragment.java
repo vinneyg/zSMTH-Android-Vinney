@@ -116,7 +116,7 @@ public class HotTopicFragment extends Fragment implements OnVolumeUpDownListener
       }
 
 
-    getActivity().setTitle(SMTHApplication.App_Title_Prefix + "首页导读");
+    getActivity().setTitle(SMTHApplication.App_Title_Prefix + "首页");
 
     if (TopicListContent.HOT_TOPICS.size() == 0) {
       RefreshGuidance();
@@ -126,7 +126,7 @@ public class HotTopicFragment extends Fragment implements OnVolumeUpDownListener
 
   public void showLoadingHints() {
     MainActivity activity = (MainActivity) getActivity();
-    if (activity != null) activity.showProgress("获取导读信息...");
+    if (activity != null) activity.showProgress("获取首页信息...");
   }
 
   public void clearLoadingHints() {
@@ -177,7 +177,7 @@ public class HotTopicFragment extends Fragment implements OnVolumeUpDownListener
 
       @Override public void onError(@NonNull Throwable e) {
         clearLoadingHints();
-        Toast.makeText(SMTHApplication.getAppContext(), "获取热帖失败!\n" + e.toString(), Toast.LENGTH_LONG).show();
+        Toast.makeText(SMTHApplication.getAppContext(), "获取首页热帖失败!\n" + e.toString(), Toast.LENGTH_LONG).show();
       }
 
       @Override public void onComplete() {

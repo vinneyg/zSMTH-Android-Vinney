@@ -32,7 +32,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
       dividerDrawableRes = R.drawable.recyclerview_divider;
     }
 
-    mDivider = context.getResources().getDrawable(dividerDrawableRes);
+    mDivider = context.getResources().getDrawable(dividerDrawableRes,null);
     mHeight = DIVIDER_HEIGHT;
     mWidth = DIVIDER_WIDTH;
     setOrientation(orientation);

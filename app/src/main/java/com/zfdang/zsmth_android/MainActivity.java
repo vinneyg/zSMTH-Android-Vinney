@@ -179,8 +179,8 @@ public class MainActivity extends SMTHBaseActivity
             new int[]{android.R.attr.state_checked}
     };
 
-    int[] colors = new int[]{getResources().getColor(R.color.colorPrimary),
-            getResources().getColor(R.color.status_text_night)
+    int[] colors = new int[]{getResources().getColor(R.color.colorPrimary,null),
+            getResources().getColor(R.color.status_text_night,null)
     };
     ColorStateList csl = new ColorStateList(states, colors);
 
@@ -200,7 +200,7 @@ public class MainActivity extends SMTHBaseActivity
     mUsername.setOnClickListener(this);
 
     // http://stackoverflow.com/questions/27097126/marquee-title-in-toolbar-actionbar-in-android-with-lollipop-sdk
-    TextView titleTextView = null;
+    TextView titleTextView ;
     try {
       Field f = toolbar.getClass().getDeclaredField("mTitleTextView");
       f.setAccessible(true);
@@ -329,8 +329,8 @@ public class MainActivity extends SMTHBaseActivity
             new int[]{android.R.attr.state_checked}
     };
 
-    int[] colors = new int[]{getResources().getColor(R.color.status_text_night),
-            getResources().getColor(R.color.colorPrimary)
+    int[] colors = new int[]{getResources().getColor(R.color.status_text_night,null),
+            getResources().getColor(R.color.colorPrimary,null)
     };
     ColorStateList csl = new ColorStateList(states, colors);
     mBottomNavigationView.setItemTextColor(csl);
@@ -371,9 +371,9 @@ public class MainActivity extends SMTHBaseActivity
     SubActionButton.Builder itemBuilder = new SubActionButton.Builder(this);
 
     ImageView itemIcon1 = new ImageView(this);
-    itemIcon1.setImageDrawable(getResources().getDrawable(R.drawable.ic_whatshot_white_48dp));
+    itemIcon1.setImageDrawable(getResources().getDrawable(R.drawable.ic_whatshot_white_48dp,null));
     SubActionButton button1 = itemBuilder.setContentView(itemIcon1)
-        .setBackgroundDrawable(getResources().getDrawable(R.drawable.navigation_button_background))
+        .setBackgroundDrawable(getResources().getDrawable(R.drawable.navigation_button_background,null))
         .build();
     button1.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
@@ -384,9 +384,9 @@ public class MainActivity extends SMTHBaseActivity
     });
 
     ImageView itemIcon2 = new ImageView(this);
-    itemIcon2.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_white_48dp));
+    itemIcon2.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_white_48dp,null));
     SubActionButton button2 = itemBuilder.setContentView(itemIcon2)
-        .setBackgroundDrawable(getResources().getDrawable(R.drawable.navigation_button_background))
+        .setBackgroundDrawable(getResources().getDrawable(R.drawable.navigation_button_background,null))
         .build();
     button2.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
@@ -397,9 +397,9 @@ public class MainActivity extends SMTHBaseActivity
     });
 
     ImageView itemIcon3 = new ImageView(this);
-    itemIcon3.setImageDrawable(getResources().getDrawable(R.drawable.ic_format_list_bulleted_white_48dp));
+    itemIcon3.setImageDrawable(getResources().getDrawable(R.drawable.ic_format_list_bulleted_white_48dp,null));
     SubActionButton button3 = itemBuilder.setContentView(itemIcon3)
-        .setBackgroundDrawable(getResources().getDrawable(R.drawable.navigation_button_background))
+        .setBackgroundDrawable(getResources().getDrawable(R.drawable.navigation_button_background,null))
         .build();
     button3.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
@@ -410,9 +410,9 @@ public class MainActivity extends SMTHBaseActivity
     });
 
     ImageView itemIcon4 = new ImageView(this);
-    itemIcon4.setImageDrawable(getResources().getDrawable(R.drawable.ic_email_white_48dp));
+    itemIcon4.setImageDrawable(getResources().getDrawable(R.drawable.ic_email_white_48dp,null));
     SubActionButton button4 = itemBuilder.setContentView(itemIcon4)
-        .setBackgroundDrawable(getResources().getDrawable(R.drawable.navigation_button_background))
+        .setBackgroundDrawable(getResources().getDrawable(R.drawable.navigation_button_background,null))
         .build();
     button4.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
@@ -468,7 +468,7 @@ public class MainActivity extends SMTHBaseActivity
               PendingIntent.getActivity(MainActivity.this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
       Notification.Builder mBuilder = new Notification.Builder(this).setSmallIcon(R.drawable.ic_launcher)
-              .setContentTitle("zSMTH提醒")
+              .setContentTitle("zSMTH-v提醒")
               .setWhen(System.currentTimeMillis())
               .setAutoCancel(true)
               .setOnlyAlertOnce(true)
@@ -482,7 +482,7 @@ public class MainActivity extends SMTHBaseActivity
         mBuilder.setChannelId(getPackageName()); //必须添加（Android 8.0） 【唯一标识】
         NotificationChannel channel = new NotificationChannel(
                 getPackageName(),
-                "zSMTH通知消息",
+                "zSMTH-v通知消息",
                 NotificationManager.IMPORTANCE_DEFAULT
         );
         mNotifyMgr.createNotificationChannel(channel);
@@ -646,7 +646,7 @@ public class MainActivity extends SMTHBaseActivity
 
     if (fragment != hotTopicFragment) {
       // return to hottopic if we are not there yet
-      String title = "首页导读";
+      String title = "首页";
       FragmentManager fm = getSupportFragmentManager();
       fm.beginTransaction().replace(R.id.content_frame, hotTopicFragment).commit();
       setTitle(SMTHApplication.App_Title_Prefix + title);
@@ -670,7 +670,7 @@ public class MainActivity extends SMTHBaseActivity
       }
       // reset will be run after 2000 ms
       mHandler.postDelayed(new PendingDoubleBackToExit(), 2000);
-      Toast.makeText(this, "再按一次退出zSMTH", Toast.LENGTH_SHORT).show();
+      Toast.makeText(this, "再按一次退出zSMTH-v", Toast.LENGTH_SHORT).show();
     }
   }
 
@@ -805,16 +805,16 @@ public class MainActivity extends SMTHBaseActivity
 
     if (id == R.id.nav_guidance) {
       fragment = hotTopicFragment;
-      title = "首页导读";
+      title = "首页";
     } else if (id == R.id.nav_favorite) {
       fragment = favoriteBoardFragment;
-      title = "收藏夹";
+      title = "收藏";
     } else if (id == R.id.nav_all_boards) {
       fragment = allBoardFragment;
-      title = "所有版面";
+      title = "版面";
     } else if (id == R.id.nav_mail) {
       fragment = mailListFragment;
-      title = "邮件";
+      title = "消息";
     } else if (id == R.id.nav_setting) {
       //            fragment = settingFragment;
       fragment = preferenceFragment;
@@ -958,8 +958,8 @@ public class MainActivity extends SMTHBaseActivity
       if (board.isBoard()) {
         // confirm dialog
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
-        String title = String.format("将版面\"%s\"从收藏夹中删除么？", board.getBoardName());
-        builder.setTitle("收藏夹操作").setMessage(title);
+        String title = String.format("将版面\"%s\"从收藏中删除么？", board.getBoardName());
+        builder.setTitle("收藏操作").setMessage(title);
 
        // Log.d(TAG, favoriteBoardFragment.getCurrentFavoritePath());
 
@@ -982,7 +982,7 @@ public class MainActivity extends SMTHBaseActivity
                       public void onNext(@NonNull AjaxResponse ajaxResponse) {
                         Log.d(TAG, "onNext: " + ajaxResponse.toString());
                         if (ajaxResponse.getAjax_st() == AjaxResponse.AJAX_RESULT_OK) {
-                          Toast.makeText(MainActivity.this, ajaxResponse.getAjax_msg() + "\n" + "请刷新收藏夹！", Toast.LENGTH_SHORT).show();
+                          Toast.makeText(MainActivity.this, ajaxResponse.getAjax_msg() + "\n" + "请刷新收藏！", Toast.LENGTH_SHORT).show();
                         } else {
                           Toast.makeText(MainActivity.this, ajaxResponse.toString(), Toast.LENGTH_LONG).show();
                         }
@@ -1013,8 +1013,8 @@ public class MainActivity extends SMTHBaseActivity
       } else if(board.isSection()) {
         //* +Vinney confirm Folder
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
-        String title = String.format("将版面二级目录\"%s\"从收藏夹中删除么？", board.getFolderName());
-        builder.setTitle("收藏夹操作").setMessage(title);
+        String title = String.format("将版面二级目录\"%s\"从收藏中删除么？", board.getFolderName());
+        builder.setTitle("收藏操作").setMessage(title);
 
         builder.setPositiveButton("删除", new DialogInterface.OnClickListener() {
           @Override
@@ -1037,7 +1037,7 @@ public class MainActivity extends SMTHBaseActivity
                       public void onNext(@NonNull AjaxResponse ajaxResponse) {
                         Log.d(TAG, "onNext: " + ajaxResponse.toString());
                         if (ajaxResponse.getAjax_st() == AjaxResponse.AJAX_RESULT_OK) {
-                          Toast.makeText(MainActivity.this, ajaxResponse.getAjax_msg() + "\n" + "请刷新收藏夹！", Toast.LENGTH_SHORT).show();
+                          Toast.makeText(MainActivity.this, ajaxResponse.getAjax_msg() + "\n" + "请刷新收藏！", Toast.LENGTH_SHORT).show();
                         } else {
                           Toast.makeText(MainActivity.this, ajaxResponse.toString(), Toast.LENGTH_LONG).show();
                         }
@@ -1069,8 +1069,8 @@ public class MainActivity extends SMTHBaseActivity
       else if (board.isFolder())
       {
           android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
-          String title = String.format("将版面二级目录\"%s\"从收藏夹中删除么？", board.getFolderName());
-          builder.setTitle("收藏夹操作").setMessage(title);
+          String title = String.format("将版面二级目录\"%s\"从收藏中删除么？", board.getFolderName());
+          builder.setTitle("收藏操作").setMessage(title);
 
           builder.setPositiveButton("删除", new DialogInterface.OnClickListener() {
             @Override
@@ -1093,7 +1093,7 @@ public class MainActivity extends SMTHBaseActivity
                         public void onNext(@NonNull AjaxResponse ajaxResponse) {
                           Log.d(TAG, "onNext: " + ajaxResponse.toString());
                           if (ajaxResponse.getAjax_st() == AjaxResponse.AJAX_RESULT_OK) {
-                            Toast.makeText(MainActivity.this, ajaxResponse.getAjax_msg() + "\n" + "请刷新收藏夹！", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, ajaxResponse.getAjax_msg() + "\n" + "请刷新收藏！", Toast.LENGTH_SHORT).show();
                           } else {
                             Toast.makeText(MainActivity.this, ajaxResponse.toString(), Toast.LENGTH_LONG).show();
                           }

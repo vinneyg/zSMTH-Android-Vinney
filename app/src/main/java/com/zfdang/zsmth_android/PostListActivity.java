@@ -8,7 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Build;
+
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
@@ -16,7 +16,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-//import android.support.v7.widget.StaggeredGridLayoutManager;
+
 import androidx.appcompat.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -48,7 +48,7 @@ import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.zfdang.SMTHApplication;
-//import com.zfdang.zsmth_android.helpers.ActivityUtils;
+
 import com.zfdang.zsmth_android.fresco.WrapContentDraweeView;
 import com.zfdang.zsmth_android.helpers.RecyclerViewUtil;
 import com.zfdang.zsmth_android.models.Attachment;
@@ -64,7 +64,7 @@ import com.zfdang.zsmth_android.newsmth.SMTHHelper;
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.onekeyshare.OnekeyShare;
-//import github.nisrulz.screenshott.ScreenShott;
+
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -72,14 +72,13 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
-//import java.io.BufferedInputStream;
-//import java.io.BufferedOutputStream;
+
 import java.io.File;
-//import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.List;
-//import java.util.Stack;
+import java.util.Locale;
+
 
 import okhttp3.ResponseBody;
 
@@ -287,7 +286,7 @@ public class PostListActivity extends SMTHBaseActivity
     mFrom = intent.getStringExtra(SMTHApplication.FROM_BOARD);
     // now onCreateOptionsMenu(...) is called again
     //        invalidateOptionsMenu();
-    //        Log.d(TAG, String.format("Load post list for topic = %s, source = %s", topic.toString(), mFrom));
+    //        Log.d(TAG, String.format(Locale.CHINA,"Load post list for topic = %s, source = %s", topic.toString(), mFrom));
 
     // set onClick Lisetner for page navigator buttons
 
@@ -348,9 +347,9 @@ public class PostListActivity extends SMTHBaseActivity
               }
               mCurrentPageNo = mIndex / POST_PER_PAGE + 1;
              //mTotalPageNo = mTopic.getTotalPageNo();
-              String title = String.format("[%d/%d] %s", mCurrentPageNo, mTotalPageNo, mTopic.getTitle());
+              String title = String.format(Locale.CHINA,"[%d/%d] %s", mCurrentPageNo, mTotalPageNo, mTopic.getTitle());
               mTitle.setText(title);
-              mPageNo.setText(String.format("%d", mCurrentPageNo));
+              mPageNo.setText(String.format(Locale.CHINA,"%d", mCurrentPageNo));
               mCurrentReadPageNo = mCurrentPageNo;
               //recyclerView.getAdapter().notifyDataSetChanged();
              // recyclerView.getAdapter().notifyItemRangeChanged(1,1,"x");
@@ -386,7 +385,7 @@ public class PostListActivity extends SMTHBaseActivity
         reloadPostList();
       }
       else {
-        String title = String.format("[%d/%d] %s", mCurrentReadPageNo, mTotalPageNo, mTopic.getTitle());
+        String title = String.format(Locale.CHINA,"[%d/%d] %s", mCurrentReadPageNo, mTotalPageNo, mTopic.getTitle());
         mTitle.setText(title);
         scrollToPosition();
         mCurrentPageNo =mCurrentReadPageNo;
@@ -449,7 +448,7 @@ public class PostListActivity extends SMTHBaseActivity
     //case 2: if not yet on the last item of this page. then check this page.
     String temp = PostListContent.POSTS.get(PostListContent.POSTS.size()-1).getPosition();
 
-    int Index =0;
+    int Index ;
     if (temp.equals("楼主")) {
       Index = 0;
     } else {
@@ -496,7 +495,7 @@ public class PostListActivity extends SMTHBaseActivity
                   if(posts.size()==0) {
                     return Observable.empty(); //handle error case
                   }
-                  if(SMTHApplication.ReadRec == false) {
+                  if(!SMTHApplication.ReadRec) {
                     SMTHApplication.ReadPostFirst = posts.get(0);
                     SMTHApplication.ReadRec=true;
                   }
@@ -519,7 +518,7 @@ public class PostListActivity extends SMTHBaseActivity
               @Override public void onNext(@NonNull Post post) {
 
                 String temp = PostListContent.POSTS.get(PostListContent.POSTS.size()-1).getPosition();
-                int Index =0;
+                int Index ;
                 if (temp.equals("楼主")) {
                   Index = 0;
                 } else {
@@ -530,7 +529,7 @@ public class PostListActivity extends SMTHBaseActivity
 
                 // Log.d(TAG, post.toString());
                  temp = post.getPosition();
-                int mIndex =0;
+                int mIndex ;
                 if (temp.equals("楼主")) {
                   mIndex = 0;
                 } else {
@@ -553,7 +552,7 @@ public class PostListActivity extends SMTHBaseActivity
 
               @Override public void onComplete() {
                 String temp = PostListContent.POSTS.get(PostListContent.POSTS.size()-1).getPosition();
-                int Index =0;
+                int Index ;
                 if (temp.equals("楼主")) {
                   Index = 0;
                 } else {
@@ -570,9 +569,9 @@ public class PostListActivity extends SMTHBaseActivity
                   mTopic.setTotalPageNo(mTotalPageNo);
                   Toast.makeText(SMTHApplication.getAppContext(),"没有新数据",Toast.LENGTH_SHORT).show();
                 }
-                  String title = String.format("[%d/%d] %s", mCurrentPageNo, mTotalPageNo, mTopic.getTitle());
+                  String title = String.format(Locale.CHINA,"[%d/%d] %s", mCurrentPageNo, mTotalPageNo, mTopic.getTitle());
                   mTitle.setText(title);
-                  mPageNo.setText(String.format("%d", mCurrentPageNo));
+                  mPageNo.setText(String.format(Locale.CHINA,"%d", mCurrentPageNo));
                   mCurrentReadPageNo = mCurrentPageNo;
                  //mRecyclerView.getAdapter().notifyItemInserted(PostListContent.POSTS.size()-1);
                 clearLoadingHints();
@@ -606,7 +605,7 @@ public class PostListActivity extends SMTHBaseActivity
               if(posts.size()==0) {
                 return Observable.empty(); //handle error case
               }
-              if(SMTHApplication.ReadRec == false) {
+              if(!SMTHApplication.ReadRec) {
                 SMTHApplication.ReadPostFirst = posts.get(0);
                 SMTHApplication.ReadRec=true;
               }
@@ -639,9 +638,9 @@ public class PostListActivity extends SMTHBaseActivity
 
           @Override public void onComplete() {
             mTotalPageNo = mTopic.getTotalPageNo();
-            String title = String.format("[%d/%d] %s", mCurrentPageNo, mTopic.getTotalPageNo(), mTopic.getTitle());
+            String title = String.format(Locale.CHINA,"[%d/%d] %s", mCurrentPageNo, mTopic.getTotalPageNo(), mTopic.getTitle());
             mTitle.setText(title);
-            mPageNo.setText(String.format("%d", mCurrentPageNo));
+            mPageNo.setText(String.format(Locale.CHINA,"%d", mCurrentPageNo));
             mCurrentReadPageNo = mCurrentPageNo;
             clearLoadingHints();
             SMTHApplication.deletionCount++;
@@ -674,7 +673,7 @@ public class PostListActivity extends SMTHBaseActivity
                   if(posts.size()==0) {
                     return Observable.empty(); //handle error case
                   }
-                  if(SMTHApplication.ReadRec == false) {
+                  if(!SMTHApplication.ReadRec) {
                     SMTHApplication.ReadPostFirst = posts.get(0);
                     SMTHApplication.ReadRec=true;
                   }
@@ -696,7 +695,7 @@ public class PostListActivity extends SMTHBaseActivity
 
               @Override public void onNext(@NonNull Post post) {
                 String temp = post.getPosition();
-                int Index =0;
+                int Index ;
                 if (temp.equals("楼主")) {
                   Index = 0;
                 } else {
@@ -717,9 +716,9 @@ public class PostListActivity extends SMTHBaseActivity
 
               @Override public void onComplete() {
                 mTotalPageNo = mTopic.getTotalPageNo();
-                String title = String.format("[%d/%d] %s", mCurrentPageNo, mTopic.getTotalPageNo(), mTopic.getTitle());
+                String title = String.format(Locale.CHINA,"[%d/%d] %s", mCurrentPageNo, mTopic.getTotalPageNo(), mTopic.getTitle());
                 mTitle.setText(title);
-                mPageNo.setText(String.format("%d", mCurrentPageNo));
+                mPageNo.setText(String.format(Locale.CHINA,"%d", mCurrentPageNo));
                 mCurrentReadPageNo = mCurrentPageNo;
                 clearLoadingHints();
 
@@ -872,7 +871,7 @@ public class PostListActivity extends SMTHBaseActivity
         if(Settings.getInstance().isautoloadmore()) {
           try {
             if (mCurrentPageNo == pageNo) {
-              Toast.makeText(PostListActivity.this, String.format("已在第%d页！", pageNo), Toast.LENGTH_SHORT).show();
+              Toast.makeText(PostListActivity.this, String.format(Locale.CHINA,"已在第%d页！", pageNo), Toast.LENGTH_SHORT).show();
             } else if (pageNo >= 1 && pageNo <= mTopic.getTotalPageNo()) {
               mCurrentPageNo = pageNo;
               // turn off keyboard
@@ -988,7 +987,7 @@ public class PostListActivity extends SMTHBaseActivity
   @Override public boolean onItemLongClicked(final int position, View v) {
     if (position == RecyclerView.NO_POSITION || position >= PostListContent.POSTS.size()) return false;
 
-    //Log.d(TAG, String.format("Post by %s is long clicked", PostListContent.POSTS.get(position).getAuthor()));
+    //Log.d(TAG, String.format(Locale.CHINA,"Post by %s is long clicked", PostListContent.POSTS.get(position).getAuthor()));
 
     final PostActionAlertDialogItem[] menuItems = {
         new PostActionAlertDialogItem(getString(R.string.post_reply_post), R.drawable.ic_reply_black_48dp),       // 0
@@ -1122,7 +1121,7 @@ public class PostListActivity extends SMTHBaseActivity
     return true;
   }
   private void onPostPopupMenuItem(int position, int which) {
-    //        Log.d(TAG, String.format("MenuItem %d was clicked", which));
+    //        Log.d(TAG, String.format(Locale.CHINA,"MenuItem %d was clicked", which));
     if (position >= PostListContent.POSTS.size()) {
       Log.e(TAG, "onPostPopupMenuItem: " + "Invalid Post index" + position);
       return;
@@ -1185,7 +1184,7 @@ public class PostListActivity extends SMTHBaseActivity
       String content;
       if (post != null) {
         content = post.getRawContent();
-
+        /*
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
           final android.content.ClipboardManager clipboardManager =
               (android.content.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
@@ -1195,7 +1194,9 @@ public class PostListActivity extends SMTHBaseActivity
           final android.text.ClipboardManager clipboardManager =
               (android.text.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
           clipboardManager.setText(content);
-        }
+          }*/
+        final android.content.ClipboardManager clipboardManager =
+                (android.content.ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
         Toast.makeText(PostListActivity.this, "帖子内容已复制到剪贴板", Toast.LENGTH_SHORT).show();
       } else {
         Toast.makeText(PostListActivity.this, "复制失败！", Toast.LENGTH_SHORT).show();
@@ -1208,7 +1209,7 @@ public class PostListActivity extends SMTHBaseActivity
       popup.showAtLocation(mRecyclerView, Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 100);
     } else if (which == 7) {
       // open post in browser
-      String url = String.format(SMTHHelper.SMTH_MOBILE_URL + "/article/%s/%s?p=%d", mTopic.getBoardEngName(), mTopic.getTopicID(), mCurrentPageNo);
+      String url = String.format(Locale.CHINA,SMTHHelper.SMTH_MOBILE_URL + "/article/%s/%s?p=%d", mTopic.getBoardEngName(), mTopic.getTopicID(), mCurrentPageNo);
       startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
     } else if (which == 8) {
       // post_share
@@ -1342,15 +1343,15 @@ public class PostListActivity extends SMTHBaseActivity
     oks.disableSSOWhenAuthorize();
 
     // prepare information from the post
-    String title = String.format("[%s] %s @ 水木社区", mTopic.getBoardChsName(), mTopic.getTitle());
+    String title = String.format(Locale.CHINA,"[%s] %s @ 水木社区", mTopic.getBoardChsName(), mTopic.getTitle());
     String postURL =
-        String.format(SMTHHelper.SMTH_MOBILE_URL + "/article/%s/%s?p=%d", mTopic.getBoardEngName(), mTopic.getTopicID(), mCurrentPageNo);
-    String content = String.format("[%s]在大作中写到: %s", post.getAuthor(), post.getRawContent());
+        String.format(Locale.CHINA,SMTHHelper.SMTH_MOBILE_URL + "/article/%s/%s?p=%d", mTopic.getBoardEngName(), mTopic.getTopicID(), mCurrentPageNo);
+    String content = String.format(Locale.CHINA,"[%s]在大作中写到: %s", post.getAuthor(), post.getRawContent());
     // the max length of webo is 140
     if (content.length() > 110) {
       content = content.substring(0, 110);
     }
-    content += String.format("...\nLink:%s", postURL);
+    content += String.format(Locale.CHINA,"...\nLink:%s", postURL);
 
     // default: use zSMTH logo
     String imageURL = "http://zsmth-android.zfdang.com/zsmth.png";
@@ -1486,12 +1487,12 @@ public class PostListActivity extends SMTHBaseActivity
 
   @Override public void OnRePostAction(Post post, String target, String outgo) {
     SMTHHelper helper = SMTHHelper.getInstance();
-    Log.d("Vinney-1",mTopic.getBoardEngName());
+   // Log.d("Vinney-1",mTopic.getBoardEngName());
     helper.wService.repostPost(mTopic.getBoardEngName(), post.getPostID(), target, outgo).map(new Function<ResponseBody, String>() {
       @Override public String apply(@NonNull ResponseBody responseBody) throws Exception {
         try {
           String response = SMTHHelper.DecodeResponseFromWWW(responseBody.bytes());
-          Log.d("Vinney-R",response);
+       //   Log.d("Vinney-R",response);
           return SMTHHelper.parseRepostResponse(response);
         } catch (Exception e) {
           Log.e(TAG, "call: " + Log.getStackTraceString(e));

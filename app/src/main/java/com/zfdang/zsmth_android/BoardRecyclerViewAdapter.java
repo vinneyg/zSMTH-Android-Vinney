@@ -12,6 +12,7 @@ import com.zfdang.zsmth_android.models.Board;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 /**
@@ -121,7 +122,7 @@ public class BoardRecyclerViewAdapter extends RecyclerView.Adapter<BoardRecycler
 
         for (final Board board : originalList) {
           // this matching method can be further improved
-          String boardLabel = String.format("%s-%s-%s", board.getBoardChsName(), board.getBoardEngName(), board.getCategoryName());
+          String boardLabel = String.format(Locale.CHINA,"%s-%s-%s", board.getBoardChsName(), board.getBoardEngName(), board.getCategoryName());
           if (Pattern.compile(Pattern.quote(filterPattern), Pattern.CASE_INSENSITIVE).matcher(boardLabel).find()) {
             filteredList.add(board);
           }

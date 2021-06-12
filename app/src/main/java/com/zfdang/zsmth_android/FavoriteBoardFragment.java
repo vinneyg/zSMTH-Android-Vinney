@@ -48,7 +48,7 @@ public class FavoriteBoardFragment extends Fragment  implements OnVolumeUpDownLi
   private OnBoardFragmentInteractionListener mListener;
 
   private RecyclerView mRecyclerView = null;
-  private String mDefaultTitle = "收藏夹";
+  private String mDefaultTitle = "收藏";
 
   // list of favorite paths
   private List<Board> mFavoritePaths = null;
@@ -174,14 +174,14 @@ public class FavoriteBoardFragment extends Fragment  implements OnVolumeUpDownLi
       network = Observable.create(new ObservableOnSubscribe<List<Board>>() {
         @Override public void subscribe(@NonNull ObservableEmitter<List<Board>> observableEmitter) throws Exception {
           List<Board> boards = SMTHHelper.LoadFavoriteBoardsInFolder(finalCurrentPath);
-          if (boards != null && boards.size() > 0) {
+          if (boards.size() > 0) {
             observableEmitter.onNext(boards);
           } else {
             observableEmitter.onComplete();
           }
         }
       });
-    } else if(board != null && board.isSection()){
+    } else if(board.isSection()){
       // 用户在收藏夹里收藏的系统的二级目录
       network = Observable.create(new ObservableOnSubscribe<List<Board>>() {
         @Override public void subscribe(@NonNull ObservableEmitter<List<Board>> observableEmitter) throws Exception {
@@ -231,7 +231,7 @@ public class FavoriteBoardFragment extends Fragment  implements OnVolumeUpDownLi
     if (activity == null) {
       return;
     }
-    String title = "";
+    String title ;
     if(mFavoritePaths.size() == 0) {
       title = SMTHApplication.App_Title_Prefix + mDefaultTitle;
     } else {

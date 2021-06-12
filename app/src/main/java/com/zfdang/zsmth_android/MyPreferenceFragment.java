@@ -31,6 +31,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import java.io.File;
+import java.util.Locale;
 
 /**
  * Created by zfdang on 2016-5-2.
@@ -392,6 +393,7 @@ public class MyPreferenceFragment extends PreferenceFragmentCompat {
         Settings.getInstance().setUseSignature(bValue);
         if (bValue == false) {
           String alipay = "vinneyguo@outlook.com";
+          /*
           if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             final android.content.ClipboardManager clipboardManager =
                 (android.content.ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
@@ -402,6 +404,9 @@ public class MyPreferenceFragment extends PreferenceFragmentCompat {
                 (android.text.ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
             clipboardManager.setText(alipay);
           }
+          */
+          final android.content.ClipboardManager clipboardManager =
+                  (android.content.ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
           Toast.makeText(getActivity(), "作者支付宝ID已复制到剪贴板...", Toast.LENGTH_SHORT).show();
         }
         return true;
@@ -552,7 +557,7 @@ public class MyPreferenceFragment extends PreferenceFragmentCompat {
       PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
       String version = pInfo.versionName;
       int verCode = pInfo.versionCode;
-      String summary = String.format("版本号: %s(%d)", version, verCode);
+      String summary = String.format(Locale.CHINA,"版本号: %s(%d)", version, verCode);
       app_version.setSummary(summary);
     } catch (Exception e) {
       Log.e(TAG, "updateVersionInfo: " + Log.getStackTraceString(e));

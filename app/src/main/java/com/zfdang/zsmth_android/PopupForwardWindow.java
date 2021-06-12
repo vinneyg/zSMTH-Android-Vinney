@@ -171,8 +171,8 @@ public class PopupForwardWindow extends PopupWindow {
           String [] newTarget = target.split(",");
           ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
           for(int i=0;i<newTarget.length;i++) {
-            Log.d("Vinney", newTarget[i]);
-            Log.d("Vinney", PopupForwardWindow.post.getPostID());
+            //Log.d("Vinney", newTarget[i]);
+            //Log.d("Vinney", PopupForwardWindow.post.getPostID());
             //mListener.OnRePostAction(PopupForwardWindow.post, target, "on");
             mListener.OnRePostAction(PopupForwardWindow.post, newTarget[i], "on");
 
