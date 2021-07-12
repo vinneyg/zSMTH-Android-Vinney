@@ -773,12 +773,12 @@ public class MainActivity extends SMTHBaseActivity
 
               @Override
               public void onNext(@NonNull AjaxResponse ajaxResponse) {
-                Toast.makeText(MainActivity.this, ajaxResponse.getAjax_msg(), Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, ajaxResponse.getAjax_msg(), Toast.LENGTH_SHORT).show();
               }
 
               @Override
               public void onError(@NonNull Throwable e) {
-                Toast.makeText(MainActivity.this, "退出登录失败!\n" + e.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "退出登录失败!\n" + e.toString(), Toast.LENGTH_SHORT).show();
               }
 
               @Override
@@ -827,7 +827,7 @@ public class MainActivity extends SMTHBaseActivity
       quitNow();
     } else if( id == R.id.nav_read)
     {
-     //Toast.makeText(this, "Click boards below",Toast.LENGTH_LONG);
+     //Toast.makeText(this, "Click boards below",Toast.LENGTH_SHORT);
       return true;
     }
     else if( id == R.id.read_board1)
@@ -984,14 +984,14 @@ public class MainActivity extends SMTHBaseActivity
                         if (ajaxResponse.getAjax_st() == AjaxResponse.AJAX_RESULT_OK) {
                           Toast.makeText(MainActivity.this, ajaxResponse.getAjax_msg() + "\n" + "请刷新收藏！", Toast.LENGTH_SHORT).show();
                         } else {
-                          Toast.makeText(MainActivity.this, ajaxResponse.toString(), Toast.LENGTH_LONG).show();
+                          Toast.makeText(MainActivity.this, ajaxResponse.toString(), Toast.LENGTH_SHORT).show();
                         }
 
                       }
 
                       @Override
                       public void onError(@NonNull Throwable e) {
-                        Toast.makeText(MainActivity.this, "删除收藏版面失败！\n" + e.toString(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this, "删除收藏版面失败！\n" + e.toString(), Toast.LENGTH_SHORT).show();
 
                       }
 
@@ -1039,14 +1039,14 @@ public class MainActivity extends SMTHBaseActivity
                         if (ajaxResponse.getAjax_st() == AjaxResponse.AJAX_RESULT_OK) {
                           Toast.makeText(MainActivity.this, ajaxResponse.getAjax_msg() + "\n" + "请刷新收藏！", Toast.LENGTH_SHORT).show();
                         } else {
-                          Toast.makeText(MainActivity.this, ajaxResponse.toString(), Toast.LENGTH_LONG).show();
+                          Toast.makeText(MainActivity.this, ajaxResponse.toString(), Toast.LENGTH_SHORT).show();
                         }
 
                       }
 
                       @Override
                       public void onError(@NonNull Throwable e) {
-                        Toast.makeText(MainActivity.this, "删除收藏目录失败！\n" + e.toString(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this, "删除收藏目录失败！\n" + e.toString(), Toast.LENGTH_SHORT).show();
 
                       }
 
@@ -1095,14 +1095,14 @@ public class MainActivity extends SMTHBaseActivity
                           if (ajaxResponse.getAjax_st() == AjaxResponse.AJAX_RESULT_OK) {
                             Toast.makeText(MainActivity.this, ajaxResponse.getAjax_msg() + "\n" + "请刷新收藏！", Toast.LENGTH_SHORT).show();
                           } else {
-                            Toast.makeText(MainActivity.this, ajaxResponse.toString(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this, ajaxResponse.toString(), Toast.LENGTH_SHORT).show();
                           }
 
                         }
 
                         @Override
                         public void onError(@NonNull Throwable e) {
-                          Toast.makeText(MainActivity.this, "删除收藏目录失败！\n" + e.toString(), Toast.LENGTH_LONG).show();
+                          Toast.makeText(MainActivity.this, "删除收藏目录失败！\n" + e.toString(), Toast.LENGTH_SHORT).show();
 
                         }
 

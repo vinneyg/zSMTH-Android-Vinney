@@ -401,7 +401,7 @@ public class ComposePostActivity extends SMTHBaseActivity {
 
           @Override public void onError(@NonNull Throwable e) {
             dismissProgress();
-            Toast.makeText(SMTHApplication.getAppContext(), "发生错误:\n" + e.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(SMTHApplication.getAppContext(), "发生错误:\n" + e.toString(), Toast.LENGTH_SHORT).show();
 
           }
 
@@ -411,7 +411,7 @@ public class ComposePostActivity extends SMTHBaseActivity {
             String message = null;
             if (postPublishResult != AjaxResponse.AJAX_RESULT_OK) {
               message = "操作失败! \n错误信息:\n" + postPublishMessage;
-              Toast.makeText(ComposePostActivity.this, message, Toast.LENGTH_LONG).show();
+              Toast.makeText(ComposePostActivity.this, message, Toast.LENGTH_SHORT).show();
               Intent intent = new Intent(ComposePostActivity.this, LoginActivity.class);
               startActivityForResult(intent, MainActivity.LOGIN_ACTIVITY_REQUEST_CODE);
             } else {
@@ -422,7 +422,7 @@ public class ComposePostActivity extends SMTHBaseActivity {
                 // otherwise, compose the message by ourself
                 message = "成功!";
               }
-              Toast.makeText(SMTHApplication.getAppContext(), message, Toast.LENGTH_LONG).show();
+              Toast.makeText(SMTHApplication.getAppContext(), message, Toast.LENGTH_SHORT).show();
 
               KeyboardLess.$hide(ComposePostActivity.this, mContent);
 

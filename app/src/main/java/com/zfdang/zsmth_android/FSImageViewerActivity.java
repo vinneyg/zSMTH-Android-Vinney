@@ -262,7 +262,7 @@ public class FSImageViewerActivity extends AppCompatActivity implements OnPhotoT
   public void saveImageToFile(String imagePath, boolean isAnimation) {
     File imageFile = FrescoUtils.getCachedImageOnDisk(Uri.parse(imagePath));
     if (imageFile == null) {
-      Toast.makeText(FSImageViewerActivity.this, "无法读取缓存文件！", Toast.LENGTH_LONG).show();
+      Toast.makeText(FSImageViewerActivity.this, "无法读取缓存文件！", Toast.LENGTH_SHORT).show();
       return;
     }
     // Log.d(TAG, "saveImageToFile: " + imageFile.getAbsolutePath());
@@ -302,7 +302,7 @@ public class FSImageViewerActivity extends AppCompatActivity implements OnPhotoT
       }
     } catch (Exception e) {
       Log.e(TAG, "saveImageToFile: " + Log.getStackTraceString(e));
-      Toast.makeText(FSImageViewerActivity.this, "保存图片失败:\n请授予应用存储权限！\n" + e.toString(), Toast.LENGTH_LONG).show();
+      Toast.makeText(FSImageViewerActivity.this, "保存图片失败:\n请授予应用存储权限！\n" + e.toString(), Toast.LENGTH_SHORT).show();
     }
   }
 

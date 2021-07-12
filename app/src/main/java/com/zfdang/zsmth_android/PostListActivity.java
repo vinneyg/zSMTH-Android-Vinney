@@ -436,7 +436,7 @@ public class PostListActivity extends SMTHBaseActivity
     else {
       //  loadPostListByPages();
       clearLoadingHints();
-      Toast.makeText(PostListActivity.this, "已在首页", Toast.LENGTH_LONG).show();
+      Toast.makeText(PostListActivity.this, "已在首页", Toast.LENGTH_SHORT).show();
     }
   }
 
@@ -547,7 +547,7 @@ public class PostListActivity extends SMTHBaseActivity
 
               @Override public void onError(@NonNull Throwable e) {
                 clearLoadingHints();
-                Toast.makeText(SMTHApplication.getAppContext(), "加载失败！\n" + e.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(SMTHApplication.getAppContext(), "加载失败！\n" + e.toString(), Toast.LENGTH_SHORT).show();
               }
 
               @Override public void onComplete() {
@@ -578,7 +578,7 @@ public class PostListActivity extends SMTHBaseActivity
 
                   //Special User OFFLINE case: [] or [Category 第一页:]
                   if (PostListContent.POSTS.size() == 0) {
-                    //Toast.makeText(SMTHApplication.getAppContext(),"请重新登录-"+ PostListContent.POSTS.size()+"-!",Toast.LENGTH_LONG).show();
+                    //Toast.makeText(SMTHApplication.getAppContext(),"请重新登录-"+ PostListContent.POSTS.size()+"-!",Toast.LENGTH_SHORT).show();
                     PostListContent.clear();
                     try {
                       Thread.sleep(1000);
@@ -633,7 +633,7 @@ public class PostListActivity extends SMTHBaseActivity
 
           @Override public void onError(@NonNull Throwable e) {
             clearLoadingHints();
-            Toast.makeText(SMTHApplication.getAppContext(), "加载失败！\n" + e.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(SMTHApplication.getAppContext(), "加载失败！\n" + e.toString(), Toast.LENGTH_SHORT).show();
           }
 
           @Override public void onComplete() {
@@ -647,7 +647,7 @@ public class PostListActivity extends SMTHBaseActivity
 
             //Special User OFFLINE case: [] or [Category 第一页:]
             if(PostListContent.POSTS.size() == 0) {
-                //Toast.makeText(SMTHApplication.getAppContext(),"请重新登录-"+ PostListContent.POSTS.size()+"-!",Toast.LENGTH_LONG).show();
+                //Toast.makeText(SMTHApplication.getAppContext(),"请重新登录-"+ PostListContent.POSTS.size()+"-!",Toast.LENGTH_SHORT).show();
                 PostListContent.clear();
                 try {
                   Thread.sleep(1000);
@@ -711,7 +711,7 @@ public class PostListActivity extends SMTHBaseActivity
 
               @Override public void onError(@NonNull Throwable e) {
                 clearLoadingHints();
-                Toast.makeText(SMTHApplication.getAppContext(), "加载失败！\n" + e.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(SMTHApplication.getAppContext(), "加载失败！\n" + e.toString(), Toast.LENGTH_SHORT).show();
               }
 
               @Override public void onComplete() {
@@ -725,7 +725,7 @@ public class PostListActivity extends SMTHBaseActivity
                 //Special User OFFLINE case: [] or [Category 第一页:]
                 if(PostListContent.POSTS.size() == 0)
                 {
-                  //Toast.makeText(SMTHApplication.getAppContext(),"请重新登录-"+ PostListContent.POSTS.size()+"-!",Toast.LENGTH_LONG).show();
+                  //Toast.makeText(SMTHApplication.getAppContext(),"请重新登录-"+ PostListContent.POSTS.size()+"-!",Toast.LENGTH_SHORT).show();
                   PostListContent.clear();
 
                   try {
@@ -1297,7 +1297,7 @@ public class PostListActivity extends SMTHBaseActivity
       }
     } catch (Exception e) {
       Log.e(TAG, "saveImageToFile: " + Log.getStackTraceString(e));
-      Toast.makeText(PostListActivity.this, "保存截图失败:\n" + e.toString(), Toast.LENGTH_LONG).show();
+      Toast.makeText(PostListActivity.this, "保存截图失败:\n" + e.toString(), Toast.LENGTH_SHORT).show();
     }
   }
 
@@ -1320,11 +1320,11 @@ public class PostListActivity extends SMTHBaseActivity
       }
 
       @Override public void onNext(@NonNull String s) {
-          Toast.makeText(PostListActivity.this, s, Toast.LENGTH_LONG).show();
+          Toast.makeText(PostListActivity.this, s, Toast.LENGTH_SHORT).show();
       }
 
       @Override public void onError(@NonNull Throwable e) {
-        Toast.makeText(PostListActivity.this, "删除帖子失败！\n" + e.toString(), Toast.LENGTH_LONG).show();
+        Toast.makeText(PostListActivity.this, "删除帖子失败！\n" + e.toString(), Toast.LENGTH_SHORT).show();
 
       }
 
@@ -1397,7 +1397,7 @@ public class PostListActivity extends SMTHBaseActivity
       }
 
       @Override public void onError(Platform platform, int i, Throwable throwable) {
-        Toast.makeText(PostListActivity.this, "分享失败:\n" + throwable.toString(), Toast.LENGTH_LONG).show();
+        Toast.makeText(PostListActivity.this, "分享失败:\n" + throwable.toString(), Toast.LENGTH_SHORT).show();
       }
 
       @Override public void onCancel(Platform platform, int i) {
@@ -1431,12 +1431,12 @@ public class PostListActivity extends SMTHBaseActivity
               Toast.makeText(PostListActivity.this, ajaxResponse.getAjax_msg(), Toast.LENGTH_SHORT).show();
               reloadPostList();
             } else {
-              Toast.makeText(PostListActivity.this, ajaxResponse.toString(), Toast.LENGTH_LONG).show();
+              Toast.makeText(PostListActivity.this, ajaxResponse.toString(), Toast.LENGTH_SHORT).show();
             }
           }
 
           @Override public void onError(@NonNull Throwable e) {
-            Toast.makeText(PostListActivity.this, "增加Like失败!\n" + e.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(PostListActivity.this, "增加Like失败!\n" + e.toString(), Toast.LENGTH_SHORT).show();
           }
 
           @Override public void onComplete() {
@@ -1471,12 +1471,12 @@ public class PostListActivity extends SMTHBaseActivity
             if (ajaxResponse.getAjax_st() == AjaxResponse.AJAX_RESULT_OK) {
               Toast.makeText(PostListActivity.this, ajaxResponse.getAjax_msg(), Toast.LENGTH_SHORT).show();
             } else {
-              Toast.makeText(PostListActivity.this, ajaxResponse.toString(), Toast.LENGTH_LONG).show();
+              Toast.makeText(PostListActivity.this, ajaxResponse.toString(), Toast.LENGTH_SHORT).show();
             }
           }
 
           @Override public void onError(@NonNull Throwable e) {
-            Toast.makeText(PostListActivity.this, "转寄失败！\n" + e.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(PostListActivity.this, "转寄失败！\n" + e.toString(), Toast.LENGTH_SHORT).show();
           }
 
           @Override public void onComplete() {
@@ -1509,7 +1509,7 @@ public class PostListActivity extends SMTHBaseActivity
       }
 
       @Override public void onError(@NonNull Throwable e) {
-        Toast.makeText(SMTHApplication.getAppContext(), e.toString(), Toast.LENGTH_LONG).show();
+        Toast.makeText(SMTHApplication.getAppContext(), e.toString(), Toast.LENGTH_SHORT).show();
       }
 
       @Override public void onComplete() {

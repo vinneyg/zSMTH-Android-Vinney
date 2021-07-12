@@ -159,14 +159,14 @@ public class LoginActivity extends SMTHBaseActivity implements OnClickListener {
                 finish();
                 break;
               default:
-                  Toast.makeText(SMTHApplication.getAppContext(), ajaxResponse.toString(), Toast.LENGTH_LONG).show();
+                  Toast.makeText(SMTHApplication.getAppContext(), ajaxResponse.toString(), Toast.LENGTH_SHORT).show();
                 break;
             }
           }
 
           @Override public void onError(@NonNull Throwable e) {
             dismissProgress();
-            Toast.makeText(SMTHApplication.getAppContext(), "登录失败!\n" + e.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(SMTHApplication.getAppContext(), "登录失败!\n" + e.toString(), Toast.LENGTH_SHORT).show();
           }
 
           @Override public void onComplete() {

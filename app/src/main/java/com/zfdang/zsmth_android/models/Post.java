@@ -400,7 +400,7 @@ public class Post {
       // handle quoted content
       if (line.startsWith(":")) {
        // line = "<font color=#00b4ae>" + line + "</font>";
-        line = "<font color=#727272>" + line + "</font>";
+        line = "<font color=#808080>" + line + "</font>";
         sb.append(line).append("<br />");
         continue;
       }
@@ -424,6 +424,7 @@ public class Post {
       if (i == signatureStartLine) {
         // entering signature mode
         signatureMode = 1;
+        line = "<font color=#808080>" + line + "</font>";
         sb.append(line).append("<br />");
         continue;
       }
@@ -441,6 +442,13 @@ public class Post {
             .replace("m.newsmth.net", "")
             .replace("官方应用", "")
             .replace("客户端", "");
+
+        line = line.replace("·", "")
+                .replace("http://www.mysmth.net", "")
+                .replace("http://m.mysmth.net", "")
+                .replace("http://mysmth.net", "")
+                .replace("mysmth.net", "")
+                .replace("m.mysmth.net", "");
 
         line = "<font color=#808080>" + StringUtils.lookupIPLocation(line) + "</font>";
         sb.append(line).append("<br />");

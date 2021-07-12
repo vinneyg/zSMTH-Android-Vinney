@@ -214,7 +214,7 @@ public class FavoriteBoardFragment extends Fragment  implements OnVolumeUpDownLi
 
       @Override public void onError(@NonNull Throwable e) {
         clearLoadingHints();
-        Toast.makeText(SMTHApplication.getAppContext(), "加载收藏夹失败!\n" + e.toString(), Toast.LENGTH_LONG).show();
+        Toast.makeText(SMTHApplication.getAppContext(), "加载收藏夹失败!\n" + e.toString(), Toast.LENGTH_SHORT).show();
 
       }
 

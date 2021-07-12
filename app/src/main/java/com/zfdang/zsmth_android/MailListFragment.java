@@ -181,7 +181,7 @@ public class MailListFragment extends androidx.fragment.app.Fragment implements 
                 }
 
                 @Override public void onError(@NonNull Throwable e) {
-                  Toast.makeText(SMTHApplication.getAppContext(), "删除邮件失败!\n" + e.toString(), Toast.LENGTH_LONG).show();
+                  Toast.makeText(SMTHApplication.getAppContext(), "删除邮件失败!\n" + e.toString(), Toast.LENGTH_SHORT).show();
                 }
 
                 @Override public void onComplete() {
@@ -191,7 +191,7 @@ public class MailListFragment extends androidx.fragment.app.Fragment implements 
         }
         else{
           recyclerView.getAdapter().notifyItemChanged(position);
-          Toast.makeText(SMTHApplication.getAppContext(), "目录无法删除", Toast.LENGTH_LONG).show();
+          Toast.makeText(SMTHApplication.getAppContext(), "目录无法删除", Toast.LENGTH_SHORT).show();
         }
       }
     };
@@ -331,7 +331,7 @@ public class MailListFragment extends androidx.fragment.app.Fragment implements 
           List<Mail> results = SMTHHelper.ParseMailsFromWWW(response);
           return Observable.fromIterable(results);
         } catch (Exception e) {
-          Toast.makeText(SMTHApplication.getAppContext(), "加载文章提醒失败\n" + e.toString(), Toast.LENGTH_LONG).show();
+          Toast.makeText(SMTHApplication.getAppContext(), "加载文章提醒失败\n" + e.toString(), Toast.LENGTH_SHORT).show();
         }
         return null;
       }
@@ -348,7 +348,7 @@ public class MailListFragment extends androidx.fragment.app.Fragment implements 
 
       @Override public void onError(@NonNull Throwable e) {
         clearLoadingHints();
-        Toast.makeText(getActivity(), "加载相关文章失败！\n" + e.toString(), Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), "加载相关文章失败！\n" + e.toString(), Toast.LENGTH_SHORT).show();
 
       }
 
@@ -386,7 +386,7 @@ public class MailListFragment extends androidx.fragment.app.Fragment implements 
 
       @Override public void onError(@NonNull Throwable e) {
         clearLoadingHints();
-        Toast.makeText(SMTHApplication.getAppContext(), "加载邮件列表失败！\n" + e.toString(), Toast.LENGTH_LONG).show();
+        Toast.makeText(SMTHApplication.getAppContext(), "加载邮件列表失败！\n" + e.toString(), Toast.LENGTH_SHORT).show();
       }
 
       @Override public void onComplete() {
@@ -450,7 +450,7 @@ public class MailListFragment extends androidx.fragment.app.Fragment implements 
             }
 
             @Override public void onError(@NonNull Throwable e) {
-              Toast.makeText(SMTHApplication.getAppContext(), "设置已读标记失败!\n" + e.toString(), Toast.LENGTH_LONG).show();
+              Toast.makeText(SMTHApplication.getAppContext(), "设置已读标记失败!\n" + e.toString(), Toast.LENGTH_SHORT).show();
             }
 
             @Override public void onComplete() {

@@ -229,7 +229,7 @@ public class PopupForwardWindow extends PopupWindow {
   //
   //                        @Override
   //                        public void onError(Throwable e) {
-  //                            Toast.makeText(SMTHApplication.getAppContext(), e.toString(), Toast.LENGTH_LONG).show();
+  //                            Toast.makeText(SMTHApplication.getAppContext(), e.toString(), Toast.LENGTH_SHORT).show();
   //                        }
   //
   //                        @Override

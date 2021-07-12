@@ -298,14 +298,14 @@ public class BoardTopicActivity extends SMTHBaseActivity
               if (ajaxResponse.getAjax_st() == AjaxResponse.AJAX_RESULT_OK) {
                 Toast.makeText(BoardTopicActivity.this, ajaxResponse.getAjax_msg() + "\n请手动刷新收藏夹！", Toast.LENGTH_SHORT).show();
               } else {
-                //Toast.makeText(BoardTopicActivity.this, ajaxResponse.toString(), Toast.LENGTH_LONG).show();
-                Toast.makeText(BoardTopicActivity.this, "该版面已经收藏", Toast.LENGTH_LONG).show();
+                //Toast.makeText(BoardTopicActivity.this, ajaxResponse.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(BoardTopicActivity.this, "该版面已经收藏", Toast.LENGTH_SHORT).show();
               }
 
             }
 
             @Override public void onError(@NonNull Throwable e) {
-              Toast.makeText(BoardTopicActivity.this, "收藏版面失败！\n" + e.toString(), Toast.LENGTH_LONG).show();
+              Toast.makeText(BoardTopicActivity.this, "收藏版面失败！\n" + e.toString(), Toast.LENGTH_SHORT).show();
 
             }
 
@@ -414,7 +414,7 @@ public class BoardTopicActivity extends SMTHBaseActivity
             clearLoadingHints();
 
             Toast.makeText(SMTHApplication.getAppContext(), String.format("获取第%d页的帖子失败!\n", mCurrentPageNo) + e.toString(),
-                Toast.LENGTH_LONG).show();
+                Toast.LENGTH_SHORT).show();
             mCurrentPageNo -= 1;
           }
 
@@ -537,7 +537,7 @@ public class BoardTopicActivity extends SMTHBaseActivity
           }
 
           @Override public void onError(@NonNull Throwable e) {
-            Toast.makeText(SMTHApplication.getAppContext(), "加载搜索结果失败!\n" + e.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(SMTHApplication.getAppContext(), "加载搜索结果失败!\n" + e.toString(), Toast.LENGTH_SHORT).show();
 
           }
 

@@ -202,7 +202,7 @@ public class MailContentActivity extends AppCompatActivity {
     int id = item.getItemId();
     if (id == android.R.id.home) {
       if (mMail.isRefferedPost() ) {
-          //Toast.makeText(MailContentActivity.this, "回复POST提醒", Toast.LENGTH_LONG).show();
+          //Toast.makeText(MailContentActivity.this, "回复POST提醒", Toast.LENGTH_SHORT).show();
           Board board = new Board();
           board.initAsBoard(mMail.fromBoard, mMail.fromBoard, "", "");
 
@@ -217,7 +217,7 @@ public class MailContentActivity extends AppCompatActivity {
       return true;
     } else if (id == R.id.mail_content_reply) {
       if (mPost == null) {
-        Toast.makeText(MailContentActivity.this, "帖子内容错误，无法回复！", Toast.LENGTH_LONG).show();
+        Toast.makeText(MailContentActivity.this, "帖子内容错误，无法回复！", Toast.LENGTH_SHORT).show();
         return true;
       } else {
         ComposePostContext postContext = new ComposePostContext();
@@ -251,7 +251,7 @@ public class MailContentActivity extends AppCompatActivity {
         intent.putExtra(SMTHApplication.FROM_BOARD, SMTHApplication.FROM_BOARD_BOARD);
         startActivity(intent);
       } else {
-        Toast.makeText(MailContentActivity.this, "普通邮件，无法打开原贴!", Toast.LENGTH_LONG).show();
+        Toast.makeText(MailContentActivity.this, "普通邮件，无法打开原贴!", Toast.LENGTH_SHORT).show();
       }
     }else if(id == R.id.mail_content_copy) //Vinney: 增加邮件内容复制
       {

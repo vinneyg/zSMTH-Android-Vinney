@@ -636,7 +636,7 @@ public class Settings {
     mShowSticky = mPreference.getBoolean(SHOW_STICKY_TOPIC, false);
     mUsername = mPreference.getString(USERNAME_KEY, "");
     mPassword = mPreference.getString(PASSWORD_KEY, "");
-    bAutoLogin = mPreference.getBoolean(AUTO_LOGIN, false);
+    bAutoLogin = mPreference.getBoolean(AUTO_LOGIN, true);
 
     bLastLoginSuccess = mPreference.getBoolean(LAST_LOGIN_SUCCESS, false);
 
