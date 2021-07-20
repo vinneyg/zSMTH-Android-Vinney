@@ -1197,6 +1197,8 @@ public class PostListActivity extends SMTHBaseActivity
           }*/
         final android.content.ClipboardManager clipboardManager =
                 (android.content.ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+        final android.content.ClipData clipData = android.content.ClipData.newPlainText("PostContent", content);
+        clipboardManager.setPrimaryClip(clipData);
         Toast.makeText(PostListActivity.this, "帖子内容已复制到剪贴板", Toast.LENGTH_SHORT).show();
       } else {
         Toast.makeText(PostListActivity.this, "复制失败！", Toast.LENGTH_SHORT).show();

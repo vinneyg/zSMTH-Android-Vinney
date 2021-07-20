@@ -42,8 +42,8 @@ task clean(type: Delete) {
 
 ext {
     minSdkVersion = 24
-    targetSdkVersion = 30
-    compileSdkVersion = 30
+    targetSdkVersion = 29
+    compileSdkVersion = 29
     // https://developer.android.com/studio/releases/build-tools
     buildToolsVersion = '30.0.2'
     FRESCO_VERSION = '1.13.0'
